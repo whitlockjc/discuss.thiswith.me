@@ -8,7 +8,7 @@ site_page_type: tag
 </div>
 <% blog.tags.each do |tag, articles| %>
 <% wrap_layout :row_container do %>
-<h3><a href="/tags/<%= tag %>/"><%= tag %></a></h3>
+<h3><a href="tags/<%= tag %>/"><%= tag %></a></h3>
 <ul>
   <% articles.each do |article| %>
   <li>

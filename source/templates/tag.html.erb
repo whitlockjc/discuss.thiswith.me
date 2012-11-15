@@ -8,14 +8,12 @@ site_page_type: tag
 <div class="page-header single-page-header">
   <h1>Article Tagged '<%= tagname %>' <small><%= page_articles.length %> articles</small></h1>
 </div>
-<div class="row">
-  <div class="span10">
-    <ul>
-      <% page_articles.each_with_index do |article, i| %>
-      <%= partial "layouts/article_as_list_item", :locals => {:article => article, :i => i} %>
-      <% end %>
-    </ul>
-  </div>
-</div>
+<% wrap_layout :row_container do %>
+<ul>
+  <% page_articles.each_with_index do |article, i| %>
+  <%= partial "layouts/article_as_list_item", :locals => {:article => article, :i => i} %>
+  <% end %>
+</ul>
+<% end %>
 <% end %>
 <% end %>
