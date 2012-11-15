@@ -9,8 +9,8 @@
   </div>
   <div class="span3">
     <a href="https://twitter.com/share" class="twitter-share-button"
-       data-url="<%= site_root %><%= article.url %>"
-       data-text="<%= article.title %>: <%= site_root %><%= article.url %>"
+       data-url="<%= absolute_url(article.url) %>"
+       data-text="<%= article.title %>"
        <% if article.tags.length > 0 %>
        data-hashtags="<%= article.tags.join(' ') %>"
        <% end %>
@@ -20,7 +20,7 @@
     <span class="g-plusone"
          data-size="medium"
          data-annotation="none"
-         data-href="<%= site_root %><%= article.url %>"></span>
+         data-href="<%= absolute_url(article.url) %>"></span>
   </div>
 </div>
 <div class="article-content">
