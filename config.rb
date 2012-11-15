@@ -88,7 +88,7 @@ end
 
 configure :build do
   # Build-specific configuration
-  set :site_root, 'http://whitlockjc.github.com/thoughtspark.org'
+  set :site_root, 'http://thoughtspark.org'
   # Build directory
   set :build_dir, '.'
 end

@@ -1,43 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>http://whitlockjc.github.com/thoughtspark.org/</loc>
+    <loc>http://thoughtspark.org/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
-    <lastmod>2012-11-14T22:21:27-07:00</lastmod>
+    <lastmod>2012-11-14T22:37:28-07:00</lastmod>
   </url>
   <url>
-    <loc>http://whitlockjc.github.com/thoughtspark.org/tags/</loc>
+    <loc>http://thoughtspark.org/tags/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
-    <lastmod>2012-11-14T22:21:27-07:00</lastmod>
+    <lastmod>2012-11-14T22:37:28-07:00</lastmod>
   </url>
   <url>
-    <loc>http://whitlockjc.github.com/thoughtspark.org/archives/</loc>
+    <loc>http://thoughtspark.org/archives/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
-    <lastmod>2012-11-14T22:21:27-07:00</lastmod>
+    <lastmod>2012-11-14T22:37:28-07:00</lastmod>
   </url>
   <url>
-    <loc>http://whitlockjc.github.com/thoughtspark.org/about-me/</loc>
+    <loc>http://thoughtspark.org/about-me/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
-    <lastmod>2012-11-14T22:21:27-07:00</lastmod>
+    <lastmod>2012-11-14T22:37:28-07:00</lastmod>
   </url>
   <url>
-    <loc>http://whitlockjc.github.com/thoughtspark.org/2012/</loc>
+    <loc>http://thoughtspark.org/2012/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
-    <lastmod>2012-11-14T22:21:27-07:00</lastmod>
+    <lastmod>2012-11-14T22:37:28-07:00</lastmod>
   </url>
   <url>
-    <loc>http://whitlockjc.github.com/thoughtspark.org/tags/thoughtspark.org/</loc>
+    <loc>http://thoughtspark.org/tags/thoughtspark.org/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
-    <lastmod>2012-11-14T22:21:27-07:00</lastmod>
+    <lastmod>2012-11-14T22:37:28-07:00</lastmod>
   </url>
   <url>
-    <loc>http://whitlockjc.github.com/thoughtspark.org/2012/11/14/the-new-thoughtspark-org/</loc>
+    <loc>http://thoughtspark.org/2012/11/14/the-new-thoughtspark-org/</loc>
     <changefreq>never</changefreq>
     <priority>1.0</priority>
     <lastmod>2012-11-14T21:00:00-07:00</lastmod>
