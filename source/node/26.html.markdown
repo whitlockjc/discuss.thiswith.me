@@ -5,8 +5,10 @@ tags: subversion, ldap
 ---
 
 <div class="alert alert-error">
-This script has become so popular that I have moved it to [Bitbucket](http://bitbucket.org) to be able to properly
-collaborate with the users.  Please submit your patches/bugs/requests at: https://bitbucket.org/whitlockjc/jw-tools
+This script has become so popular that I have moved it to
+<a href="http://bitbucket.org" title="BitBucket">BitBucket</a> to be able to properly collaborate with the users.
+Please submit your patches/bugs/requests at:
+<a href="https://bitbucket.org/whitlockjc/jw-tools" title="JW Toolkit">https://bitbucket.org/whitlockjc/jw-tools</a>.
 </div>
 
 ### Background
@@ -60,8 +62,8 @@ Apache to authenticate your Subversion users, which we will not be covering, you
 Apache configuration into the script.  Before we go through an example though, there are a few prerequisites that you
 need to have taken care of before the script will run:
 
-* Install Python (http://www.python.org)
-* Install the python-ldap module (http://python-ldap.sourceforge.net)
+* Install Python ([http://www.python.org](http://www.python.org))
+* Install the python-ldap module ([http://python-ldap.sourceforge.net](http://python-ldap.sourceforge.net))
 
 Now that we have those things out of the way, let's look at the help output of the script, just to get our bearings:
 
