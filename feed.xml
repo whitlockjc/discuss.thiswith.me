@@ -5,7 +5,7 @@
   <id>http://www.thoughtspark.org</id>
   <link href="http://www.thoughtspark.org"/>
   <link href="http://www.thoughtspark.org/feed.xml" rel="self"/>
-  <updated>2012-11-15T04:00:00Z</updated>
+  <updated>2012-11-15T06:00:00Z</updated>
   <author>
     <name>Jeremy Whitlock</name>
   </author>
@@ -13,8 +13,8 @@
     <title>The New ThoughtSpark.org</title>
     <link rel="alternate" href="/2012/11/14/the-new-thoughtspark-org/"/>
     <id>/2012/11/14/the-new-thoughtspark-org/</id>
-    <published>2012-11-15T04:00:00Z</published>
-    <updated>2012-11-15T04:00:00Z</updated>
+    <published>2012-11-15T06:00:00Z</published>
+    <updated>2012-11-15T06:00:00Z</updated>
     <author>
       <name>Jeremy Whitlock</name>
     </author>
@@ -85,20 +85,11 @@ service that will host your static websites for you.  Examples: GitHub&amp;#39;s
 
 &lt;p&gt;GitHub Pages, Markdown, Middleman and &lt;a href="http://twitter.github.com/bootstrap/"&gt;Twitter Bootstrap&lt;/a&gt; have made it very easy
 for me to re-create and maintain ThoughtSpark.org.  I feel like with this new approach for ThoughtSpark.org, I&amp;#39;ll be
-able to get posts out quicker and much easier, while saving a few bucks along the way.  Here are a few more things left
-to do to finish the migration:&lt;/p&gt;
+able to get posts out quicker and much easier, while saving a few bucks along the way.  Thanks for your patience and I
+look forward to sharing with you on my new platform.&lt;/p&gt;
 
-&lt;ul&gt;
-&lt;li&gt;Migrate the old Drupal posts to the new website&lt;/li&gt;
-&lt;li&gt;Configure site search&lt;/li&gt;
-&lt;li&gt;Configure site comments&lt;/li&gt;
-&lt;li&gt;Configure site feedback above and beyond &lt;a href="https://twitter.com/whitlockjc"&gt;Twitter&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Document my Middleman configuration, helpers and other pieces &lt;em&gt;(I think the things I learned and have done could be
-userful to others using Middleman)&lt;/em&gt;&lt;/li&gt;
-&lt;li&gt;Get back to writing about the awesome things I&amp;#39;m involved in&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Thanks for your patience and I look forward to sharing with you on my new platform.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; There are a few things left to finish before I&amp;#39;d say that the migration is complete, follow
+&lt;a href="https://github.com/whitlockjc/thoughtspark.org/issues/1"&gt;here&lt;/a&gt; if you&amp;#39;re interested.&lt;/p&gt;
 </content>
   </entry>
 </feed>

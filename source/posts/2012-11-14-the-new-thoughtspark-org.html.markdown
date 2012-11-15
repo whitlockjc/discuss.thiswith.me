@@ -1,6 +1,6 @@
 ---
 title: The New ThoughtSpark.org
-date: 2012-11-14 21:00 -07:00
+date: 2012-11-14 23:00 -07:00
 tags: thoughtspark.org
 ---
 
@@ -61,15 +61,8 @@ service that will host your static websites for you.  Examples: GitHub's Pages a
 ### In Closing
 GitHub Pages, Markdown, Middleman and [Twitter Bootstrap](http://twitter.github.com/bootstrap/) have made it very easy
 for me to re-create and maintain ThoughtSpark.org.  I feel like with this new approach for ThoughtSpark.org, I'll be
-able to get posts out quicker and much easier, while saving a few bucks along the way.  Here are a few more things left
-to do to finish the migration:
+able to get posts out quicker and much easier, while saving a few bucks along the way.  Thanks for your patience and I
+look forward to sharing with you on my new platform.
 
-* Migrate the old Drupal posts to the new website
-* Configure site search
-* Configure site comments
-* Configure site feedback above and beyond [Twitter](https://twitter.com/whitlockjc)
-* Document my Middleman configuration, helpers and other pieces *(I think the things I learned and have done could be
-userful to others using Middleman)*
-* Get back to writing about the awesome things I'm involved in
-
-Thanks for your patience and I look forward to sharing with you on my new platform.
+**Note:** There are a few things left to finish before I'd say that the migration is complete, follow
+[here](https://github.com/whitlockjc/thoughtspark.org/issues/1) if you're interested.
