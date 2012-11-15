@@ -20,6 +20,12 @@ activate :blog do |blog|
 end
 
 ###
+# Change to using Redcarpet for Markdown
+###
+set :markdown_engine, :redcarpet
+set :markdown, :fenced_code_blocks => true, :smartypants => true
+
+###
 # Individual Pages
 ###
 site_pages = [
@@ -29,8 +35,6 @@ site_pages = [
   {"path" => "/about-me/index.html", "layout" => "scaffolding"},
   {"path" => "/feed.xml", "layout" => false},
   {"path" => "/sitemap.xml", "layout" => false},
-  # TODO: Fix so that share widgets display and tags are included in tags pages
-  {"path" => "/node/26.html", "layout" => "scaffolding"}
 ]
 
 site_pages.each do |page_config|
@@ -42,12 +46,9 @@ set :site_pages, site_pages
 page "/404.html", :layout => "scaffolding", :directory_index => false
 
 ###
-# Syntax Highlighting
+# Migrated Drupal Nodes
 ###
-activate :syntax
-
-set :markdown_engine, :redcarpet
-set :markdown, :fenced_code_blocks => true, :smartypants => true
+page "/node/26/index.html", :proxy => "posts/2009-01-20-using-ldap-groups-with-subversion-s-authz-file.html", :layout => "scaffolding"
 
 ###
 # Pretty URLs
@@ -98,4 +99,8 @@ configure :build do
   set :site_root, 'http://thoughtspark.org'
   # Build directory
   set :build_dir, '.'
+  ###
+  # Syntax Highlighting
+  ###
+  activate :syntax
 end

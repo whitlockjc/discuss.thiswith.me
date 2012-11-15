@@ -202,7 +202,5 @@ easier.  It might even get so easy you forget that Subversion doesn't natively s
 
 ### Change History
 
-* 2009-01-22 - There was a bug when you didn't specify the -z flag and when the query returned no groups.  Version
-1.0.1 has been produced as a result.
-* 2009-04-15 - There was a bug introduced when reformatting the code that broke the nested groups support.  Version
-1.0.2 has been produced as a result.
+* 2009-01-22 - There was a bug when you didn't specify the -z flag and when the query returned no groups.  Version 1.0.1 has been produced as a result.
+* 2009-04-15 - There was a bug introduced when reformatting the code that broke the nested groups support.  Version 1.0.2 has been produced as a result.

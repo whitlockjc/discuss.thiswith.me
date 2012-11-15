@@ -96,4 +96,249 @@ it for a few reasons and will instead only migrate things upon request.  To requ
 &lt;a href="https://twitter.com/whitlockjc"&gt;Twitter&lt;/a&gt;.&lt;/p&gt;
 </content>
   </entry>
+  <entry>
+    <title>Using LDAP Groups With Subversion's Authz File</title>
+    <link rel="alternate" href="/2009/01/20/using-ldap-groups-with-subversion-s-authz-file/"/>
+    <id>/2009/01/20/using-ldap-groups-with-subversion-s-authz-file/</id>
+    <published>2009-01-20T19:34:00Z</published>
+    <updated>2009-01-20T19:34:00Z</updated>
+    <author>
+      <name>Jeremy Whitlock</name>
+    </author>
+    <summary type="html">&lt;p&gt;&lt;div class="alert alert-error"&gt;
+This script has become so popular that I have moved it to
+&lt;a href="http://bitbucket.org" title="BitBucket"&gt;BitBucket&lt;/a&gt; to be able to properly collaborate with the users.
+Please submit your patches/bugs/requests at:
+&lt;a href="https://bitbucket.org/whitlockjc/jw-tools" title="JW Toolkit"&gt;https://bitbucket.org/whitlockjc/jw-tools&lt;/a&gt;.&lt;/p&gt;
+</summary>
+    <content type="html">&lt;div class="alert alert-error"&gt;
+This script has become so popular that I have moved it to
+&lt;a href="http://bitbucket.org" title="BitBucket"&gt;BitBucket&lt;/a&gt; to be able to properly collaborate with the users.
+Please submit your patches/bugs/requests at:
+&lt;a href="https://bitbucket.org/whitlockjc/jw-tools" title="JW Toolkit"&gt;https://bitbucket.org/whitlockjc/jw-tools&lt;/a&gt;.
+&lt;/div&gt;
+
+&lt;h3&gt;Background&lt;/h3&gt;
+
+&lt;p&gt;When building a &lt;a href="http://subversion.apache.org"&gt;Subversion&lt;/a&gt; server, people usually go for the setup that requires the
+least amount of administrative overhead.  For many, especially in the enterprise where
+&lt;a href="http://en.wikipedia.org/wiki/Active_Directory"&gt;Active Directory&lt;/a&gt; and &lt;a href="http://en.wikipedia.org/wiki/OpenLDAP"&gt;OpenLDAP&lt;/a&gt;
+rule, this means hooking up &lt;a href="http://httpd.apache.org"&gt;Apache&lt;/a&gt; to a directory server to authenticate users via
+&lt;a href="http://en.wikipedia.org/wiki/LDAP"&gt;LDAP&lt;/a&gt;.  The reason for such a setup is that you can use the same credentials that
+log you into your computer, and other internal resources usually, to access Subversion.  One less set of credentials
+for the user to remember and one less user data store for the administrator to maintain.  Initially, this scenario is
+without any real disadvantage.  But once you want to start using your groups defined in your directory with
+&lt;a href="http://svnbook.red-bean.com/nightly/en/svn.serverconfig.pathbasedauthz.html"&gt;Subversion&amp;#39;s authorization&lt;/a&gt; (authz)
+mechanism, you find one of the shortcomings of such a configuration.&lt;/p&gt;
+
+&lt;h3&gt;The Problem&lt;/h3&gt;
+
+&lt;p&gt;Subversion&amp;#39;s authz architecture requires your group definitions to be defined within the authz file.  Subversion&amp;#39;s
+authz architecture is also unaware of third-party data stores for users/groups.  This means that if you do not define
+your group within the authz file, Subversion will not know whether a user is a member of said group and will
+ultimately tell you that you do not have access to a resource.  That being said, the current problem is that with
+this server configuration, either you cannot harness group models defined in your directory server or you have to
+manually synchronize your group models from your directory server to Subversion&amp;#39;s authz file.  There are many
+downsides to doing things this way:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;It&amp;#39;s time consuming&lt;/li&gt;
+&lt;li&gt;It&amp;#39;s easy to forget that changes have been made and need to be mirrored&lt;/li&gt;
+&lt;li&gt;It&amp;#39;s very easy to make mistakes when doing it yourself&lt;/li&gt;
+&lt;li&gt;&amp;hellip;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;So while using LDAP for Subversion authentication is a dream, things are not so nice when it comes to reusing your
+group models for authz that are defined in your directory server.&lt;/p&gt;
+
+&lt;h3&gt;The Solution&lt;/h3&gt;
+
+&lt;p&gt;Well, it just so happens that I have a solution.  One that is repeatable, loss-less and can be easily setup using the
+same information you used to configure Apache to authenticate your Subversion users.  The solution is the
+&lt;strong&gt;LDAP Groups to Subversion Authz Groups Bridge&lt;/strong&gt; script. &lt;strong&gt;(Note: This script, its license and a duplicate of this
+documentation are attached to the bottom of this article.)&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;The &amp;ldquo;LDAP Groups to Subversion Authz Groups Bridge&amp;rdquo; script is written in Python and, as mentioned before, does its work
+in a loss-less fashion.  This means that while this script will take on the trouble of taking your groups models
+defined in your directory server and reproducing them in a Subversion authz file, the script will not prohibit you from
+creating group definitions within the authz file that are not defined in your directory server.  Tired of all of the
+background?  Ready to see the script in action?  Let&amp;#39;s go.&lt;/p&gt;
+
+&lt;h3&gt;The Implementation&lt;/h3&gt;
+
+&lt;p&gt;Implementing the &amp;ldquo;LDAP Groups to Subversion Authz Groups Bridge&amp;rdquo; is actually simple.  If you&amp;#39;ve already configured
+Apache to authenticate your Subversion users, which we will not be covering, you can honestly copy/paste pieces of the
+Apache configuration into the script.  Before we go through an example though, there are a few prerequisites that you
+need to have taken care of before the script will run:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Install Python (&lt;a href="http://www.python.org"&gt;http://www.python.org&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Install the python-ldap module (&lt;a href="http://python-ldap.sourceforge.net"&gt;http://python-ldap.sourceforge.net&lt;/a&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Now that we have those things out of the way, let&amp;#39;s look at the help output of the script, just to get our bearings:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;Usage&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;sync_ldap_groups_to_svn_authz&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;py&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;
+
+&lt;span class="n"&gt;Options&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+  &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;h&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;help&lt;/span&gt;            &lt;span class="n"&gt;show&lt;/span&gt; &lt;span class="k"&gt;this&lt;/span&gt; &lt;span class="n"&gt;help&lt;/span&gt; &lt;span class="n"&gt;message&lt;/span&gt; &lt;span class="n"&gt;and&lt;/span&gt; &lt;span class="n"&gt;exit&lt;/span&gt;
+  &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;d&lt;/span&gt; &lt;span class="n"&gt;BIND_DN&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;bind&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;dn&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;BIND_DN&lt;/span&gt;
+                        &lt;span class="n"&gt;The&lt;/span&gt; &lt;span class="n"&gt;DN&lt;/span&gt; &lt;span class="n"&gt;of&lt;/span&gt; &lt;span class="n"&gt;the&lt;/span&gt; &lt;span class="n"&gt;user&lt;/span&gt; &lt;span class="n"&gt;to&lt;/span&gt; &lt;span class="n"&gt;bind&lt;/span&gt; &lt;span class="n"&gt;to&lt;/span&gt; &lt;span class="n"&gt;the&lt;/span&gt; &lt;span class="n"&gt;directory&lt;/span&gt; &lt;span class="k"&gt;with&lt;/span&gt;
+  &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;p&lt;/span&gt; &lt;span class="n"&gt;BIND_PASSWORD&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;bind&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;password&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;BIND_PASSWORD&lt;/span&gt;
+                        &lt;span class="n"&gt;The&lt;/span&gt; &lt;span class="n"&gt;password&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;the&lt;/span&gt; &lt;span class="n"&gt;user&lt;/span&gt; &lt;span class="n"&gt;specified&lt;/span&gt; &lt;span class="k"&gt;with&lt;/span&gt; &lt;span class="n"&gt;the&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;bind&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;dn&lt;/span&gt;
+  &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;l&lt;/span&gt; &lt;span class="n"&gt;URL&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;url&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;URL&lt;/span&gt;     &lt;span class="n"&gt;The&lt;/span&gt; &lt;span class="n"&gt;url&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;scheme&lt;/span&gt;&lt;span class="o"&gt;://&lt;/span&gt;&lt;span class="n"&gt;hostname&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="n"&gt;port&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;the&lt;/span&gt; &lt;span class="n"&gt;directory&lt;/span&gt;
+                        &lt;span class="n"&gt;server&lt;/span&gt;
+  &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt; &lt;span class="n"&gt;BASE_DN&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;base&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;dn&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;BASE_DN&lt;/span&gt;
+                        &lt;span class="n"&gt;The&lt;/span&gt; &lt;span class="n"&gt;DN&lt;/span&gt; &lt;span class="n"&gt;at&lt;/span&gt; &lt;span class="n"&gt;which&lt;/span&gt; &lt;span class="n"&gt;to&lt;/span&gt; &lt;span class="n"&gt;perform&lt;/span&gt; &lt;span class="n"&gt;the&lt;/span&gt; &lt;span class="n"&gt;recursive&lt;/span&gt; &lt;span class="n"&gt;search&lt;/span&gt;
+  &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;g&lt;/span&gt; &lt;span class="n"&gt;GROUP_QUERY&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;group&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;query&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;GROUP_QUERY&lt;/span&gt;
+                        &lt;span class="n"&gt;The&lt;/span&gt; &lt;span class="n"&gt;query&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;filter&lt;/span&gt; &lt;span class="n"&gt;used&lt;/span&gt; &lt;span class="n"&gt;to&lt;/span&gt; &lt;span class="n"&gt;identify&lt;/span&gt; &lt;span class="n"&gt;group&lt;/span&gt; &lt;span class="n"&gt;objects&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;
+                        &lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="n"&gt;Default&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;objectClass&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;group&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;
+  &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;m&lt;/span&gt; &lt;span class="n"&gt;GROUP_MEMBER_ATTRIBUTE&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;group&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;member&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;attribute&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;GROUP_MEMBER_ATTRIBUTE&lt;/span&gt;
+                        &lt;span class="n"&gt;The&lt;/span&gt; &lt;span class="n"&gt;attribute&lt;/span&gt; &lt;span class="n"&gt;of&lt;/span&gt; &lt;span class="n"&gt;the&lt;/span&gt; &lt;span class="n"&gt;group&lt;/span&gt; &lt;span class="n"&gt;object&lt;/span&gt; &lt;span class="n"&gt;that&lt;/span&gt; &lt;span class="n"&gt;stores&lt;/span&gt; &lt;span class="n"&gt;the&lt;/span&gt;
+                        &lt;span class="n"&gt;group&lt;/span&gt; &lt;span class="n"&gt;memberships&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;  &lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="n"&gt;Default&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;member&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;
+  &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;u&lt;/span&gt; &lt;span class="n"&gt;USER_QUERY&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;user&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;query&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;USER_QUERY&lt;/span&gt;
+                        &lt;span class="n"&gt;The&lt;/span&gt; &lt;span class="n"&gt;query&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;filter&lt;/span&gt; &lt;span class="n"&gt;used&lt;/span&gt; &lt;span class="n"&gt;to&lt;/span&gt; &lt;span class="n"&gt;identify&lt;/span&gt; &lt;span class="n"&gt;user&lt;/span&gt; &lt;span class="n"&gt;objects&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;
+                        &lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="n"&gt;Default&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;objectClass&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;user&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;
+  &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="n"&gt;USERID_ATTRIBUTE&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;userid_attribute&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;USERID_ATTRIBUTE&lt;/span&gt;
+                        &lt;span class="n"&gt;The&lt;/span&gt; &lt;span class="n"&gt;attribute&lt;/span&gt; &lt;span class="n"&gt;of&lt;/span&gt; &lt;span class="n"&gt;the&lt;/span&gt; &lt;span class="n"&gt;user&lt;/span&gt; &lt;span class="n"&gt;object&lt;/span&gt; &lt;span class="n"&gt;that&lt;/span&gt; &lt;span class="n"&gt;stores&lt;/span&gt; &lt;span class="n"&gt;the&lt;/span&gt;
+                        &lt;span class="n"&gt;userid&lt;/span&gt; &lt;span class="n"&gt;to&lt;/span&gt; &lt;span class="n"&gt;be&lt;/span&gt; &lt;span class="n"&gt;used&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt; &lt;span class="n"&gt;the&lt;/span&gt; &lt;span class="n"&gt;authz&lt;/span&gt; &lt;span class="n"&gt;file&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;  &lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="n"&gt;Default&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;cn&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;
+  &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;z&lt;/span&gt; &lt;span class="n"&gt;AUTHZ_PATH&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;authz&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;AUTHZ_PATH&lt;/span&gt;
+                        &lt;span class="n"&gt;The&lt;/span&gt; &lt;span class="n"&gt;path&lt;/span&gt; &lt;span class="n"&gt;to&lt;/span&gt; &lt;span class="n"&gt;the&lt;/span&gt; &lt;span class="n"&gt;authz&lt;/span&gt; &lt;span class="n"&gt;file&lt;/span&gt; &lt;span class="n"&gt;to&lt;/span&gt; &lt;span class="n"&gt;update&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;create&lt;/span&gt;
+  &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;q&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;quiet&lt;/span&gt;           &lt;span class="n"&gt;Suppress&lt;/span&gt; &lt;span class="n"&gt;logging&lt;/span&gt; &lt;span class="n"&gt;information&lt;/span&gt;
+&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Anything that has a &lt;strong&gt;[Default:&lt;/strong&gt; string in its corresponding documentation is &amp;ldquo;optional&amp;rdquo; and can usually be omitted
+when running against most directory servers.  The things that are not optional are things that you can get from your
+Apache configuration.  Now that we have our bearings, let&amp;#39;s see an example.&lt;/p&gt;
+
+&lt;p&gt;Let&amp;#39;s pretend that I have a directory structure like this:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Release Managers (CN=Release Managers,OU=Groups,DC=subversion,DC=thoughtspark,DC=org)
+
+&lt;ul&gt;
+&lt;li&gt;Release Manager One (CN=Release Manager One,OU=Users,DC=subversion,DC=thoughtspark,DC=org)&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Developers (CN=Developers,OU=Groups,DC=subversion,DC=thoughtspark,DC=org)
+
+&lt;ul&gt;
+&lt;li&gt;Release Managers (CN=Release Managers,OU=Nested Groups,OU=Groups,DC=subversion,DC=thoughtspark,DC=org)&lt;/li&gt;
+&lt;li&gt;Developer One (CN=Developer One,OU=Users,DC=subversion,DC=thoughtspark,DC=org)&lt;/li&gt;
+&lt;li&gt;Developer Two (CN=Developer Two,OU=Users,DC=subversion,DC=thoughtspark,DC=org)&lt;/li&gt;
+&lt;li&gt;Developer Three (CN=Developer Three,OU=Users,DC=subversion,DC=thoughtspark,DC=org)&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Release Managers (CN=Release Managers,OU=Nested Groups,OU=Groups,DC=subversion,DC=thoughtspark,DC=org)
+
+&lt;ul&gt;
+&lt;li&gt;Release Manager Two (CN=Release Manager Two,OU=Users,DC=subversion,DC=thoughtspark,DC=org)&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Administrators (CN=Administrators,CN=Roles,DC=subversion,DC=thoughtspark,DC=org)
+
+&lt;ul&gt;
+&lt;li&gt;Jeremy Whitlock (CN=Jeremy Whitlock,OU=Users,DC=subversion,DC=thoughtspark,DC=org)&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;(Yes&amp;hellip;I have two groups with the same name but in different locations. This will help showcase how the &lt;strong&gt;LDAP Groups
+to Subversion Authz Groups Bridge&lt;/strong&gt; handles this situation.)  I now want to run the script:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;python&lt;/span&gt; &lt;span class="n"&gt;sync_ldap_groups_to_svn_authz&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;py&lt;/span&gt; &lt;span class="o"&gt;\&lt;/span&gt;
+  &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;d&lt;/span&gt; &amp;quot;&lt;span class="n"&gt;CN&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="n"&gt;Jeremy&lt;/span&gt; &lt;span class="n"&gt;Whitlock&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;OU&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="n"&gt;Users&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;DC&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="n"&gt;subversion&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;DC&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="n"&gt;thoughtspark&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;DC&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="n"&gt;org&lt;/span&gt;&amp;quot; &lt;span class="o"&gt;\&lt;/span&gt;
+  &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;l&lt;/span&gt; &amp;quot;&lt;span class="n"&gt;ldap&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;//&lt;/span&gt;&lt;span class="n"&gt;localhost&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;389&amp;quot; &lt;span class="o"&gt;\&lt;/span&gt;
+  &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt; &amp;quot;&lt;span class="n"&gt;DC&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="n"&gt;subversion&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;DC&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="n"&gt;thoughtspark&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;DC&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="n"&gt;org&lt;/span&gt;&amp;quot; &lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;svn_auth&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;txt&lt;/span&gt;
+&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;You&amp;#39;ll notice I didn&amp;#39;t specify a password.  In this event, the script will prompt you, securely, for a password.  After
+the script runs, as long as you didn&amp;#39;t run with the &amp;ldquo;-q&amp;rdquo; flag, you should see output like this:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;Successfully&lt;/span&gt; &lt;span class="n"&gt;bound&lt;/span&gt; &lt;span class="n"&gt;to&lt;/span&gt; &lt;span class="n"&gt;ldap&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;//&lt;/span&gt;&lt;span class="n"&gt;localhost&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;389
+4 &lt;span class="n"&gt;groups&lt;/span&gt; &lt;span class="n"&gt;found&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;
+&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Okay, things ran smoothly.  (If you notice any &lt;strong&gt;[WARNING]&lt;/strong&gt; output, just look at the message along side the warning to
+see why.)  So what does the file look like?&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;[groups]&lt;/span&gt;
+
+&lt;span class="c"&gt;### Start generated content: LDAP Groups to Subversion Authz Groups Bridge (2009/01/19 23:17:07) ###&lt;/span&gt;
+&lt;span class="na"&gt;ReleaseManagers&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;Release Manager One&lt;/span&gt;
+&lt;span class="na"&gt;Developers&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;@ReleaseManagers1, Developer Three, Developer Two, Developer One&lt;/span&gt;
+&lt;span class="na"&gt;ReleaseManagers1&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;Release Manager Two&lt;/span&gt;
+&lt;span class="na"&gt;Administrators&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;Jeremy Whitlock&lt;/span&gt;
+
+&lt;span class="c"&gt;################################################################################&lt;/span&gt;
+&lt;span class="c"&gt;###########   LDAP Groups to Subversion Authz Groups Bridge (Legend)  ##########&lt;/span&gt;
+&lt;span class="c"&gt;################################################################################&lt;/span&gt;
+&lt;span class="c"&gt;### ReleaseManagers = CN=Release Managers,OU=Groups,DC=subversion,DC=thoughtspark,DC=org&lt;/span&gt;
+&lt;span class="c"&gt;### Developers = CN=Developers,OU=Groups,DC=subversion,DC=thoughtspark,DC=org&lt;/span&gt;
+&lt;span class="c"&gt;### ReleaseManagers1 = CN=Release Managers,OU=Nested Groups,OU=Groups,DC=subversion,DC=thoughtspark,DC=org&lt;/span&gt;
+&lt;span class="c"&gt;### Administrators = CN=Administrators,CN=Roles,DC=subversion,DC=thoughtspark,DC=org&lt;/span&gt;
+&lt;span class="c"&gt;###############################################################################&lt;/span&gt;
+
+&lt;span class="c"&gt;### End generated content: LDAP Groups to Subversion Authz Groups Bridge ###&lt;/span&gt;
+&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Here is a list of features, or things to realize, based on the output of this script:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;The &amp;ldquo;[groups]&amp;rdquo; section is created but only if necessary&lt;/li&gt;
+&lt;li&gt;All generated content is within known &amp;ldquo;markers&amp;rdquo; for loss-less regeneration&lt;/li&gt;
+&lt;li&gt;The header tells you when the file was last synchronized&lt;/li&gt;
+&lt;li&gt;Nested groups, of any level, are supported&lt;/li&gt;
+&lt;li&gt;Groups with the same name, but different locations, are supported&lt;/li&gt;
+&lt;li&gt;An easy-to-read legend is created for reference reasons&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Now that we&amp;#39;ve seen a very simple example, let&amp;#39;s see one more example of how we might take an Apache configuration and
+turn that into a call to the &amp;ldquo;LDAP Groups to Subversion Authz Groups Bridge&amp;rdquo;.&lt;/p&gt;
+
+&lt;p&gt;Below we have a snippet of the important parts of an Apache configuration using LDAP for Subversion authentication:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="p"&gt;...&lt;/span&gt;
+# &lt;span class="n"&gt;The&lt;/span&gt; &lt;span class="n"&gt;distinguished&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt; &lt;span class="n"&gt;to&lt;/span&gt; &lt;span class="n"&gt;bind&lt;/span&gt; &lt;span class="n"&gt;to&lt;/span&gt; &lt;span class="n"&gt;the&lt;/span&gt; &lt;span class="n"&gt;directory&lt;/span&gt; &lt;span class="n"&gt;server&lt;/span&gt;
+&lt;span class="n"&gt;AuthLDAPBindDN&lt;/span&gt; &amp;quot;&lt;span class="n"&gt;CN&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="n"&gt;Jeremy&lt;/span&gt; &lt;span class="n"&gt;Whitlock&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;OU&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="n"&gt;Users&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;DC&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="n"&gt;subversion&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;DC&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="n"&gt;thoughtspark&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;DC&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="n"&gt;org&lt;/span&gt;&amp;quot;
+
+# &lt;span class="n"&gt;The&lt;/span&gt; &lt;span class="n"&gt;password&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;the&lt;/span&gt; &lt;span class="n"&gt;user&lt;/span&gt; &lt;span class="n"&gt;above&lt;/span&gt;
+&lt;span class="n"&gt;AuthLDAPBindPassword&lt;/span&gt; &amp;quot;&lt;span class="n"&gt;myP455w0rd&lt;/span&gt;&amp;quot;
+
+# &lt;span class="n"&gt;The&lt;/span&gt; &lt;span class="n"&gt;LDAP&lt;/span&gt; &lt;span class="n"&gt;query&lt;/span&gt; &lt;span class="n"&gt;url&lt;/span&gt;
+&lt;span class="n"&gt;AuthLDAPURL&lt;/span&gt; &amp;quot;&lt;span class="n"&gt;ldap&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;//&lt;/span&gt;&lt;span class="n"&gt;localhost&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;389&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;DC&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="n"&gt;subversion&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;DC&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="n"&gt;thoughtspark&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;DC&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="n"&gt;org&lt;/span&gt;?&lt;span class="n"&gt;sAMAccountName&lt;/span&gt;?&lt;span class="n"&gt;sub&lt;/span&gt;?&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;objectClass&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="n"&gt;user&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&amp;quot;
+&lt;span class="p"&gt;...&lt;/span&gt;
+&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;With the above information, Apache could connect to my theoretical Active Directory server and look for user objects.
+The way Apache identifies user objects is by the &amp;ldquo;objectClass&amp;rdquo; attribute being set to &amp;ldquo;user&amp;rdquo;.  Once a user is found,
+the &lt;strong&gt;sAMAccountName&lt;/strong&gt; attribute is queried to see if it matches the user logging in.  Once the user is found, it is
+authenticated.  That being said, let&amp;#39;s parse this information and turn it into a successful call to the &lt;strong&gt;LDAP Groups
+to Subversion Authz Groups Bridge&lt;/strong&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;python&lt;/span&gt; &lt;span class="n"&gt;sync_ldap_groups_to_svn_authz&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;py&lt;/span&gt; &lt;span class="o"&gt;\&lt;/span&gt;
+  &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;d&lt;/span&gt; &amp;quot;&lt;span class="n"&gt;CN&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="n"&gt;Jeremy&lt;/span&gt; &lt;span class="n"&gt;Whitlock&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;OU&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="n"&gt;Users&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;DC&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="n"&gt;subversion&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;DC&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="n"&gt;thoughtspark&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;DC&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="n"&gt;org&lt;/span&gt;&amp;quot; &lt;span class="o"&gt;\&lt;/span&gt;
+  &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;p&lt;/span&gt; &amp;quot;&lt;span class="n"&gt;myP455w0rd&lt;/span&gt;&amp;quot; &lt;span class="o"&gt;\&lt;/span&gt;
+  &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;l&lt;/span&gt; &amp;quot;&lt;span class="n"&gt;ldap&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;//&lt;/span&gt;&lt;span class="n"&gt;localhost&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;389&amp;quot; &lt;span class="o"&gt;\&lt;/span&gt;
+  &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt; &amp;quot;&lt;span class="n"&gt;DC&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="n"&gt;subversion&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;DC&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="n"&gt;thoughtspark&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;DC&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="n"&gt;org&lt;/span&gt;&amp;quot; &lt;span class="o"&gt;\&lt;/span&gt;
+  &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nb"&gt;i&lt;/span&gt; &amp;quot;&lt;span class="n"&gt;sAMAccountName&lt;/span&gt;&amp;quot; &lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;svn_auth&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;txt&lt;/span&gt;
+&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The new things you see in this call that differ from the first call is that we are now looking for the
+&lt;strong&gt;sAMAccountName&lt;/strong&gt; attribute for the username instead of the &amp;ldquo;cn&amp;rdquo; attribute.  You also see that we can pass the
+password as a command line argument.&lt;/p&gt;
+
+&lt;h3&gt;Summary&lt;/h3&gt;
+
+&lt;p&gt;So now that we&amp;#39;ve seen how the script is ran, what is necessary to get it running and even a complete example, it&amp;#39;s
+now up to you to get this thing into your Subversion infrastructure.  Immediate ideas are to automate this with your
+operating system&amp;#39;s task scheduler and/or create a web interface to kick this script off on an as-needed basis.
+Regardless of how you use it, the &amp;ldquo;LDAP Groups to Subversion Authz Groups Bridge&amp;rdquo; should make the error-prone, tedious
+and easy-to-forget process of manually synchronizing your LDAP group models to Subversion&amp;#39;s authz file much, much
+easier.  It might even get so easy you forget that Subversion doesn&amp;#39;t natively support LDAP groups.&lt;/p&gt;
+
+&lt;h3&gt;Change History&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;2009-01-22 - There was a bug when you didn&amp;#39;t specify the -z flag and when the query returned no groups.  Version 1.0.1 has been produced as a result.&lt;/li&gt;
+&lt;li&gt;2009-04-15 - There was a bug introduced when reformatting the code that broke the nested groups support.  Version 1.0.2 has been produced as a result.&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+  </entry>
 </feed>

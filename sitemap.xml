@@ -4,42 +4,66 @@
     <loc>http://thoughtspark.org/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
-    <lastmod>2012-11-15T14:36:29-07:00</lastmod>
+    <lastmod>2012-11-15T15:49:13-07:00</lastmod>
   </url>
   <url>
     <loc>http://thoughtspark.org/tags/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
-    <lastmod>2012-11-15T14:36:29-07:00</lastmod>
+    <lastmod>2012-11-15T15:49:13-07:00</lastmod>
   </url>
   <url>
     <loc>http://thoughtspark.org/archives/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
-    <lastmod>2012-11-15T14:36:29-07:00</lastmod>
+    <lastmod>2012-11-15T15:49:13-07:00</lastmod>
   </url>
   <url>
     <loc>http://thoughtspark.org/about-me/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
-    <lastmod>2012-11-15T14:36:29-07:00</lastmod>
+    <lastmod>2012-11-15T15:49:13-07:00</lastmod>
   </url>
   <url>
     <loc>http://thoughtspark.org/2012/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
-    <lastmod>2012-11-15T14:36:29-07:00</lastmod>
+    <lastmod>2012-11-15T15:49:13-07:00</lastmod>
+  </url>
+  <url>
+    <loc>http://thoughtspark.org/2009/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <lastmod>2012-11-15T15:49:13-07:00</lastmod>
+  </url>
+  <url>
+    <loc>http://thoughtspark.org/tags/subversion/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <lastmod>2012-11-15T15:49:13-07:00</lastmod>
+  </url>
+  <url>
+    <loc>http://thoughtspark.org/tags/ldap/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <lastmod>2012-11-15T15:49:13-07:00</lastmod>
   </url>
   <url>
     <loc>http://thoughtspark.org/tags/thoughtspark.org/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
-    <lastmod>2012-11-15T14:36:29-07:00</lastmod>
+    <lastmod>2012-11-15T15:49:13-07:00</lastmod>
   </url>
   <url>
     <loc>http://thoughtspark.org/2012/11/14/the-new-thoughtspark-org/</loc>
     <changefreq>never</changefreq>
     <priority>1.0</priority>
     <lastmod>2012-11-14T23:00:00-07:00</lastmod>
+  </url>
+  <url>
+    <loc>http://thoughtspark.org/2009/01/20/using-ldap-groups-with-subversion-s-authz-file/</loc>
+    <changefreq>never</changefreq>
+    <priority>1.0</priority>
+    <lastmod>2009-01-20T12:34:00-07:00</lastmod>
   </url>
 </urlset>

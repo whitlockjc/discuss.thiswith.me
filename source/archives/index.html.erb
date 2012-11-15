@@ -8,15 +8,15 @@ site_page_type: archive
 </div>
 <% wrap_layout :row_container do %>
 <h2>Archives by Year</h2>
-<% end %>
 <% articles_by_year.each do |year, articles| %>
 <% wrap_layout :row_container do %>
 <h3><a href="<%= absolute_url('/' + year.to_s + '/') %>"><%= year %></a></h3>
 <ul>
-  <% page_articles.each_with_index do |article, i| %>
+  <% articles.each_with_index do |article, i| %>
   <%= partial "layouts/article_as_list_item", :locals => {:article => article, :i => i} %>
   <% end %>
 </ul>
+<% end %>
 <% end %>
 <% wrap_layout :row_container do %>
 <h2>Archives by Tag</h2>
