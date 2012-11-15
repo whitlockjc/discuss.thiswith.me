@@ -29,7 +29,7 @@ site_pages = [
   {"path" => "/about-me/index.html", "layout" => "scaffolding"},
   {"path" => "/feed.xml", "layout" => false},
   {"path" => "/sitemap.xml", "layout" => false},
-  {"path" => "/node/26/index.html", "layout" => "scaffolding"}
+  {"path" => "/node/26.html", "layout" => "scaffolding"}
 ]
 
 site_pages.each do |page_config|

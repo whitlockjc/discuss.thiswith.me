@@ -100,16 +100,16 @@ Apache configuration.  Now that we have our bearings, let's see an example.
 Let's pretend that I have a directory structure like this:
 
 * Release Managers (CN=Release Managers,OU=Groups,DC=subversion,DC=thoughtspark,DC=org)
-** Release Manager One (CN=Release Manager One,OU=Users,DC=subversion,DC=thoughtspark,DC=org)
+ * Release Manager One (CN=Release Manager One,OU=Users,DC=subversion,DC=thoughtspark,DC=org)
 * Developers (CN=Developers,OU=Groups,DC=subversion,DC=thoughtspark,DC=org)
-** Release Managers (CN=Release Managers,OU=Nested Groups,OU=Groups,DC=subversion,DC=thoughtspark,DC=org)
-** Developer One (CN=Developer One,OU=Users,DC=subversion,DC=thoughtspark,DC=org)
-** Developer Two (CN=Developer Two,OU=Users,DC=subversion,DC=thoughtspark,DC=org)
-** Developer Three (CN=Developer Three,OU=Users,DC=subversion,DC=thoughtspark,DC=org)
+ * Release Managers (CN=Release Managers,OU=Nested Groups,OU=Groups,DC=subversion,DC=thoughtspark,DC=org)
+ * Developer One (CN=Developer One,OU=Users,DC=subversion,DC=thoughtspark,DC=org)
+ * Developer Two (CN=Developer Two,OU=Users,DC=subversion,DC=thoughtspark,DC=org)
+ * Developer Three (CN=Developer Three,OU=Users,DC=subversion,DC=thoughtspark,DC=org)
 * Release Managers (CN=Release Managers,OU=Nested Groups,OU=Groups,DC=subversion,DC=thoughtspark,DC=org)
-** Release Manager Two (CN=Release Manager Two,OU=Users,DC=subversion,DC=thoughtspark,DC=org)
+ * Release Manager Two (CN=Release Manager Two,OU=Users,DC=subversion,DC=thoughtspark,DC=org)
 * Administrators (CN=Administrators,CN=Roles,DC=subversion,DC=thoughtspark,DC=org)
-** Jeremy Whitlock (CN=Jeremy Whitlock,OU=Users,DC=subversion,DC=thoughtspark,DC=org)
+ * Jeremy Whitlock (CN=Jeremy Whitlock,OU=Users,DC=subversion,DC=thoughtspark,DC=org)
 
 (Yes...I have two groups with the same name but in different locations. This will help showcase how the **LDAP Groups
 to Subversion Authz Groups Bridge** handles this situation.)  I now want to run the script:

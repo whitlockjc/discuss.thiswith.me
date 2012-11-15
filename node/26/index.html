@@ -1,4 +1,81 @@
-<div class="alert alert-error">
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+        
+    <title>ThoughtSpark.org - Using LDAP Groups With Subversion's Authz File</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Interesting stuff from the eyes of Jeremy Whitlock">
+    <meta name="author" content="Jeremy Whitlock <jcscoobyrs@gmail.com>">
+
+    <!-- Stylesheets -->
+    <link href="http://thoughtspark.org/css/bootstrap.css" rel="stylesheet">
+    <link href="http://thoughtspark.org/css/thoughtspark.org.css" rel="stylesheet">
+    <link href="http://thoughtspark.org/css/bootstrap-responsive.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Favicon and Touch Icons -->
+    <!-- <link rel="shortcut icon" href="http://thoughtspark.org/img/favicon.ico">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://thoughtspark.org/img/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://thoughtspark.org/img/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://thoughtspark.org/img/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="http://thoughtspark.org/img/apple-touch-icon-57-precomposed.png"> -->
+
+    <!-- Google Analytics -->
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-8129913-1']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </head>
+
+  <body>
+
+    <div id="wrapper">
+      <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="navbar-inner">
+          <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </a>
+            <a class="brand" href="http://thoughtspark.org/">ThoughtSpark.org</a>
+            <div class="nav-collapse collapse">
+              <ul class="nav">
+                <li class="">
+                  <a href="http://thoughtspark.org/archives/">Archives</a></li>
+                <li class="">
+                  <a href="http://thoughtspark.org/tags/">Tags Index</a></li>
+                <li class="">
+                  <a href="http://thoughtspark.org/about-me/">About Me</a></li>
+              </ul>
+              <form class="navbar-search pull-right" id="cse-search-box" action="http://google.com/cse" target="_blank">
+                <input type="hidden" name="cx" value="002070316934860344827:uskwlee9cfw" />
+                <input type="hidden" name="ie" value="UTF-8" />
+                <input type="text" class="search-query" name="q" placeholder="Search" />
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="container-fluid" id="content-wrapper">
+        <div class="row-fluid">
+          <div class="span8 offset2 content" id="content">
+            <div class="alert alert-error">
 This script has become so popular that I have moved it to [Bitbucket](http://bitbucket.org) to be able to properly
 collaborate with the users.  Please submit your patches/bugs/requests at: https://bitbucket.org/whitlockjc/jw-tools
 </div>
@@ -100,16 +177,28 @@ Apache configuration.  Now that we have our bearings, let&#39;s see an example.<
 
 <ul>
 <li>Release Managers (CN=Release Managers,OU=Groups,DC=subversion,DC=thoughtspark,DC=org)
-** Release Manager One (CN=Release Manager One,OU=Users,DC=subversion,DC=thoughtspark,DC=org)</li>
+
+<ul>
+<li>Release Manager One (CN=Release Manager One,OU=Users,DC=subversion,DC=thoughtspark,DC=org)</li>
+</ul></li>
 <li>Developers (CN=Developers,OU=Groups,DC=subversion,DC=thoughtspark,DC=org)
-** Release Managers (CN=Release Managers,OU=Nested Groups,OU=Groups,DC=subversion,DC=thoughtspark,DC=org)
-** Developer One (CN=Developer One,OU=Users,DC=subversion,DC=thoughtspark,DC=org)
-** Developer Two (CN=Developer Two,OU=Users,DC=subversion,DC=thoughtspark,DC=org)
-** Developer Three (CN=Developer Three,OU=Users,DC=subversion,DC=thoughtspark,DC=org)</li>
+
+<ul>
+<li>Release Managers (CN=Release Managers,OU=Nested Groups,OU=Groups,DC=subversion,DC=thoughtspark,DC=org)</li>
+<li>Developer One (CN=Developer One,OU=Users,DC=subversion,DC=thoughtspark,DC=org)</li>
+<li>Developer Two (CN=Developer Two,OU=Users,DC=subversion,DC=thoughtspark,DC=org)</li>
+<li>Developer Three (CN=Developer Three,OU=Users,DC=subversion,DC=thoughtspark,DC=org)</li>
+</ul></li>
 <li>Release Managers (CN=Release Managers,OU=Nested Groups,OU=Groups,DC=subversion,DC=thoughtspark,DC=org)
-** Release Manager Two (CN=Release Manager Two,OU=Users,DC=subversion,DC=thoughtspark,DC=org)</li>
+
+<ul>
+<li>Release Manager Two (CN=Release Manager Two,OU=Users,DC=subversion,DC=thoughtspark,DC=org)</li>
+</ul></li>
 <li>Administrators (CN=Administrators,CN=Roles,DC=subversion,DC=thoughtspark,DC=org)
-** Jeremy Whitlock (CN=Jeremy Whitlock,OU=Users,DC=subversion,DC=thoughtspark,DC=org)</li>
+
+<ul>
+<li>Jeremy Whitlock (CN=Jeremy Whitlock,OU=Users,DC=subversion,DC=thoughtspark,DC=org)</li>
+</ul></li>
 </ul>
 
 <p>(Yes&hellip;I have two groups with the same name but in different locations. This will help showcase how the <strong>LDAP Groups
@@ -214,3 +303,26 @@ easier.  It might even get so easy you forget that Subversion doesn&#39;t native
 <li>2009-04-15 - There was a bug introduced when reformatting the code that broke the nested groups support.  Version
 1.0.2 has been produced as a result.</li>
 </ul>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="push"></div>
+
+    <div id="footer">
+      <div class="container-fluid">
+        <p>&copy; Jeremy Whitlock 2012 | Brought to you buy <a href="http://pages.github.com/">GitHub Pages</a>,
+          <a href="http://middlemanapp.com/">Middleman</a> and
+          <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a>.
+        </p>
+      </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="http://thoughtspark.org/js/jquery.js"></script>
+    <script src="http://thoughtspark.org/js/bootstrap.js"></script>
+    <script src="http://thoughtspark.org/js/thoughtspark.org.js"></script>
+  </body>
+</html>
