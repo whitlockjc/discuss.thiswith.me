@@ -1,0 +1,35 @@
+---
+title: Archives
+site_page_type: archive
+---
+<% wrap_layout :row_container do %>
+<div class="page-header single-page-header">
+  <h1>Archives</h1>
+</div>
+<% wrap_layout :row_container do %>
+<h2>Archives by Year</h2>
+<% end %>
+<% articles_by_year.each do |year, articles| %>
+<% wrap_layout :row_container do %>
+<h3><a href="/<%= year %>/"><%= year %></a></h3>
+<ul>
+  <% page_articles.each_with_index do |article, i| %>
+  <%= partial "layouts/article_as_list_item", :locals => {:article => article, :i => i} %>
+  <% end %>
+</ul>
+<% end %>
+<% wrap_layout :row_container do %>
+<h2>Archives by Tag</h2>
+<% end %>
+<% blog.tags.each do |tag, articles| %>
+<% wrap_layout :row_container do %>
+<h3><a href="/tags/<%= tag %>/"><%= tag %></a></h3>
+<ul>
+  <% articles.each_with_index do |article, i| %>
+  <%= partial "layouts/article_as_list_item", :locals => {:article => article, :i => i} %>
+  <% end %>
+</ul>
+<% end %>
+<% end %>
+<% end %>
+<% end %>

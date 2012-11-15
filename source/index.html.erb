@@ -1,0 +1,14 @@
+---
+title: Home
+pageable: true
+per_page: 10
+---
+<% page_articles.each_with_index do |article, i| %>
+<%= partial "layouts/article_in_list", :locals => {:article => article, :articles_displayed => page_articles.length, :i => i} %>
+<% end %>
+<% if blog.articles.length > page_articles.length %>
+<hr />
+<div class="alert alert-info">
+  <strong>But wait</strong>, there's more in the <a href="/archives/">archives</a>.
+</div>
+<% end %>
