@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>ThoughtSpark.org</title>
+  <subtitle>The blog of Jeremy Whitlock.</subtitle>
+  <id>http://www.thoughtspark.org</id>
+  <link href="http://www.thoughtspark.org"/>
+  <link href="http://www.thoughtspark.org/feed.xml" rel="self"/>
+  <updated>2012-11-15T04:00:00Z</updated>
+  <author>
+    <name>Jeremy Whitlock</name>
+  </author>
+  <entry>
+    <title>The New ThoughtSpark.org</title>
+    <link rel="alternate" href="/2012/11/14/the-new-thoughtspark-org/"/>
+    <id>/2012/11/14/the-new-thoughtspark-org/</id>
+    <published>2012-11-15T04:00:00Z</published>
+    <updated>2012-11-15T04:00:00Z</updated>
+    <author>
+      <name>Jeremy Whitlock</name>
+    </author>
+    <summary type="html">&lt;p&gt;I&amp;#39;ve decided it&amp;#39;s time to rethink how I maintain and deploy &lt;a href="http://www.thoughtspark.org"&gt;ThoughtSpark.org&lt;/a&gt;.  My
+current deployment model is to use &lt;a href="http://drupal.org"&gt;Drupal&lt;/a&gt; to craft/host my site&amp;#39;s content and I currently
+pay a small monthly fee to &lt;a href="http://www.godaddy.com"&gt;GoDaddy&lt;/a&gt; for hosting Drupal.  While there isn&amp;#39;t anything&lt;/p&gt;
+</summary>
+    <content type="html">&lt;p&gt;I&amp;#39;ve decided it&amp;#39;s time to rethink how I maintain and deploy &lt;a href="http://www.thoughtspark.org"&gt;ThoughtSpark.org&lt;/a&gt;.  My
+current deployment model is to use &lt;a href="http://drupal.org"&gt;Drupal&lt;/a&gt; to craft/host my site&amp;#39;s content and I currently
+pay a small monthly fee to &lt;a href="http://www.godaddy.com"&gt;GoDaddy&lt;/a&gt; for hosting Drupal.  While there isn&amp;#39;t anything
+really &lt;strong&gt;wrong&lt;/strong&gt; with my current model, I&amp;#39;ve grown tired of it.  Below are a few pain points worth mentioning.&lt;/p&gt;
+
+&lt;h3&gt;Maintenance Overhead&lt;/h3&gt;
+
+&lt;p&gt;I&amp;#39;ve grown tired of maintaining Drupal.  I&amp;#39;m tired of applying a security patch or verision update and having my
+whole site turn to crap.  Why?  All of my modules then need to be re-enabled and/or updated.  How is this a
+problem?  All non-core functionality on my site &lt;em&gt;(sitemap.xml generation, SPAM filtering, syntax highlighting, &amp;hellip;)&lt;/em&gt;
+are all enabled via modules.  If these modules are disabled during the update, and they are, I now have to go through
+the process of re-enabling them just so my site doesn&amp;#39;t look like crap and I don&amp;#39;t get SPAMed to Hell and back.&lt;/p&gt;
+
+&lt;p&gt;Don&amp;#39;t get me wrong, Drupal is a phenomenal product.  It&amp;#39;s an excellent
+&lt;abbr title="Content Management System"&gt;CMS&lt;/abbr&gt; and Drupal is also a great example of what an
+&lt;abbr title="Open Source Software"&gt;OSS&lt;/abbr&gt; project should be.  It&amp;#39;s not Drupal&amp;#39;s fault that I don&amp;#39;t need a
+&lt;abbr title="Content Management System"&gt;CMS&lt;/abbr&gt; and I&amp;#39;m sure there is a reason that the update process is more
+painful than I&amp;#39;d like.&lt;/p&gt;
+
+&lt;p&gt;Another aspect of the maintenance overhead is the fact that Drupal runs on &lt;a href="http://php.net"&gt;PHP&lt;/a&gt; and needs a
+database, &lt;a href="http://www.mysql.com"&gt;MySQL&lt;/a&gt; in my case, so you have to either host your server or pay someone to host it
+you.  I chose the second option.  The overhead for this of course is the financial cost, regardless of how large or
+small it is.&lt;/p&gt;
+
+&lt;h3&gt;Authoring&lt;/h3&gt;
+
+&lt;p&gt;The options I&amp;#39;ve been exposed to in Drupal for authoring content on my site is to use raw
+&lt;abbr title="HyperText Markup Language"&gt;HTML&lt;/abbr&gt; or using one of the
+&lt;abbr title="What You See Is What You Get"&gt;WYSIWYG&lt;/abbr&gt; editors.  The problem with raw HTML is it&amp;#39;s cumbersom and
+error prone.  Crafting a single post can often end up with a lot of time spent finding HTML typos.  The problem with
+WYSIWYG editors is that you often end up fighting them.  Either the output is junk or they don&amp;#39;t handle certain use
+cases, like handling code blocks.  Regardless, I loathe creating content in Drupal but again, I don&amp;#39;t feel it&amp;#39;s
+Drupal&amp;#39;s fault, I just want something simpler.&lt;/p&gt;
+
+&lt;p&gt;One approach to creating web-based content I&amp;#39;ve become very fond of as of late is
+&lt;a href="http://daringfireball.net/projects/markdown/"&gt;Markdown&lt;/a&gt;.  Markdown is a great language that allows me to focus more
+on the content being crafted while still being able to style my content very easily.  I can even drop in raw HTML
+wheenver I feel the need to.  If you&amp;#39;ve ever visited any &lt;a href="https://www.github.com"&gt;GitHub&lt;/a&gt; project/user homepage or
+a project&amp;#39;s wiki, you&amp;#39;ve seen the result of Markdown.&lt;/p&gt;
+
+&lt;h3&gt;The Solution&lt;/h3&gt;
+
+&lt;p&gt;The new ThoughtSpark.org will no longer be using Drupal and will no longer be deployed on GoDaddy.  Instead, I&amp;#39;m going
+to use a static website generator that will take my Markdown files and create my website.  The tool I will be using is
+&lt;a href="http://www.middlemanapp.com"&gt;Middleman&lt;/a&gt; and I will be using &lt;a href="http://pages.github.com/"&gt;GitHub Pages&lt;/a&gt; as my host.  Not
+only will writing/maintaining my website content be easier but now it will also require no cost to host.  Those two
+things are good enough reasons for me to switch but there are also the following reasons that are equally compelling:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Security&lt;/strong&gt;: With there being no server-side component and no server-side processing, there are much fewer security
+issues that I need to concern myself with&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Performance&lt;/strong&gt;: With there being no server-side component and no server-side processing, the performance of the site
+will be faster&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Deployment&lt;/strong&gt;: The solutions for hosting static websites are plentiful and you are no longer locked into a
+particular host/product for hosting your website.  &lt;em&gt;(There&amp;#39;s a chance you&amp;#39;re already using a
+service that will host your static websites for you.  Examples: GitHub&amp;#39;s Pages and 
+&lt;a href="http://www.dropboxwiki.com/Hosting_Websites_with_Dropbox"&gt;DropBox&lt;/a&gt; are two excellent examples.)&lt;/em&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3&gt;In Closing&lt;/h3&gt;
+
+&lt;p&gt;GitHub Pages, Markdown, Middleman and &lt;a href="http://twitter.github.com/bootstrap/"&gt;Twitter Bootstrap&lt;/a&gt; have made it very easy
+for me to re-create and maintain ThoughtSpark.org.  I feel like with this new approach for ThoughtSpark.org, I&amp;#39;ll be
+able to get posts out quicker and much easier, while saving a few bucks along the way.  Here are a few more things left
+to do to finish the migration:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Migrate the old Drupal posts to the new website&lt;/li&gt;
+&lt;li&gt;Configure site search&lt;/li&gt;
+&lt;li&gt;Configure site comments&lt;/li&gt;
+&lt;li&gt;Configure site feedback above and beyond &lt;a href="https://twitter.com/whitlockjc"&gt;Twitter&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Document my Middleman configuration, helpers and other pieces &lt;em&gt;(I think the things I learned and have done could be
+userful to others using Middleman)&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;Get back to writing about the awesome things I&amp;#39;m involved in&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Thanks for your patience and I look forward to sharing with you on my new platform.&lt;/p&gt;
+</content>
+  </entry>
+</feed>
