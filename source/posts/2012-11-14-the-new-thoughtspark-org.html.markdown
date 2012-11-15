@@ -66,3 +66,7 @@ look forward to sharing with you on my new platform.
 
 **Note:** There are a few things left to finish before I'd say that the migration is complete, follow
 [here](https://github.com/whitlockjc/thoughtspark.org/issues/1) if you're interested.
+**Note:** Originally I had planned on migrating all of the old Drupal posts to the new platform.  I've decided against
+it for a few reasons and will instead only migrate things upon request.  To request such a thing, use the
+[issue tracker](https://github.com/whitlockjc/thoughtspark.org/issues) or hit me up on
+[Twitter](https://twitter.com/whitlockjc).
