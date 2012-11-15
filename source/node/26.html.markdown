@@ -95,7 +95,7 @@ Now that we have those things out of the way, let's look at the help output of t
                             The path to the authz file to update/create
       -q, --quiet           Suppress logging information
 
-Anything that has a "[Default:" string in its corresponding documentation is "optional" and can usually be omitted
+Anything that has a **[Default:** string in its corresponding documentation is "optional" and can usually be omitted
 when running against most directory servers.  The things that are not optional are things that you can get from your
 Apache configuration.  Now that we have our bearings, let's see an example.
 
