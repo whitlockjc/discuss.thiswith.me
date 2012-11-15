@@ -2,9 +2,9 @@ xml.instruct!
 xml.urlset 'xmlns' => 'http://www.sitemaps.org/schemas/sitemap/0.9' do
   # Site Pages
   site_pages.each do |site_page|
-    if site_page['path'].end_with?('/index.html')
+    if site_page[:path].end_with?('/index.html')
       xml.url do
-        xml.loc site_root + site_page['path'].gsub('index.html', '')
+        xml.loc site_root + site_page[:path].gsub('index.html', '')
         xml.changefreq 'weekly'
         xml.priority 1.0
         xml.lastmod w3c_date(DateTime.now)

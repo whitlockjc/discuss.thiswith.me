@@ -29,16 +29,16 @@ set :markdown, :fenced_code_blocks => true, :smartypants => true
 # Individual Pages
 ###
 site_pages = [
-  {"path" => "/index.html", "layout" => "scaffolding"},
-  {"path" => "/tags/index.html", "layout" => "scaffolding"},
-  {"path" => "/archives/index.html", "layout" => "scaffolding"},
-  {"path" => "/about-me/index.html", "layout" => "scaffolding"},
-  {"path" => "/feed.xml", "layout" => false},
-  {"path" => "/sitemap.xml", "layout" => false},
+  {:path => "/index.html", :layout => "scaffolding"},
+  {:path => "/tags/index.html", :layout => "scaffolding"},
+  {:path => "/archives/index.html", :layout => "scaffolding"},
+  {:path => "/about-me/index.html", :layout => "scaffolding"},
+  {:path => "/feed.xml", :layout => false},
+  {:path => "/sitemap.xml", :layout => false},
 ]
 
 site_pages.each do |page_config|
-  page page_config["path"], :layout => page_config["layout"]
+  page page_config[:path], :layout => page_config[:layout]
 end
 
 set :site_pages, site_pages
@@ -48,7 +48,15 @@ page "/404.html", :layout => "scaffolding", :directory_index => false
 ###
 # Migrated Drupal Nodes
 ###
-page "/node/26/index.html", :proxy => "posts/2009-01-20-using-ldap-groups-with-subversion-s-authz-file.html", :layout => "scaffolding"
+migrated_pages = [
+  {:path => "/node/26/index.html", :proxy => "posts/2009-01-20-using-ldap-groups-with-subversion-s-authz-file.html"}
+]
+
+migrated_pages.each do |page_config|
+  page page_config[:path], :proxy => page_config[:proxy], :default_path => page_config[:proxy], :layout => "article_page"
+end
+
+set :migrated_pages, migrated_pages
 
 ###
 # Pretty URLs

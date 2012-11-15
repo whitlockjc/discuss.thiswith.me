@@ -1,5 +1,5 @@
 <% wrap_layout :scaffolding do %>
-<%= partial "layouts/article", :locals => {:article => current_article } %>
+<%= partial "layouts/article", :locals => {:article => current_article != nil ? current_article : current_page.store.find_resource_by_path(current_page.metadata[:options][:default_path])} %>
 <% wrap_layout :row_container do %>
 <div id="disqus_thread"></div>
 <script type="text/javascript">
