@@ -84,11 +84,14 @@ helpers do
   def w3c_date(date)
     date.strftime("%Y-%m-%dT%H:%M:%S%:z")
   end
+  def absolute_url(path)
+    return site_root + path
+  end
 end
 
 configure :build do
   # Build-specific configuration
-  set :site_root, 'http://thoughtspark.org'
+  set :site_root, 'http://whitlockjc.github.com/thoughtspark.org'
   # Build directory
   set :build_dir, '.'
 end

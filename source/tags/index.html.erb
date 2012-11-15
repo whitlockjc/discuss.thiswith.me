@@ -8,13 +8,13 @@ site_page_type: tag
 </div>
 <% blog.tags.each do |tag, articles| %>
 <% wrap_layout :row_container do %>
-<h3><a href="tags/<%= tag %>/"><%= tag %></a></h3>
+<h3><a href="<%= absolute_url(tag_path(tag)) %>"><%= tag %></a></h3>
 <ul>
   <% articles.each do |article| %>
   <li>
-    <a href="<%= article.url %>"><%= article.title %></a>
+    <a href="<%= absolute_url(article.url) %>"><%= article.title %></a>
     <% article.tags.sort.each do |tag| %>
-    <a href="<%= tag_path tag %>" class="tag-link"><span class="label label-info"><%= tag %></span></a>
+    <a href="<%= absolute_url(tag_path(tag)) %>" class="tag-link"><span class="label label-info"><%= tag %></span></a>
     <% end %>
     <span>(<%= article.date.strftime('Posted on %Y/%m/%d at %H:%M') %>)</span>
   </li>

@@ -11,7 +11,7 @@ site_page_type: archive
 <% end %>
 <% articles_by_year.each do |year, articles| %>
 <% wrap_layout :row_container do %>
-<h3><a href="/<%= year %>/"><%= year %></a></h3>
+<h3><a href="<%= absolute_url('/' + year.to_s + '/') %>"><%= year %></a></h3>
 <ul>
   <% page_articles.each_with_index do |article, i| %>
   <%= partial "layouts/article_as_list_item", :locals => {:article => article, :i => i} %>
@@ -23,7 +23,7 @@ site_page_type: archive
 <% end %>
 <% blog.tags.each do |tag, articles| %>
 <% wrap_layout :row_container do %>
-<h3><a href="<%= tag_path tag %>"><%= tag %></a></h3>
+<h3><a href="<%= absolute_url(tag_path(tag)) %>"><%= tag %></a></h3>
 <ul>
   <% articles.each_with_index do |article, i| %>
   <%= partial "layouts/article_as_list_item", :locals => {:article => article, :i => i} %>
