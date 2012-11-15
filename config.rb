@@ -37,6 +37,8 @@ end
 
 set :site_pages, site_pages
 
+page "/404.html", :layout => "scaffolding", :directory_index => false
+
 ###
 # Syntax Highlighting
 ###
