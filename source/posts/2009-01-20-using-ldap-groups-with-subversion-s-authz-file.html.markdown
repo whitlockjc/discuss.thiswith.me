@@ -2,6 +2,7 @@
 title: Using LDAP Groups With Subversion's Authz File
 date: 2009-01-20 12:34 -07:00
 tags: subversion, ldap
+archived: true
 ---
 
 <div class="alert alert-error">
