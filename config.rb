@@ -35,6 +35,7 @@ site_pages = [
   {:path => "/about-me/index.html", :layout => "scaffolding"},
   {:path => "/feed.xml", :layout => false},
   {:path => "/sitemap.xml", :layout => false},
+  {:path => "/sitemap.xsl", :layout => false}
 ]
 
 site_pages.each do |page_config|
