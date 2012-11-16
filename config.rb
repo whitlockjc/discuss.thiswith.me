@@ -34,6 +34,7 @@ site_pages = [
   {:path => "/archives/index.html", :layout => "scaffolding"},
   {:path => "/about-me/index.html", :layout => "scaffolding"},
   {:path => "/feed.xml", :layout => false},
+  {:path => "/feed.xsl", :layout => false},
   {:path => "/sitemap.xml", :layout => false},
   {:path => "/sitemap.xsl", :layout => false}
 ]

@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="http://thoughtspark.org/feed.xsl" type="text/xsl"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title>ThoughtSpark.org</title>
   <subtitle>The blog of Jeremy Whitlock.</subtitle>
   <id>http://www.thoughtspark.org</id>
-  <link href="http://www.thoughtspark.org"/>
-  <link href="http://www.thoughtspark.org/feed.xml" rel="self"/>
+  <link href="http://thoughtspark.org/"/>
+  <link href="http://thoughtspark.org/feed.xml" rel="self"/>
   <updated>2012-11-15T06:00:00Z</updated>
   <author>
     <name>Jeremy Whitlock</name>
   </author>
   <entry>
     <title>The New ThoughtSpark.org</title>
-    <link rel="alternate" href="/2012/11/14/the-new-thoughtspark-org/"/>
-    <id>/2012/11/14/the-new-thoughtspark-org/</id>
+    <link rel="alternate" href="http://thoughtspark.org/2012/11/14/the-new-thoughtspark-org/"/>
+    <id>http://thoughtspark.org/2012/11/14/the-new-thoughtspark-org/</id>
     <published>2012-11-15T06:00:00Z</published>
     <updated>2012-11-15T06:00:00Z</updated>
     <author>
@@ -98,8 +99,8 @@ it for a few reasons and will instead only migrate things upon request.  To requ
   </entry>
   <entry>
     <title>Using LDAP Groups With Subversion's Authz File</title>
-    <link rel="alternate" href="/2009/01/20/using-ldap-groups-with-subversion-s-authz-file/"/>
-    <id>/2009/01/20/using-ldap-groups-with-subversion-s-authz-file/</id>
+    <link rel="alternate" href="http://thoughtspark.org/2009/01/20/using-ldap-groups-with-subversion-s-authz-file/"/>
+    <id>http://thoughtspark.org/2009/01/20/using-ldap-groups-with-subversion-s-authz-file/</id>
     <published>2009-01-20T19:34:00Z</published>
     <updated>2009-01-20T19:34:00Z</updated>
     <author>

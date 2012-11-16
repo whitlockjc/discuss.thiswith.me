@@ -1,5 +1,5 @@
 xml.instruct!
-xml.instruct! 'xml-stylesheet', {:href=>'/sitemap.xsl', :type=>'text/xsl'}
+xml.instruct! 'xml-stylesheet', {:href => absolute_url('/sitemap.xsl'), :type => 'text/xsl'}
 xml.urlset 'xmlns' => 'http://www.sitemaps.org/schemas/sitemap/0.9' do
   # Site Pages
   site_pages.each do |site_page|
