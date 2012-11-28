@@ -1,5 +1,6 @@
 <% wrap_layout :scaffolding do %>
 <%= partial "layouts/article", :locals => {:article => current_article != nil ? current_article : current_page.store.find_resource_by_path(current_page.metadata[:options][:default_path])} %>
+<% if environment != :development %>
 <% wrap_layout :row_container do %>
 <div id="disqus_thread"></div>
 <script type="text/javascript">
@@ -15,5 +16,6 @@
 </script>
 <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+<% end %>
 <% end %>
 <% end %>

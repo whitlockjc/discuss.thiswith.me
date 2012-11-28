@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:atom="http://www.w3.org/2005/Atom" version="1.0">
-  <xsl:output method="html" omit-xml-declaration="yes" encoding="ISO-8859-1"/>
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <xsl:output omit-xml-declaration="yes" method="html" encoding="ISO-8859-1"/>
   <xsl:template match="/">
     <xsl:text disable-output-escaping="yes">
 &lt;!DOCTYPE html&gt;    </xsl:text>
@@ -9,9 +9,9 @@
         <meta charset="utf-8"/>
         <title>
 ThoughtSpark.org - Feed        </title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <meta name="description" content="Interesting stuff from the eyes of Jeremy Whitlock"/>
-        <meta name="author" content="Jeremy Whitlock &lt;jcscoobyrs@gmail.com&gt;"/>
+        <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+        <meta content="Interesting stuff from the eyes of Jeremy Whitlock" name="description"/>
+        <meta content="Jeremy Whitlock &lt;jcscoobyrs@gmail.com&gt;" name="author"/>
         <!-- Stylesheets -->
         <link href="http://thoughtspark.org/css/bootstrap.css" rel="stylesheet"/>
         <link href="http://thoughtspark.org/css/thoughtspark.org.css" rel="stylesheet"/>
@@ -22,12 +22,12 @@ ThoughtSpark.org - Feed        </title>
           <div class="navbar navbar-inverse navbar-fixed-top">
             <div class="navbar-inner">
               <div class="container-fluid">
-                <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <a data-target=".nav-collapse" data-toggle="collapse" class="btn btn-navbar">
                   <span class="icon-bar"/>
                   <span class="icon-bar"/>
                   <span class="icon-bar"/>
                 </a>
-                <a class="brand" href="http://thoughtspark.org/">
+                <a href="http://thoughtspark.org/" class="brand">
 ThoughtSpark.org                </a>
                 <div class="nav-collapse collapse">
                   <ul class="nav">
@@ -44,18 +44,18 @@ Tags Index                      </a>
 About Me                      </a>
                     </li>
                   </ul>
-                  <form class="navbar-search pull-right" id="cse-search-box" action="http://google.com/cse" target="_blank">
-                    <input type="hidden" name="cx" value="002070316934860344827:uskwlee9cfw"/>
-                    <input type="hidden" name="ie" value="UTF-8"/>
-                    <input type="text" class="search-query" name="q" placeholder="Search"/>
+                  <form id="cse-search-box" action="http://google.com/cse" target="_blank" class="navbar-search pull-right">
+                    <input value="002070316934860344827:uskwlee9cfw" type="hidden" name="cx"/>
+                    <input value="UTF-8" type="hidden" name="ie"/>
+                    <input placeholder="Search" type="text" name="q" class="search-query"/>
                   </form>
                 </div>
               </div>
             </div>
           </div>
-          <div class="container-fluid" id="content-wrapper">
+          <div id="content-wrapper" class="container-fluid">
             <div class="row-fluid">
-              <div class="span12 content" id="content">
+              <div id="content" class="span12 content">
                 <div class="page-header single-page-header">
                   <h1>
 Feed                    <small>
@@ -96,7 +96,7 @@ Updated                      </th>
         <div id="footer">
           <div class="container-fluid">
             <p>
-© Jeremy Whitlock 2012 | Brought to you buy               <a href="http://pages.github.com/">
+&#169; Jeremy Whitlock 2012 | Brought to you buy               <a href="http://pages.github.com/">
 GitHub Pages              </a>
 ,               <a href="http://middlemanapp.com/">
 Middleman              </a>
