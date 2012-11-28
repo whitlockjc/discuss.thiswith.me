@@ -6,10 +6,44 @@
   <id>http://www.thoughtspark.org</id>
   <link href="http://thoughtspark.org/"/>
   <link href="http://thoughtspark.org/feed.xml" rel="self"/>
-  <updated>2012-11-15T06:00:00Z</updated>
+  <updated>2012-11-28T22:15:00Z</updated>
   <author>
     <name>Jeremy Whitlock</name>
   </author>
+  <entry>
+    <title>Underscore.js Book</title>
+    <link href="http://thoughtspark.org/2012/11/28/underscore-js-book/" rel="alternate"/>
+    <id>http://thoughtspark.org/2012/11/28/underscore-js-book/</id>
+    <published>2012-11-28T22:15:00Z</published>
+    <updated>2012-11-28T22:15:00Z</updated>
+    <author>
+      <name>Jeremy Whitlock</name>
+    </author>
+    <summary type="html">&lt;p&gt;Let&amp;#39;s make it official, in case you didn&amp;#39;t hear on &lt;a href="http://twitter.com/whitlockjc/status/259296818360377346"&gt;Twitter&lt;/a&gt;,
+I&amp;#39;ve signed a contract with &lt;a href="http://oreilly.com/"&gt;O&amp;#39;Reilly Media&lt;/a&gt; to write a book about
+&lt;a href="http://underscorejs.org"&gt;Underscore.js&lt;/a&gt;.  How did I get into this awesome situation you might ask?  Well, back in&lt;/p&gt;
+</summary>
+    <content type="html">&lt;p&gt;Let&amp;#39;s make it official, in case you didn&amp;#39;t hear on &lt;a href="http://twitter.com/whitlockjc/status/259296818360377346"&gt;Twitter&lt;/a&gt;,
+I&amp;#39;ve signed a contract with &lt;a href="http://oreilly.com/"&gt;O&amp;#39;Reilly Media&lt;/a&gt; to write a book about
+&lt;a href="http://underscorejs.org"&gt;Underscore.js&lt;/a&gt;.  How did I get into this awesome situation you might ask?  Well, back in
+October &lt;a href="https://twitter.com/jashkenas"&gt;Jeremy Ashkenas&lt;/a&gt; posted
+&lt;a href="https://twitter.com/jashkenas/status/258249389733187584"&gt;on Twitter&lt;/a&gt; saying that if you were interested in writing
+a book about Underscore.js, let him know.  I submitted my proposal and it was accepted.  &lt;strong&gt;WOOHOO!!!&lt;/strong&gt;  Needless to
+say, I&amp;#39;m very excited about this opportunity and I&amp;#39;ll do my best to make sure this thing happens.&lt;/p&gt;
+
+&lt;h3&gt;Any Suggestions?&lt;/h3&gt;
+
+&lt;p&gt;I don&amp;#39;t just want my name on the cover of just any book, I want this book to be the best possible.  That being said,
+while I already have some ideas of my own, I&amp;#39;d love to hear anything you think that could help me the book awesome.  To
+do that, leave your requests/suggestions in the comments.&lt;/p&gt;
+
+&lt;h3&gt;Progress&lt;/h3&gt;
+
+&lt;p&gt;I&amp;#39;ve already started work on this book based on the proposal sent to O&amp;#39;Reilly.  As I make progress, I&amp;#39;ll keep you guys
+up to speed here on ThoughtSpark.org.  Feel free to reach out to &lt;a href="https://twitter.com/whitlockjc"&gt;me on Twitter&lt;/a&gt; or
+in the comments with anything pertinent to this effort.&lt;/p&gt;
+</content>
+  </entry>
   <entry>
     <title>The New ThoughtSpark.org</title>
     <link href="http://thoughtspark.org/2012/11/14/the-new-thoughtspark-org/" rel="alternate"/>

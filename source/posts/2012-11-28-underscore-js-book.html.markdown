@@ -1,6 +1,6 @@
 ---
 title: Underscore.js Book
-date: 2012-11-28 16:00 -07:00
+date: 2012-11-28 15:15 -07:00
 tags: javascript, underscore.js, me, o'reilly
 ---
 
