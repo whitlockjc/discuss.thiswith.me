@@ -13,9 +13,9 @@ a book about Underscore.js, let him know.  I submitted my proposal and it was ac
 say, I'm very excited about this opportunity and I'll do my best to make sure this thing happens.
 
 ### Any Suggestions?
-I don't just want my name on the cover of just any book, I want this book to be the best possible.  That being said,
-while I already have some ideas of my own, I'd love to hear anything you think that could help me the book awesome.  To
-do that, leave your requests/suggestions in the comments.
+I'm not looking to have my name on the cover of just any book, I want this book to be the best possible.  That being
+said, I'd love to hear anything you think that could help make the book awesome.  To submit your suggestions, leave
+your requests/suggestions in the comments below.
 
 ### Progress
 I've already started work on this book based on the proposal sent to O'Reilly.  As I make progress, I'll keep you guys
