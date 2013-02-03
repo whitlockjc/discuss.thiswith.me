@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:atom="http://www.w3.org/2005/Atom" version="1.0">
+<xsl:stylesheet xmlns:atom="http://www.w3.org/2005/Atom" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
   <xsl:output method="html" omit-xml-declaration="yes" encoding="ISO-8859-1"/>
   <xsl:template match="/">
     <xsl:text disable-output-escaping="yes">
@@ -22,7 +22,7 @@ ThoughtSpark.org - Feed        </title>
           <div class="navbar navbar-inverse navbar-fixed-top">
             <div class="navbar-inner">
               <div class="container-fluid">
-                <a data-target=".nav-collapse" data-toggle="collapse" class="btn btn-navbar">
+                <a data-toggle="collapse" class="btn btn-navbar" data-target=".nav-collapse">
                   <span class="icon-bar"/>
                   <span class="icon-bar"/>
                   <span class="icon-bar"/>
@@ -44,18 +44,18 @@ Tags Index                      </a>
 About Me                      </a>
                     </li>
                   </ul>
-                  <form id="cse-search-box" target="_blank" class="navbar-search pull-right" action="http://google.com/cse">
+                  <form target="_blank" class="navbar-search pull-right" id="cse-search-box" action="http://google.com/cse">
                     <input type="hidden" value="002070316934860344827:uskwlee9cfw" name="cx"/>
                     <input type="hidden" value="UTF-8" name="ie"/>
-                    <input type="text" placeholder="Search" name="q" class="search-query"/>
+                    <input type="text" placeholder="Search" class="search-query" name="q"/>
                   </form>
                 </div>
               </div>
             </div>
           </div>
-          <div id="content-wrapper" class="container-fluid">
+          <div class="container-fluid" id="content-wrapper">
             <div class="row-fluid">
-              <div id="content" class="span12 content">
+              <div class="span12 content" id="content">
                 <div class="page-header single-page-header">
                   <h1>
 Feed                    <small>
