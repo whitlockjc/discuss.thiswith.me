@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns:sitemap="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
-  <xsl:output method="html" encoding="ISO-8859-1" omit-xml-declaration="yes"/>
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:sitemap="http://www.sitemaps.org/schemas/sitemap/0.9" version="1.0">
+  <xsl:output encoding="ISO-8859-1" method="html" omit-xml-declaration="yes"/>
   <xsl:template match="/">
     <xsl:text disable-output-escaping="yes">
 &lt;!DOCTYPE html&gt;    </xsl:text>
-    <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
       <head>
         <meta charset="utf-8"/>
         <title>
 ThoughtSpark.org - Sitemap        </title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <meta name="description" content="Interesting stuff from the eyes of Jeremy Whitlock"/>
-        <meta name="author" content="Jeremy Whitlock &lt;jcscoobyrs@gmail.com&gt;"/>
+        <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+        <meta content="Interesting stuff from the eyes of Jeremy Whitlock" name="description"/>
+        <meta content="Jeremy Whitlock &lt;jcscoobyrs@gmail.com&gt;" name="author"/>
         <!-- Stylesheets -->
         <link href="http://thoughtspark.org/css/bootstrap.css" rel="stylesheet"/>
         <link href="http://thoughtspark.org/css/thoughtspark.org.css" rel="stylesheet"/>
@@ -22,7 +22,7 @@ ThoughtSpark.org - Sitemap        </title>
           <div class="navbar navbar-inverse navbar-fixed-top">
             <div class="navbar-inner">
               <div class="container-fluid">
-                <a data-toggle="collapse" class="btn btn-navbar" data-target=".nav-collapse">
+                <a data-target=".nav-collapse" class="btn btn-navbar" data-toggle="collapse">
                   <span class="icon-bar"/>
                   <span class="icon-bar"/>
                   <span class="icon-bar"/>
@@ -47,7 +47,7 @@ About Me                      </a>
                   <form target="_blank" class="navbar-search pull-right" action="http://google.com/cse" id="cse-search-box">
                     <input name="cx" value="002070316934860344827:uskwlee9cfw" type="hidden"/>
                     <input name="ie" value="UTF-8" type="hidden"/>
-                    <input name="q" type="text" placeholder="Search" class="search-query"/>
+                    <input placeholder="Search" class="search-query" name="q" type="text"/>
                   </form>
                 </div>
               </div>

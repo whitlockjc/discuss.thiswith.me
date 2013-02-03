@@ -5,103 +5,103 @@
     <loc>http://thoughtspark.org/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
-    <lastmod>2013-02-02T22:40:54-07:00</lastmod>
+    <lastmod>2013-02-02T22:42:13-07:00</lastmod>
   </url>
   <url>
     <loc>http://thoughtspark.org/tags/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
-    <lastmod>2013-02-02T22:40:54-07:00</lastmod>
+    <lastmod>2013-02-02T22:42:13-07:00</lastmod>
   </url>
   <url>
     <loc>http://thoughtspark.org/archives/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
-    <lastmod>2013-02-02T22:40:54-07:00</lastmod>
+    <lastmod>2013-02-02T22:42:13-07:00</lastmod>
   </url>
   <url>
     <loc>http://thoughtspark.org/about-me/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
-    <lastmod>2013-02-02T22:40:54-07:00</lastmod>
+    <lastmod>2013-02-02T22:42:13-07:00</lastmod>
   </url>
   <url>
     <loc>http://thoughtspark.org/2013/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
-    <lastmod>2013-02-02T22:40:54-07:00</lastmod>
+    <lastmod>2013-02-02T22:42:13-07:00</lastmod>
   </url>
   <url>
     <loc>http://thoughtspark.org/2009/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
-    <lastmod>2013-02-02T22:40:54-07:00</lastmod>
+    <lastmod>2013-02-02T22:42:13-07:00</lastmod>
   </url>
   <url>
     <loc>http://thoughtspark.org/2012/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
-    <lastmod>2013-02-02T22:40:54-07:00</lastmod>
-  </url>
-  <url>
-    <loc>http://thoughtspark.org/tags/ldap/</loc>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
-    <lastmod>2013-02-02T22:40:54-07:00</lastmod>
-  </url>
-  <url>
-    <loc>http://thoughtspark.org/tags/subversion/</loc>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
-    <lastmod>2013-02-02T22:40:54-07:00</lastmod>
-  </url>
-  <url>
-    <loc>http://thoughtspark.org/tags/thoughtspark.org/</loc>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
-    <lastmod>2013-02-02T22:40:54-07:00</lastmod>
-  </url>
-  <url>
-    <loc>http://thoughtspark.org/tags/racism/</loc>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
-    <lastmod>2013-02-02T22:40:54-07:00</lastmod>
+    <lastmod>2013-02-02T22:42:13-07:00</lastmod>
   </url>
   <url>
     <loc>http://thoughtspark.org/tags/borderlands/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
-    <lastmod>2013-02-02T22:40:54-07:00</lastmod>
+    <lastmod>2013-02-02T22:42:13-07:00</lastmod>
   </url>
   <url>
-    <loc>http://thoughtspark.org/tags/o'reilly/</loc>
+    <loc>http://thoughtspark.org/tags/subversion/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
-    <lastmod>2013-02-02T22:40:54-07:00</lastmod>
+    <lastmod>2013-02-02T22:42:13-07:00</lastmod>
+  </url>
+  <url>
+    <loc>http://thoughtspark.org/tags/thoughtspark.org/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <lastmod>2013-02-02T22:42:13-07:00</lastmod>
+  </url>
+  <url>
+    <loc>http://thoughtspark.org/tags/ldap/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <lastmod>2013-02-02T22:42:13-07:00</lastmod>
   </url>
   <url>
     <loc>http://thoughtspark.org/tags/me/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
-    <lastmod>2013-02-02T22:40:54-07:00</lastmod>
+    <lastmod>2013-02-02T22:42:13-07:00</lastmod>
+  </url>
+  <url>
+    <loc>http://thoughtspark.org/tags/o'reilly/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <lastmod>2013-02-02T22:42:13-07:00</lastmod>
   </url>
   <url>
     <loc>http://thoughtspark.org/tags/javascript/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
-    <lastmod>2013-02-02T22:40:54-07:00</lastmod>
+    <lastmod>2013-02-02T22:42:13-07:00</lastmod>
   </url>
   <url>
-    <loc>http://thoughtspark.org/tags/underscore.js/</loc>
+    <loc>http://thoughtspark.org/tags/racism/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
-    <lastmod>2013-02-02T22:40:54-07:00</lastmod>
+    <lastmod>2013-02-02T22:42:13-07:00</lastmod>
   </url>
   <url>
     <loc>http://thoughtspark.org/tags/gaming/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
-    <lastmod>2013-02-02T22:40:54-07:00</lastmod>
+    <lastmod>2013-02-02T22:42:13-07:00</lastmod>
+  </url>
+  <url>
+    <loc>http://thoughtspark.org/tags/underscore.js/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <lastmod>2013-02-02T22:42:13-07:00</lastmod>
   </url>
   <url>
     <loc>http://thoughtspark.org/2013/02/02/tiny-tina-racist-i-think-not/</loc>
