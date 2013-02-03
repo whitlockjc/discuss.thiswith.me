@@ -22,7 +22,7 @@ Racism, as defined by [Merriam-Webster](http://www.merriam-webster.com/dictionar
 > traits of personality, intellect, morality, and other cultural behavioral features, and that some _races_ are innately
 > superior to others.
 
-That being said, where in the descriptoin above  does it say that someone of one race using the *lingo* of another
+That being said, where in the description above  does it say that someone of one race using the *lingo* of another
 race is racism, or that a race could even impose ownership of *lingo*?  The idea of saying that Tiny Tina's character
 is racist because she uses *"black lingo"* is a joke, although not a laughing matter because it's ridiculous
 accusations like this that fuel the controversal matters of racism.  Could you imagine calling
