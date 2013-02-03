@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns:sitemap="http://www.sitemaps.org/schemas/sitemap/0.9" version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-  <xsl:output method="html" omit-xml-declaration="yes" encoding="ISO-8859-1"/>
+<xsl:stylesheet xmlns:sitemap="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+  <xsl:output method="html" encoding="ISO-8859-1" omit-xml-declaration="yes"/>
   <xsl:template match="/">
     <xsl:text disable-output-escaping="yes">
 &lt;!DOCTYPE html&gt;    </xsl:text>
-    <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+    <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
       <head>
         <meta charset="utf-8"/>
         <title>
@@ -13,21 +13,21 @@ ThoughtSpark.org - Sitemap        </title>
         <meta name="description" content="Interesting stuff from the eyes of Jeremy Whitlock"/>
         <meta name="author" content="Jeremy Whitlock &lt;jcscoobyrs@gmail.com&gt;"/>
         <!-- Stylesheets -->
-        <link rel="stylesheet" href="http://thoughtspark.org/css/bootstrap.css"/>
-        <link rel="stylesheet" href="http://thoughtspark.org/css/thoughtspark.org.css"/>
-        <link rel="stylesheet" href="http://thoughtspark.org/css/bootstrap-responsive.css"/>
+        <link href="http://thoughtspark.org/css/bootstrap.css" rel="stylesheet"/>
+        <link href="http://thoughtspark.org/css/thoughtspark.org.css" rel="stylesheet"/>
+        <link href="http://thoughtspark.org/css/bootstrap-responsive.css" rel="stylesheet"/>
       </head>
       <body>
         <div id="wrapper">
           <div class="navbar navbar-inverse navbar-fixed-top">
             <div class="navbar-inner">
               <div class="container-fluid">
-                <a data-toggle="collapse" data-target=".nav-collapse" class="btn btn-navbar">
+                <a data-toggle="collapse" class="btn btn-navbar" data-target=".nav-collapse">
                   <span class="icon-bar"/>
                   <span class="icon-bar"/>
                   <span class="icon-bar"/>
                 </a>
-                <a class="brand" href="http://thoughtspark.org/">
+                <a href="http://thoughtspark.org/" class="brand">
 ThoughtSpark.org                </a>
                 <div class="nav-collapse collapse">
                   <ul class="nav">
@@ -44,18 +44,18 @@ Tags Index                      </a>
 About Me                      </a>
                     </li>
                   </ul>
-                  <form id="cse-search-box" target="_blank" class="navbar-search pull-right" action="http://google.com/cse">
-                    <input type="hidden" name="cx" value="002070316934860344827:uskwlee9cfw"/>
-                    <input type="hidden" name="ie" value="UTF-8"/>
-                    <input type="text" name="q" class="search-query" placeholder="Search"/>
+                  <form target="_blank" class="navbar-search pull-right" action="http://google.com/cse" id="cse-search-box">
+                    <input name="cx" value="002070316934860344827:uskwlee9cfw" type="hidden"/>
+                    <input name="ie" value="UTF-8" type="hidden"/>
+                    <input name="q" type="text" placeholder="Search" class="search-query"/>
                   </form>
                 </div>
               </div>
             </div>
           </div>
-          <div id="content-wrapper" class="container-fluid">
+          <div class="container-fluid" id="content-wrapper">
             <div class="row-fluid">
-              <div id="content" class="span12 content">
+              <div class="span12 content" id="content">
                 <div class="page-header single-page-header">
                   <h1>
 Sitemap                    <small>
