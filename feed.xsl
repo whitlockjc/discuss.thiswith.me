@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <xsl:output method="html" omit-xml-declaration="yes" encoding="ISO-8859-1"/>
+  <xsl:output omit-xml-declaration="yes" method="html" encoding="ISO-8859-1"/>
   <xsl:template match="/">
     <xsl:text disable-output-escaping="yes">
 &lt;!DOCTYPE html&gt;    </xsl:text>
-    <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
       <head>
         <meta charset="utf-8"/>
         <title>
@@ -22,12 +22,12 @@ ThoughtSpark.org - Feed        </title>
           <div class="navbar navbar-inverse navbar-fixed-top">
             <div class="navbar-inner">
               <div class="container-fluid">
-                <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <a data-toggle="collapse" data-target=".nav-collapse" class="btn btn-navbar">
                   <span class="icon-bar"/>
                   <span class="icon-bar"/>
                   <span class="icon-bar"/>
                 </a>
-                <a href="http://thoughtspark.org/" class="brand">
+                <a class="brand" href="http://thoughtspark.org/">
 ThoughtSpark.org                </a>
                 <div class="nav-collapse collapse">
                   <ul class="nav">
@@ -44,18 +44,18 @@ Tags Index                      </a>
 About Me                      </a>
                     </li>
                   </ul>
-                  <form action="http://google.com/cse" target="_blank" id="cse-search-box" class="navbar-search pull-right">
-                    <input name="cx" value="002070316934860344827:uskwlee9cfw" type="hidden"/>
-                    <input name="ie" value="UTF-8" type="hidden"/>
-                    <input name="q" placeholder="Search" class="search-query" type="text"/>
+                  <form class="navbar-search pull-right" target="_blank" id="cse-search-box" action="http://google.com/cse">
+                    <input type="hidden" name="cx" value="002070316934860344827:uskwlee9cfw"/>
+                    <input type="hidden" name="ie" value="UTF-8"/>
+                    <input class="search-query" type="text" name="q" placeholder="Search"/>
                   </form>
                 </div>
               </div>
             </div>
           </div>
-          <div id="content-wrapper" class="container-fluid">
+          <div class="container-fluid" id="content-wrapper">
             <div class="row-fluid">
-              <div id="content" class="span12 content">
+              <div class="span12 content" id="content">
                 <div class="page-header single-page-header">
                   <h1>
 Feed                    <small>
