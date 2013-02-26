@@ -6,10 +6,196 @@
   <id>http://www.thoughtspark.org</id>
   <link href="http://thoughtspark.org/"/>
   <link href="http://thoughtspark.org/feed.xml" rel="self"/>
-  <updated>2013-02-03T04:42:00Z</updated>
+  <updated>2013-02-25T19:00:00Z</updated>
   <author>
     <name>Jeremy Whitlock</name>
   </author>
+  <entry>
+    <title>Dropwizard and Jersey ExceptionMappers</title>
+    <link href="http://thoughtspark.org/2013/02/25/dropwizard-and-jersey-exceptionmappers/" rel="alternate"/>
+    <id>http://thoughtspark.org/2013/02/25/dropwizard-and-jersey-exceptionmappers/</id>
+    <published>2013-02-25T19:00:00Z</published>
+    <updated>2013-02-25T19:00:00Z</updated>
+    <author>
+      <name>Jeremy Whitlock</name>
+    </author>
+    <summary type="html">&lt;p&gt;The past month I&amp;#39;ve been using an &lt;a href="http://en.wikipedia.org/wiki/Open_source_software"&gt;open source&lt;/a&gt; project called
+&lt;a href="http://dropwizard.codahale.com/"&gt;Dropwizard&lt;/a&gt;.  Dropwizard is a self-described as being a &amp;ldquo;Java framework for
+developing ops-friendly, high-performance, RESTful web services&amp;rdquo;.  Dropwizard is an awesome piece of kit that bundles&lt;/p&gt;
+</summary>
+    <content type="html">&lt;p&gt;The past month I&amp;#39;ve been using an &lt;a href="http://en.wikipedia.org/wiki/Open_source_software"&gt;open source&lt;/a&gt; project called
+&lt;a href="http://dropwizard.codahale.com/"&gt;Dropwizard&lt;/a&gt;.  Dropwizard is a self-described as being a &amp;ldquo;Java framework for
+developing ops-friendly, high-performance, RESTful web services&amp;rdquo;.  Dropwizard is an awesome piece of kit that bundles
+best of breed Java tooling like &lt;a href="http://www.eclipse.org/jetty/"&gt;Jetty&lt;/a&gt;,
+&lt;a href="http://code.google.com/p/guava-libraries/"&gt;Guava&lt;/a&gt; and &lt;a href="http://jersey.java.net/"&gt;Jersey&lt;/a&gt;.  Speaking of Jersey, this is
+what I&amp;#39;d like to talk about today, specifically about how Dropwizard exposes the ability to create your own Jersey
+ExceptionMapper and how the built-in Dropwizard ExceptionMappers might cause you some grief, with a workaround.&lt;/p&gt;
+
+&lt;h3&gt;What is an ExceptionMapper?&lt;/h3&gt;
+
+&lt;p&gt;Jersey, or should I say &lt;a href="http://jax-rs-spec.java.net/"&gt;JAX-RS&lt;/a&gt;, exposes a mechanism that will allow you to map a thrown
+Exception or Throwable to a REST response, instead of being unhandled and being presented to
+the user as some stacktrace or error text.  &lt;em&gt;(This mechanism requires than you implement the generic
+ExceptionMapper interface and then register it.)&lt;/em&gt;  This is excellent for REST APIs that like to
+return errors back to the client as part of using the API, like returning a &lt;a href="http://www.json.org/"&gt;JSON&lt;/a&gt; representation
+of an Exception that can be parsed and handled on the client.&lt;/p&gt;
+
+&lt;h3&gt;Custom ExceptionMappers in Dropwizard&lt;/h3&gt;
+
+&lt;p&gt;My initial impression of Dropwizard in the context of Jersey and needing to register custom ExceptionMappers was very
+positive since Dropwizard exposes an API for registering ExceptionMappers.  Here is a very brief example for those of
+you looking to register your custom ExceptionMapper within Dropwizard:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;package&lt;/span&gt; &lt;span class="n"&gt;org&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;thoughtspark&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;dropwizard&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;app&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;org.thoughtspark.dropwizard.app.ApplicationConfiguration&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;org.thoughtspark.dropwizard.app.GenericExceptionMapper&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;com.yammer.dropwizard.Service&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;com.yammer.dropwizard.config.Bootstrap&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;com.yammer.dropwizard.config.Environment&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+
+&lt;span class="cm"&gt;/**&lt;/span&gt;
+&lt;span class="cm"&gt; * Example Dropwizard {@link Service}.&lt;/span&gt;
+&lt;span class="cm"&gt; */&lt;/span&gt;
+&lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="kd"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;ApplicationService&lt;/span&gt; &lt;span class="kd"&gt;extends&lt;/span&gt; &lt;span class="n"&gt;Service&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;ApplicationConfiguration&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+
+    &lt;span class="cm"&gt;/**&lt;/span&gt;
+&lt;span class="cm"&gt;     * Entry point for running this services in isolation via Dropwizard.&lt;/span&gt;
+&lt;span class="cm"&gt;     *&lt;/span&gt;
+&lt;span class="cm"&gt;     * @param args the arguments&lt;/span&gt;
+&lt;span class="cm"&gt;     */&lt;/span&gt;
+    &lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="kd"&gt;static&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="nf"&gt;main&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;String&lt;/span&gt;&lt;span class="o"&gt;[]&lt;/span&gt; &lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="kd"&gt;throws&lt;/span&gt; &lt;span class="n"&gt;Exception&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+        &lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="nf"&gt;ApplicationService&lt;/span&gt;&lt;span class="o"&gt;().&lt;/span&gt;&lt;span class="na"&gt;run&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+    &lt;span class="o"&gt;}&lt;/span&gt;
+
+    &lt;span class="cm"&gt;/**&lt;/span&gt;
+&lt;span class="cm"&gt;     * {@inheritDoc}&lt;/span&gt;
+&lt;span class="cm"&gt;     */&lt;/span&gt;
+    &lt;span class="nd"&gt;@Override&lt;/span&gt;
+    &lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="nf"&gt;initialize&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Bootstrap&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;ApplicationConfiguration&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;bootstrap&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+        &lt;span class="n"&gt;bootstrap&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;setName&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;application&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+    &lt;span class="o"&gt;}&lt;/span&gt;
+
+    &lt;span class="cm"&gt;/**&lt;/span&gt;
+&lt;span class="cm"&gt;     * {@inheritDoc}&lt;/span&gt;
+&lt;span class="cm"&gt;     */&lt;/span&gt;
+    &lt;span class="nd"&gt;@Override&lt;/span&gt;
+    &lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="nf"&gt;run&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ApplicationConfiguration&lt;/span&gt; &lt;span class="n"&gt;applicationConfiguration&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="n"&gt;Environment&lt;/span&gt; &lt;span class="n"&gt;environment&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="kd"&gt;throws&lt;/span&gt; &lt;span class="n"&gt;Exception&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+        &lt;span class="c1"&gt;// Register the custom ExceptionMapper(s)&lt;/span&gt;
+        &lt;span class="n"&gt;environment&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;addProvider&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;GenericExceptionMapper&lt;/span&gt;&lt;span class="o"&gt;());&lt;/span&gt;
+    &lt;span class="o"&gt;}&lt;/span&gt;
+
+&lt;span class="o"&gt;}&lt;/span&gt;
+&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The GenericExceptionMapper being registered will handle all Throwables thrown and return a JSON payload representing
+the error and its message.&lt;/p&gt;
+
+&lt;h3&gt;Dropwizards Secret &amp;ldquo;Gotcha&amp;rdquo;&lt;/h3&gt;
+
+&lt;p&gt;Everything was going great until I started using Dropwizard
+&lt;a href="http://dropwizard.codahale.com/manual/core/#validation"&gt;Validation&lt;/a&gt;.  I noticed that whenever my bean validation
+failed, instead of seeing a JSON payload of my validation exception, I was always seeing an HTML version of the
+exception&amp;hellip;almost as if I never registered my custom ExceptionMapper, or maybe my custom ExceptionMapper just wasn&amp;#39;t
+working.  Seeing that all Exceptions extend Throwable, I didn&amp;#39;t see how my ExceptionMapper wasn&amp;#39;t configured properly
+so I dropped into the debugger.&lt;/p&gt;
+
+&lt;p&gt;After some looking around, I see that the actual exception being throw was of type InvalidEntityException.  At this
+point, I created a new ExceptionMapper specifically for the InvalidEntityException, restarted Dropwizard and it
+worked!  Instead of the HTML responses for InvalidEntityExceptions, I saw my JSON representation.  Everything was
+working great&amp;hellip;that is until I restarted the server for a different reason and I noticed that the
+InvalidEntityExceptions had gone back to HTML.  I knew I hadn&amp;#39;t changed anything related to the ExceptionMapper so I
+started debugging.  After being unable to get the debugger to hit any break points in my ExceptionMappers I started
+looking into the Dropwizard sources, thank goodness for open source software, and that is when I saw something,
+Dropwizard is registering its own ExceptionMapper for the InvalidEntityException.  What was still bugging me was why my
+ExceptionMapper worked once and upon server restart it stopped working, without any changes to my code.  Once again I
+found myself in the bowels of Dropwizard&amp;#39;s source and that&amp;#39;s when I found my problem.&lt;/p&gt;
+
+&lt;p&gt;Dropwizard is adding its custom ExceptionMappers into Jersey&amp;#39;s singletons Set, a Set that does not guarantee order.
+This explains why one time my ExceptionMapper would work and another time, the built-in Dropwizard ExceptionMapper
+would work.  Now that we know the problem, below is one way to work around the problem:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;package&lt;/span&gt; &lt;span class="n"&gt;org&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;thoughtspark&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;dropwizard&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;app&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;org.thoughtspark.dropwizard.app.ApplicationConfiguration&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;org.thoughtspark.dropwizard.app.GenericExceptionMapper&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;com.fasterxml.jackson.jaxrs.json.JsonParseExceptionMapper&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;com.sun.jersey.api.core.ResourceConfig&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;com.yammer.dropwizard.Service&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;com.yammer.dropwizard.config.Bootstrap&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;com.yammer.dropwizard.config.Environment&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;com.yammer.dropwizard.jersey.InvalidEntityExceptionMapper&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;java.util.ArrayList&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;java.util.List&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;java.util.Set&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+
+&lt;span class="cm"&gt;/**&lt;/span&gt;
+&lt;span class="cm"&gt; * Example Dropwizard {@link Service}.&lt;/span&gt;
+&lt;span class="cm"&gt; */&lt;/span&gt;
+&lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="kd"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;ApplicationService&lt;/span&gt; &lt;span class="kd"&gt;extends&lt;/span&gt; &lt;span class="n"&gt;Service&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;ApplicationConfiguration&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+
+    &lt;span class="cm"&gt;/**&lt;/span&gt;
+&lt;span class="cm"&gt;     * Entry point for running this services in isolation via Dropwizard.&lt;/span&gt;
+&lt;span class="cm"&gt;     *&lt;/span&gt;
+&lt;span class="cm"&gt;     * @param args the arguments&lt;/span&gt;
+&lt;span class="cm"&gt;     */&lt;/span&gt;
+    &lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="kd"&gt;static&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="nf"&gt;main&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;String&lt;/span&gt;&lt;span class="o"&gt;[]&lt;/span&gt; &lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="kd"&gt;throws&lt;/span&gt; &lt;span class="n"&gt;Exception&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+        &lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="nf"&gt;ApplicationService&lt;/span&gt;&lt;span class="o"&gt;().&lt;/span&gt;&lt;span class="na"&gt;run&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+    &lt;span class="o"&gt;}&lt;/span&gt;
+
+    &lt;span class="cm"&gt;/**&lt;/span&gt;
+&lt;span class="cm"&gt;     * {@inheritDoc}&lt;/span&gt;
+&lt;span class="cm"&gt;     */&lt;/span&gt;
+    &lt;span class="nd"&gt;@Override&lt;/span&gt;
+    &lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="nf"&gt;initialize&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Bootstrap&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;ApplicationConfiguration&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;bootstrap&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+        &lt;span class="n"&gt;bootstrap&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;setName&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;application&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+    &lt;span class="o"&gt;}&lt;/span&gt;
+
+    &lt;span class="cm"&gt;/**&lt;/span&gt;
+&lt;span class="cm"&gt;     * {@inheritDoc}&lt;/span&gt;
+&lt;span class="cm"&gt;     */&lt;/span&gt;
+    &lt;span class="nd"&gt;@Override&lt;/span&gt;
+    &lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="nf"&gt;run&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ApplicationConfiguration&lt;/span&gt; &lt;span class="n"&gt;applicationConfiguration&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="n"&gt;Environment&lt;/span&gt; &lt;span class="n"&gt;environment&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="kd"&gt;throws&lt;/span&gt; &lt;span class="n"&gt;Exception&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+        &lt;span class="c1"&gt;// Remove all of Dropwizard&amp;#39;s custom ExceptionMappers&lt;/span&gt;
+        &lt;span class="n"&gt;ResourceConfig&lt;/span&gt; &lt;span class="n"&gt;jrConfig&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;environment&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;getJerseyResourceConfig&lt;/span&gt;&lt;span class="o"&gt;();&lt;/span&gt;
+        &lt;span class="n"&gt;Set&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;Object&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;dwSingletons&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;jrConfig&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;getSingletons&lt;/span&gt;&lt;span class="o"&gt;();&lt;/span&gt;
+        &lt;span class="n"&gt;List&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;Object&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;singletonsToRemove&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;ArrayList&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;Object&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;();&lt;/span&gt;
+
+        &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Object&lt;/span&gt; &lt;span class="n"&gt;s&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;dwSingletons&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+            &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;s&lt;/span&gt; &lt;span class="k"&gt;instanceof&lt;/span&gt; &lt;span class="n"&gt;ExceptionMapper&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;s&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;getClass&lt;/span&gt;&lt;span class="o"&gt;().&lt;/span&gt;&lt;span class="na"&gt;getName&lt;/span&gt;&lt;span class="o"&gt;().&lt;/span&gt;&lt;span class="na"&gt;startsWith&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;com.yammer.dropwizard.jersey.&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;))&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+                &lt;span class="n"&gt;singletonsToRemove&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;add&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;s&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+            &lt;span class="o"&gt;}&lt;/span&gt;
+        &lt;span class="o"&gt;}&lt;/span&gt;
+
+        &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Object&lt;/span&gt; &lt;span class="n"&gt;s&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;singletonsToRemove&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+            &lt;span class="n"&gt;jrConfig&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;getSingletons&lt;/span&gt;&lt;span class="o"&gt;().&lt;/span&gt;&lt;span class="na"&gt;remove&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;s&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+        &lt;span class="o"&gt;}&lt;/span&gt;
+
+        &lt;span class="c1"&gt;// Register the custom ExceptionMapper(s)&lt;/span&gt;
+        &lt;span class="n"&gt;environment&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;addProvider&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;GenericExceptionMapper&lt;/span&gt;&lt;span class="o"&gt;());&lt;/span&gt;
+    &lt;span class="o"&gt;}&lt;/span&gt;
+
+&lt;span class="o"&gt;}&lt;/span&gt;
+&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;In the code above, I remove all Dropwizard ExceptionMappers so that I have complete control over how my application
+renders Jersey Exceptions.  Now no matter how many times I restart the server, my custom ExceptionMapper will be used
+and I can always expect JSON to be returned for Exceptions thrown on the server.  Of course, you might need to change
+the approach above based on your needs but for this scenario, I just wanted any ExceptionMapper that Dropwizard
+provided to be done away with so I could use my custom versions that returned JSON instead of HTML.&lt;/p&gt;
+
+&lt;h3&gt;Conclusion&lt;/h3&gt;
+
+&lt;p&gt;Dropwizard is awesome and anytime I have to write Java-based REST servers, I&amp;#39;ll be using it.  I do question the
+built-in ExceptionMappers, especially with their inability to be configured to output something other than the
+hardcoded HTML, but with the workaround above, I don&amp;#39;t have to be stuck because of them.  Please do not let this take
+away from Dropwizard and if you get tired of having to use the workaround above, I&amp;#39;m sure the team would welcome a
+patch&amp;hellip;if you beat me to it.&lt;/p&gt;
+</content>
+  </entry>
   <entry>
     <title>Tiny Tina Racist?  I Think Not!</title>
     <link href="http://thoughtspark.org/2013/02/02/tiny-tina-racist-i-think-not/" rel="alternate"/>

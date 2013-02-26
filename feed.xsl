@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <xsl:output omit-xml-declaration="yes" method="html" encoding="ISO-8859-1"/>
+<xsl:stylesheet xmlns:atom="http://www.w3.org/2005/Atom" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+  <xsl:output method="html" encoding="ISO-8859-1" omit-xml-declaration="yes"/>
   <xsl:template match="/">
     <xsl:text disable-output-escaping="yes">
 &lt;!DOCTYPE html&gt;    </xsl:text>
-    <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+    <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
       <head>
         <meta charset="utf-8"/>
         <title>
@@ -27,7 +27,7 @@ ThoughtSpark.org - Feed        </title>
                   <span class="icon-bar"/>
                   <span class="icon-bar"/>
                 </a>
-                <a class="brand" href="http://thoughtspark.org/">
+                <a href="http://thoughtspark.org/" class="brand">
 ThoughtSpark.org                </a>
                 <div class="nav-collapse collapse">
                   <ul class="nav">
@@ -44,10 +44,10 @@ Tags Index                      </a>
 About Me                      </a>
                     </li>
                   </ul>
-                  <form class="navbar-search pull-right" target="_blank" id="cse-search-box" action="http://google.com/cse">
+                  <form action="http://google.com/cse" class="navbar-search pull-right" target="_blank" id="cse-search-box">
                     <input type="hidden" name="cx" value="002070316934860344827:uskwlee9cfw"/>
                     <input type="hidden" name="ie" value="UTF-8"/>
-                    <input class="search-query" type="text" name="q" placeholder="Search"/>
+                    <input type="text" name="q" placeholder="Search" class="search-query"/>
                   </form>
                 </div>
               </div>
