@@ -5,14 +5,14 @@
   <subtitle>The blog of Jeremy Whitlock.</subtitle>
   <id>http://www.thoughtspark.org</id>
   <link href="http://thoughtspark.org/"/>
-  <link href="http://thoughtspark.org/feed.xml" rel="self"/>
+  <link rel="self" href="http://thoughtspark.org/feed.xml"/>
   <updated>2013-02-25T19:00:00Z</updated>
   <author>
     <name>Jeremy Whitlock</name>
   </author>
   <entry>
     <title>Dropwizard and Jersey ExceptionMappers</title>
-    <link href="http://thoughtspark.org/2013/02/25/dropwizard-and-jersey-exceptionmappers/" rel="alternate"/>
+    <link rel="alternate" href="http://thoughtspark.org/2013/02/25/dropwizard-and-jersey-exceptionmappers/"/>
     <id>http://thoughtspark.org/2013/02/25/dropwizard-and-jersey-exceptionmappers/</id>
     <published>2013-02-25T19:00:00Z</published>
     <updated>2013-02-25T19:00:00Z</updated>
@@ -198,7 +198,7 @@ patch&amp;hellip;if you beat me to it.&lt;/p&gt;
   </entry>
   <entry>
     <title>Tiny Tina Racist?  I Think Not!</title>
-    <link href="http://thoughtspark.org/2013/02/02/tiny-tina-racist-i-think-not/" rel="alternate"/>
+    <link rel="alternate" href="http://thoughtspark.org/2013/02/02/tiny-tina-racist-i-think-not/"/>
     <id>http://thoughtspark.org/2013/02/02/tiny-tina-racist-i-think-not/</id>
     <published>2013-02-03T04:42:00Z</published>
     <updated>2013-02-03T04:42:00Z</updated>
@@ -265,7 +265,7 @@ accusations about very sensitive subjects such as racism.&lt;/p&gt;
   </entry>
   <entry>
     <title>Underscore.js Book</title>
-    <link href="http://thoughtspark.org/2012/11/28/underscore-js-book/" rel="alternate"/>
+    <link rel="alternate" href="http://thoughtspark.org/2012/11/28/underscore-js-book/"/>
     <id>http://thoughtspark.org/2012/11/28/underscore-js-book/</id>
     <published>2012-11-28T22:15:00Z</published>
     <updated>2012-11-28T22:15:00Z</updated>
@@ -299,7 +299,7 @@ in the comments with anything pertinent to this effort.&lt;/p&gt;
   </entry>
   <entry>
     <title>The New ThoughtSpark.org</title>
-    <link href="http://thoughtspark.org/2012/11/14/the-new-thoughtspark-org/" rel="alternate"/>
+    <link rel="alternate" href="http://thoughtspark.org/2012/11/14/the-new-thoughtspark-org/"/>
     <id>http://thoughtspark.org/2012/11/14/the-new-thoughtspark-org/</id>
     <published>2012-11-15T06:00:00Z</published>
     <updated>2012-11-15T06:00:00Z</updated>
@@ -387,7 +387,7 @@ it for a few reasons and will instead only migrate things upon request.  To requ
   </entry>
   <entry>
     <title>Using LDAP Groups With Subversion's Authz File</title>
-    <link href="http://thoughtspark.org/2009/01/20/using-ldap-groups-with-subversion-s-authz-file/" rel="alternate"/>
+    <link rel="alternate" href="http://thoughtspark.org/2009/01/20/using-ldap-groups-with-subversion-s-authz-file/"/>
     <id>http://thoughtspark.org/2009/01/20/using-ldap-groups-with-subversion-s-authz-file/</id>
     <published>2009-01-20T19:34:00Z</published>
     <updated>2009-01-20T19:34:00Z</updated>

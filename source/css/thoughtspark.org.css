@@ -82,6 +82,12 @@ li span {
   font-style: italic;
 }
 
+.highlight > pre {
+  overflow: auto;
+  word-wrap: normal;
+  white-space: pre;
+}
+
 /* Sticky Footer */
 #wrapper {
   min-height: 100%;

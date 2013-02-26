@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns:atom="http://www.w3.org/2005/Atom" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+<xsl:stylesheet xmlns:atom="http://www.w3.org/2005/Atom" version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
   <xsl:output method="html" encoding="ISO-8859-1" omit-xml-declaration="yes"/>
   <xsl:template match="/">
     <xsl:text disable-output-escaping="yes">
@@ -13,16 +13,16 @@ ThoughtSpark.org - Feed        </title>
         <meta name="description" content="Interesting stuff from the eyes of Jeremy Whitlock"/>
         <meta name="author" content="Jeremy Whitlock &lt;jcscoobyrs@gmail.com&gt;"/>
         <!-- Stylesheets -->
-        <link href="http://thoughtspark.org/css/bootstrap.css" rel="stylesheet"/>
-        <link href="http://thoughtspark.org/css/thoughtspark.org.css" rel="stylesheet"/>
-        <link href="http://thoughtspark.org/css/bootstrap-responsive.css" rel="stylesheet"/>
+        <link rel="stylesheet" href="http://thoughtspark.org/css/bootstrap.css"/>
+        <link rel="stylesheet" href="http://thoughtspark.org/css/thoughtspark.org.css"/>
+        <link rel="stylesheet" href="http://thoughtspark.org/css/bootstrap-responsive.css"/>
       </head>
       <body>
         <div id="wrapper">
           <div class="navbar navbar-inverse navbar-fixed-top">
             <div class="navbar-inner">
               <div class="container-fluid">
-                <a data-toggle="collapse" data-target=".nav-collapse" class="btn btn-navbar">
+                <a data-target=".nav-collapse" data-toggle="collapse" class="btn btn-navbar">
                   <span class="icon-bar"/>
                   <span class="icon-bar"/>
                   <span class="icon-bar"/>
@@ -44,18 +44,18 @@ Tags Index                      </a>
 About Me                      </a>
                     </li>
                   </ul>
-                  <form action="http://google.com/cse" class="navbar-search pull-right" target="_blank" id="cse-search-box">
-                    <input type="hidden" name="cx" value="002070316934860344827:uskwlee9cfw"/>
-                    <input type="hidden" name="ie" value="UTF-8"/>
+                  <form id="cse-search-box" target="_blank" action="http://google.com/cse" class="navbar-search pull-right">
+                    <input value="002070316934860344827:uskwlee9cfw" type="hidden" name="cx"/>
+                    <input value="UTF-8" type="hidden" name="ie"/>
                     <input type="text" name="q" placeholder="Search" class="search-query"/>
                   </form>
                 </div>
               </div>
             </div>
           </div>
-          <div class="container-fluid" id="content-wrapper">
+          <div id="content-wrapper" class="container-fluid">
             <div class="row-fluid">
-              <div class="span12 content" id="content">
+              <div id="content" class="span12 content">
                 <div class="page-header single-page-header">
                   <h1>
 Feed                    <small>
