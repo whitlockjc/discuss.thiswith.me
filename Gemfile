@@ -1,12 +1,14 @@
-source :rubygems
+source 'https://rubygems.org'
 
 # For Middleman
-gem "middleman", "~> 3.0.6"
-gem "middleman-blog", "~> 3.1.1"
-gem "middleman-syntax", "~> 1.0.0"
+gem "middleman", "~> 3.2.0"
+gem "middleman-blog", "~> 3.5.0"
+gem "middleman-syntax", "~> 1.2.1"
+gem "middleman-gh-pages", "~> 0.0.3"
 
 # Redcarpet
-gem "redcarpet", "~> 2.2.2"
+gem "redcarpet", "~> 3.0.0"
 
 # For feed.xml.builder
-gem "builder", "~> 3.0.0"
+gem "builder", "~> 3.2.2"
+gem "nokogiri", "~> 1.6.1"

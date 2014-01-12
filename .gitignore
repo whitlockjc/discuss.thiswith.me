@@ -1,2 +1,5 @@
 # Ignore Ruby bundler config
 /.bundle
+
+# Ignore the build directory
+build/

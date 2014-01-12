@@ -108,7 +108,7 @@ configure :build do
   # Build-specific configuration
   set :site_root, 'http://thoughtspark.org'
   # Build directory
-  set :build_dir, '.'
+  # set :build_dir, '.'
   ###
   # Syntax Highlighting
   ###
