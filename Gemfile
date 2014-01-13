@@ -4,7 +4,7 @@ source 'https://rubygems.org'
 gem "middleman", "~> 3.2.0"
 gem "middleman-blog", "~> 3.5.0"
 gem "middleman-syntax", "~> 1.2.1"
-gem "middleman-gh-pages", "~> 0.0.3"
+gem "middleman-deploy", "~> 0.1.4"
 
 # Redcarpet
 gem "redcarpet", "~> 3.0.0"

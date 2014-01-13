@@ -114,3 +114,7 @@ configure :build do
   ###
   activate :syntax
 end
+
+activate :deploy do |deploy|
+  deploy.method = :git
+end
