@@ -1,6 +1,6 @@
 ---
 title: Goodbye 2013 and Hello 2014
-date: 2014-01-12 21:00 -07:00
+date: 2014-01-12 19:00 -07:00
 tags: thoughtspark.org, me
 ---
 
