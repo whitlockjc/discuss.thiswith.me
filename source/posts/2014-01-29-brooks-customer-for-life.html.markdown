@@ -15,7 +15,7 @@ with [Brooks Running][brooks-running].
 I started running back in 2010 but I didn't really hit my stride until last year.  At the end of 2012, I bought a pair
 of Brooks Pure Connect running shoes.  I bought them because they looked great and they were lightweight.  Over the
 next year, I wore the soles off of these shoes.  They lasted over 300 miles of actual running distance, a
-[Tough Mudder][tough-mudder], two [Mud Brigade][mud-brigade] races, a [Crazy Legs 5K][crazy-legs-5k] and countless
+[Tough Mudder][tough-mudder], two [Mud Brigade][mud-brigade] races, a [Crazy Legs 10K][crazy-legs-10k] and countless
 runs.  These shoes were amazing, best pair of shoes I've ever owned.
 
 When it came time to replace them, the Brooks Pure Connect 2 had just come out and I expected the same from them
@@ -54,7 +54,7 @@ to be the norm.  This story is to showcase an awesome example of customer servic
 
 [6pm-com]: http://www.6pm.com/
 [brooks-running]: http://www.brooksrunning.com/
-[crazy-legs-5k]: http://paulstofko.com/Crazy_Legs_5k.php
+[crazy-legs-10k]: http://paulstofko.com/Crazy_Legs_5k.php
 [mud-brigade]: http://mudbrigadenoco.com/
 [scathing-yelp-review]: http://abcnews.go.com/US/scathing-yelp-review-cost-woman-750k/story?id=22260611
 [tough-mudder]: http://toughmudder.com/
