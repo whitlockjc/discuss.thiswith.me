@@ -112,8 +112,9 @@ provided dependencies, is to use a Browserify transform.  For this purpose, ther
 best one I've found is [exposify][exposify].  With exposify you can configure how Browserify will resolve modules that
 are provided for you externally.  For example, if you were to load Lo-Dash using a `script` tag, you could tell exposify
 that the `lodash` module could be provided by `_` global variable.  To see this in action, have a look at
-[swagger-tools/gulpfile.js#L57][swagger-tools-gulpfile-L57].  _(Long story short, exposify lets you associate a module
-name with a global variable by name.)_
+[swagger-tools/gulpfile.js#L57][swagger-tools-gulpfile-L57].  _(Long story short, exposify lets you avoid including
+modules in your browser bundle and lets you resolve the runtime dependency by associating a module name with a global
+variable by name.)_
 
 Thanks to Browserify and exposify, I could create a Bower module for swagger-tools and not include all of the required
 dependencies with the generated browser bundle.  I was able to set the proper Bower dependencies for modules that had
