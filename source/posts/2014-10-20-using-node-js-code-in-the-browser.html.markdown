@@ -1,6 +1,6 @@
 ---
 title: Using Node.js Code in the Browser
-date: 2014-10-20 22:00 -07:00
+date: 2014-10-20 21:00 -07:00
 tags: javascript, node.js, browser, browserify
 ---
 
