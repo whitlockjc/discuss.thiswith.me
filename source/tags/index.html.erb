@@ -7,7 +7,6 @@ site_page_type: tag
   <h1>Article Tags <small><%= blog.tags.length %> unique tags for <%= blog.articles.length %> articles</small></h1>
 </div>
 <% blog.tags.each do |tag, articles| %>
-<% wrap_layout :row_container do %>
 <h3><a href="<%= absolute_url(tag_path(tag)) %>"><%= tag %></a></h3>
 <ul>
   <% articles.each do |article| %>
@@ -20,6 +19,5 @@ site_page_type: tag
   </li>
   <% end %>
 </ul>
-<% end %>
 <% end %>
 <% end %>

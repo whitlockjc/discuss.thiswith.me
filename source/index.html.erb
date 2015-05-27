@@ -3,6 +3,7 @@ title: Home
 pageable: true
 per_page: 10
 ---
+<% wrap_layout :row_container do %>
 <% page_articles.each_with_index do |article, i| %>
 <% if !article.data.archived %>
 <%= partial "layouts/article_in_list", :locals => {:article => article, :articles_displayed => page_articles.length, :i => i} %>
@@ -13,4 +14,5 @@ per_page: 10
 <div class="alert alert-info">
   <strong>But wait</strong>, there's more in the <a href="<%= absolute_url('/archives/') %>'">archives</a>.
 </div>
+<% end %>
 <% end %>

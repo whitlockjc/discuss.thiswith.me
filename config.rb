@@ -46,6 +46,7 @@ end
 set :site_pages, site_pages
 
 page "/404.html", :layout => "scaffolding", :directory_index => false
+page "/miscellaneous/ron_is_right.html", :layout => "scaffolding", :directory_index => true
 
 ###
 # Migrated Drupal Nodes
