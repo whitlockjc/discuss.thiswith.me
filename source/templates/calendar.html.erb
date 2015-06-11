@@ -1,5 +1,5 @@
 ---
-site_page_type: archive
+site_page_type: archives
 ---
 <% # Override/Set the title based on the scope of the archive request %>
 <% case page_type
@@ -24,12 +24,10 @@ site_page_type: archive
     <% end %>
   </h1>
 </div>
-<% wrap_layout :row_container do %>
 <ul>
   <% page_articles.each_with_index do |article, i| %>
   <%= partial "layouts/article_as_list_item", :locals => {:article => article, :i => i} %>
   <% end %>
 </ul>
-<% end %>
 <% end %>
 <% end %>

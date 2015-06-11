@@ -1,4 +1,4 @@
-<%= partial "layouts/article_markup", :locals => {:article => article} %>
-<% if i < articles_displayed - 1 %>
+<% if i > 0 %>
 <hr />
 <% end %>
+<%= partial "layouts/article_markup", :locals => {:article => article} %>

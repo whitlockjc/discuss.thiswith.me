@@ -22,13 +22,6 @@
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 
-    <!-- Favicon and Touch Icons -->
-    <link rel="shortcut icon" href="<%= absolute_url('/img/favicon.ico') %>">
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="<%= absolute_url('/img/apple-touch-icon-144-precomposed.png') %>">
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="<%= absolute_url('/img/apple-touch-icon-114-precomposed.png') %>">
-    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="<%= absolute_url('/img/apple-touch-icon-72-precomposed.png') %>">
-    <link rel="apple-touch-icon-precomposed" href="<%= absolute_url('/img/apple-touch-icon-57-precomposed.png') %>"> -->
-
     <!-- Google Analytics -->
     <script type="text/javascript">
       var _gaq = _gaq || [];
@@ -57,11 +50,11 @@
             <a class="brand" href="<%= absolute_url('/') %>">ThoughtSpark.org</a>
             <div class="nav-collapse collapse">
               <ul class="nav">
-                <li class="<% if current_page.data.site_page_type == 'archive' %>active<% end %>">
+                <li class="<% if current_page.data.site_page_type == 'archives' %>active<% end %>">
                   <a href="<%= absolute_url('/archives/') %>">Archives</a></li>
-                <li class="<% if current_page.data.site_page_type == 'tag' %>active<% end %>">
+                <li class="<% if current_page.data.site_page_type == 'tags' %>active<% end %>">
                   <a href="<%= absolute_url('/tags/') %>">Tags Index</a></li>
-                <li class="<% if current_page.data.site_page_type == 'about' %>active<% end %>">
+                <li class="<% if current_page.data.site_page_type == 'about-me' %>active<% end %>">
                   <a href="<%= absolute_url('/about-me/') %>">About Me</a></li>
               </ul>
               <form class="navbar-search pull-right" id="cse-search-box" action="http://google.com/cse" target="_blank">
@@ -83,7 +76,7 @@
 
     <div id="footer">
       <div class="container-fluid">
-        <p>© Jeremy Whitlock 2012 | Brought to you by <a href="http://pages.github.com/">GitHub Pages</a>,
+        <p>© Jeremy Whitlock 2015 | Brought to you by <a href="http://pages.github.com/">GitHub Pages</a>,
           <a href="http://middlemanapp.com/">Middleman</a> and
           <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a>. |
           <a href="https://github.com/whitlockjc/thoughtspark.org">Site Sources</a>

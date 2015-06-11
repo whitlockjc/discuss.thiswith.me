@@ -30,9 +30,9 @@ set :markdown, :fenced_code_blocks => true, :smartypants => true
 ###
 site_pages = [
   {:path => "/index.html", :layout => "scaffolding"},
-  {:path => "/tags/index.html", :layout => "scaffolding"},
-  {:path => "/archives/index.html", :layout => "scaffolding"},
-  {:path => "/about-me/index.html", :layout => "scaffolding"},
+  {:path => "/tags.html", :layout => "scaffolding"},
+  {:path => "/archives.html", :layout => "scaffolding"},
+  {:path => "/about-me.html", :layout => "scaffolding"},
   {:path => "/feed.xml", :layout => false},
   {:path => "/feed.xsl", :layout => false},
   {:path => "/sitemap.xml", :layout => false},
@@ -46,7 +46,8 @@ end
 set :site_pages, site_pages
 
 page "/404.html", :layout => "scaffolding", :directory_index => false
-page "/miscellaneous/ron_is_right.html", :layout => "scaffolding", :directory_index => true
+page "/bower_components/*", :directory_index => false
+page "/elements/*", :directory_index => false
 
 ###
 # Migrated Drupal Nodes
@@ -69,9 +70,9 @@ activate :directory_indexes
 ###
 # Asset Locations
 ###
-set :css_dir, 'css'
-set :js_dir, 'js'
-set :images_dir, 'img'
+set :css_dir, 'styles'
+set :js_dir, 'scripts'
+set :images_dir, 'images'
 
 ###
 # Template Variables
