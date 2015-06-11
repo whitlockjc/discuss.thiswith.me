@@ -118,29 +118,36 @@ li span {
   .navbar-fixed-top {
     margin-bottom: 0px !important;
   }
+
   #content-wrapper {
     margin-top: 0px;
     padding-top: 0px;
   }
+
   #content-wrapper .page-header {
     margin-top: 7px;
     margin-bottom: 10px;
     padding-bottom: 10px;
   }
+
   #content-wrapper .page-header h1 {
     margin-top: 0px;
   }
+
   .page-header h1 small {
     font-size: 10px;
   }
+
   .widget-row {
     height:auto!important;
     overflow: auto;
   }
+
   body, html {
     margin: 0px !important;
     padding: 0px !important;
   }
+
   #content-wrapper {
     margin-left: 20px;
     margin-right: 20px;
@@ -151,10 +158,7 @@ li span {
   .widget-row > div {
     display: inline !important;
   }
-  #wrapper {
-    padding-left: 20px;
-    padding-right: 20px;
-  }
+
   #content .page-header {
     margin-top: 0px;
     padding-top: 7px;
