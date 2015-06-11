@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+        
+    <title>ThoughtSpark.org - Home</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Interesting stuff from the eyes of Jeremy Whitlock">
+    <meta name="author" content="Jeremy Whitlock <jcscoobyrs@gmail.com>">
+
+    <!-- Stylesheets -->
+    <link href="http://thoughtspark.org/css/bootstrap.css" rel="stylesheet">
+    <link href="http://thoughtspark.org/css/thoughtspark.org.css" rel="stylesheet">
+    <link href="http://thoughtspark.org/css/bootstrap-responsive.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Google Analytics -->
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-8129913-1']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </head>
+
+  <body>
+
+    <div id="wrapper">
+      <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="navbar-inner">
+          <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </a>
+            <a class="brand" href="http://thoughtspark.org/">ThoughtSpark.org</a>
+            <div class="nav-collapse collapse">
+              <ul class="nav">
+                <li class="">
+                  <a href="http://thoughtspark.org/archives/">Archives</a></li>
+                <li class="">
+                  <a href="http://thoughtspark.org/tags/">Tags Index</a></li>
+                <li class="">
+                  <a href="http://thoughtspark.org/about-me/">About Me</a></li>
+              </ul>
+              <form class="navbar-search pull-right" id="cse-search-box" action="http://google.com/cse" target="_blank">
+                <input type="hidden" name="cx" value="002070316934860344827:uskwlee9cfw" />
+                <input type="hidden" name="ie" value="UTF-8" />
+                <input type="text" class="search-query" name="q" placeholder="Search" />
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="container-fluid" id="content-wrapper">
+        <div class="row-fluid">
+  <div class="span8 offset2 content" id="content">
+    <div class="row-fluid">
+      <div class="span12">
+        <div class="page-header">
+  <h1><a href="http://thoughtspark.org/2014/10/20/using-node-js-code-in-the-browser/">Using Node.js Code in the Browser</a> <small>Posted on 2014/10/20 at 22:00</small></h1>
+</div>
+<div class="widget-row row-fluid">
+  <div class="span9">
+    
+    <a href="http://thoughtspark.org/tags/browser/" class="tag-link"><span class="label label-info">browser</span></a>
+    
+    <a href="http://thoughtspark.org/tags/browserify/" class="tag-link"><span class="label label-info">browserify</span></a>
+    
+    <a href="http://thoughtspark.org/tags/javascript/" class="tag-link"><span class="label label-info">javascript</span></a>
+    
+    <a href="http://thoughtspark.org/tags/node-js/" class="tag-link"><span class="label label-info">node.js</span></a>
+    
+  </div>
+  <div class="span3">
+    <a href="https://twitter.com/share" class="twitter-share-button"
+       data-url="http://thoughtspark.org/2014/10/20/using-node-js-code-in-the-browser/"
+       data-text="Using Node.js Code in the Browser"
+       
+       data-hashtags="javascript node.js browser browserify"
+       
+       data-via="whitlockjc"
+       data-count="none"
+       data-lang="en">Tweet</a>
+    <span class="g-plusone"
+         data-size="medium"
+         data-annotation="none"
+         data-href="http://thoughtspark.org/2014/10/20/using-node-js-code-in-the-browser/"></span>
+  </div>
+</div>
+<div class="article-content">
+  <p>For the past few months, I&rsquo;ve been working on <a href="https://github.com/apigee-127/swagger-tools">swagger-tools</a>, a JavaScript library that exposes various
+utilities for working with <a href="http://swagger.io">Swagger</a> documents.  Need a command line utility to validate your Swagger
+document(s)?  swagger-tools has it.  Need an API for validating your Swagger document(s)?  swagger-tools has it.
+Want to use your Swagger document(s) to validate your API requests or to wire up your request handlers?  swagger-tools
+has it&hellip;and much more.  But this post isn&rsquo;t about swagger-tools, sorry for the shameless plug.</p>
+
+<p>There might come a time when it might make sense to expose your Node.js module to the browser.  This happened recently
+for swagger-tools and I learned a lot during the process.  My hope is that this will help shed some light on the
+available options and what I believe is a pretty decent approach to this.</p>
+
+<h3>Getting Started</h3>
+
+<p>When I started this process, the first thing I did was look for existing projects that work in Node.js and the browser.
+While the concept is simple, I wanted to see how some of the <em>professionals</em> do it.  Since I already use
+<a href="https://lodash.com/">Lo-Dash</a>, I started there.  As expected, an <a href="http://en.wikipedia.org/wiki/Immediately-invoked_function_expression">immediately-invoked function expression</a> and a few
+statements that check the environment to identify if the code is running in the browser or Node.js.  Pretty simple
+stuff.  Just for due diligence, I looked at a few other projects and they all had the same recipe:</p>
+<pre class="highlight javascript"><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="c1">// The code for YOUR_MODULE_NAME
+</span>
+  <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">exports</span> <span class="o">!==</span> <span class="s1">&#39;undefined&#39;</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">module</span> <span class="o">!==</span> <span class="s1">&#39;undefined&#39;</span> <span class="o">&amp;&amp;</span> <span class="nx">module</span><span class="p">.</span><span class="nx">exports</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">exports</span> <span class="o">=</span> <span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">YOUR_MODULE_NAME</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="nx">exports</span><span class="p">.</span><span class="nx">YOUR_MODULE_NAME</span> <span class="o">=</span> <span class="nx">YOUR_MODULE_NAME</span><span class="p">;</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">YOUR_MODULE_NAME</span> <span class="o">=</span> <span class="nx">YOUR_MODULE_NAME</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">})(</span><span class="k">this</span><span class="p">);</span>
+</pre>
+<p>This example is quite simplistic but the purpose is to give you an example of how you might do this.  <em>(If you want a
+good example of how to do this and also how to handle more of the JavaScript module environments, checkout how Lo-Dash
+does it.  They were even nice enough to support <a href="https://github.com/tlrobinson/narwhal">Narwhal</a> and <a href="https://developer.mozilla.org/en-US/docs/Mozilla/Projects/Rhino">Rhino</a>!)</em>  Unfortunately for me, what
+allowed these projects to use such a simple approach for writing code that works in both the browser and Node.js was a
+luxury I did not have: These projects did not have any external dependencies, including no dependencies on any core
+Node.js modules.</p>
+
+<h3>The Problem</h3>
+
+<p>Any time you have a Node.js module with dependencies, you can&rsquo;t just <em>port</em> your module to run in the browser.  You not
+only have to worry about making your code working in the browser but you also have to make sure your dependencies and
+their dependencies and so on run in the browser.  You will also need to do this for core Node.js modules, which can be
+a daunting task.</p>
+
+<p>Let&rsquo;s assume you can do this yourself, you now need to make sure your code can load modules in the browser and in
+Node.js.  The problem is that the browser doesn&rsquo;t have a built-in <code>require</code> function for loading modules.  What do you
+do?  Do you separate your source base into a Node.js modules that wires things up the Node.js way and a browser module
+that wires this up the browser way and figure out some way to share code between them?  It&rsquo;s not as easy as it sounds.</p>
+
+<h3>Enter Browserify</h3>
+
+<p>Thankfully, there is an open source project called <a href="http://browserify.org/">Browserify</a> that handles all of this for you.  Changes
+are good that if you started the same way I did, you likely ran across numerous posts mentioning Browserify already.
+What Browserify does is:</p>
+
+<blockquote>
+<p>Browserify lets you require(&lsquo;modules&rsquo;) in the browser by bundling up all of your dependencies.</p>
+</blockquote>
+
+<p>That&rsquo;s a pretty simple explanation of what Browserify does.  It also helps solve most of the issues related to your
+code, or code you depend on, using core Node.js modules.  <em>(For complete information on the Node.js core module
+browser compatibility, view the <a href="https://github.com/substack/node-browserify#compatibility">Browserify compatibility documentation</a>.)</em></p>
+
+<p>With Browserify, you can generate a browser bundle from your Node.js files/modules.  This means one source base for
+Node.js and from that same source base, you can generate a working browser bundle.  I have used Browserify successfully
+on my [carvoyant][carvoyant-js] library and <a href="https://github.com/apigee-127/swagger-tools">swagger-tools</a>.  During the development of each of these
+projects, I am yet to need to break my source base up for the applicable parts that could/should run in the browser.
+<em>(In swagger-tools, of course I do not include the Connect middleware in my browser bundle but that separation was due
+to applicability and not because of some lack in Browserify.)</em></p>
+
+<p>To avoid listing out the same examples and documentation Browserify uses to explain/justify its use, I suggest you
+visit it&rsquo;s <a href="https://github.com/substack/node-browserify">documentation</a>.  Instead, I would like to share a few things I&rsquo;ve had to do while
+using Browserify and a new trick I learned to build [Bower][bower] modules using Browserify, complete with dependency
+management handled by Bower instead of having to bundle all dependencies with your brower bundle.</p>
+
+<h3>Browserify Tips</h3>
+
+<p>Making your Node.js module more browser friendly is an iterative process.  If you want to use Browserify to take your
+Node.js module as-is and create a standalone browser module, it will do that.  But chances are good that your first
+build will be huge, especially if you use any of the core Node.js modules.</p>
+
+<h4>Trimming the Fat</h4>
+
+<p>What I&rsquo;ve noticed when using Browserify is that I tend to start with a large browser bundle and I will then try to
+figure out how, if it&rsquo;s even possible, to make my bundle smaller.  The reason your browser bundle is typically so large
+is because Browserify will build a browser bundle that includes all of your dependencies in it.  <em>(Think of this as
+analogous to the Uber JAR in the Java space or a static binary for C/C++/&hellip;)</em></p>
+
+<p>To remove some of the size, some modules like Lo-Dash will allow you to cherry pick the actual module features you use
+instead of requiring the whole Lo-Dash module.  Unfortunately, not all modules are as flexible Lo-Dash is.  Of course,
+you can analyze you modules and see if you&rsquo;re importing large modules or unnecessary modules and refactor accordingly.</p>
+
+<p>In the end, the biggest gain I&rsquo;ve seen is by instructing Browserify to not include certain dependencies where possible.
+For example, let&rsquo;s say you depend on a module that already has a browser version available.  Bundling that module is no
+longer a requirement because you can include it either using Bower or a CDN or by shipping their module with your code.</p>
+
+<p>The way to do this isn&rsquo;t as obvious as you might thing.  If you look at the Browserify documentation, you might be
+inclined to <code>exclude</code> or <code>ignore</code> certain files/modules.  This will definitely make your browser bundle smaller but the
+bundle will not work when ran in the browser.  The reason for this is that excluded/ignored modules are replaced with
+<code>undefined</code>/<code>{}</code> respectively.</p>
+
+<p>To properly tell Browserify to exclude a module, and to do it in a way that in the browser you can resolve externally
+provided dependencies, is to use a Browserify transform.  For this purpose, there are many options out there but the
+best one I&rsquo;ve found is <a href="https://github.com/thlorenz/exposify">exposify</a>.  With exposify you can configure how Browserify will resolve modules that
+are provided for you externally.  For example, if you were to load Lo-Dash using a <code>script</code> tag, you could tell exposify
+that the <code>lodash</code> module could be provided by <code>_</code> global variable.  To see this in action, have a look at
+<a href="https://github.com/apigee-127/swagger-tools/blob/master/gulpfile.js#L57">swagger-tools/gulpfile.js#L57</a>.  <em>(Long story short, exposify lets you avoid including
+modules in your browser bundle and lets you resolve the runtime dependency by associating a module name with a global
+variable by name.)</em></p>
+
+<p>Thanks to Browserify and exposify, I could create a Bower module for swagger-tools and not include all of the required
+dependencies with the generated browser bundle.  I was able to set the proper Bower dependencies for modules that had
+a Bower module published and do the default Browserify thing by bundling the modules that did not.  This saved me
+<em>708k</em> or <em>67%</em> of my file size for my development module and <em>48k</em> or <em>37%</em> for my minified production module.</p>
+
+<p>Of course Browserify has transforms for the usual suspects when it comes to exclusion of source maps, minifcation,
+uglification, etc.</p>
+
+<h4>External Files</h4>
+
+<p>One of the things I needed for swagger-tools was to include some JSON files with my module.  In Node.js land, this works
+by default.  In Browserify land, you need to use another Browserify transform called <a href="https://github.com/substack/brfs">brfs</a>.  What brfs does is it
+will find any place in your code where you <code>require</code> a file, <code>fs.readFile</code> or <code>fs.readFileSync</code> and it will inline that
+file&rsquo;s contents into your module.  So if you were to <code>var schema = require(&#39;./path/to/schema.json&#39;)</code>, brfs will make it
+so that in the browser bundle, <code>schema</code> is set to the string content of your <code>schema.json</code> file.</p>
+
+<h4>Building Bundles</h4>
+
+<p>As I mentioned above, Browserify builds standalone browser bundles.  I think in many cases, these large static binaries
+can serve a purpose as they give you a completely safe environment for your module.  <em>(This is great for standalone
+application binaries where you don&rsquo;t care if others use your code.)</em>  On the other hand, being able to leverage package
+mangers to share your module and to create smaller binaries is nice as well.  I couldn&rsquo;t make my mind up so for
+swagger-tools, I build both.  <em>(To see how I&rsquo;m building 4 binaries, two standalone binaries and two Bower binaries, for
+swagger-tools, check out <a href="https://github.com/apigee-127/swagger-tools/blob/master/gulpfile.js#L35">swagger-tools/gulpfile.js#L35</a>.)</em></p>
+
+<h3>Conclusion</h3>
+
+<p>Browserify is a wonderful tool to make it very simple to have one code base for your Node.js module and your browser
+module.  I find that Browserify was very unobstrusive and that given the right transform, I could basically do all of
+the things I needed to build the browser bundle I required.  I realize that this was not some walk through or tutorial
+but don&rsquo;t fret, the <a href="https://github.com/substack/node-browserify">Browserify Documentation</a> is very easy to read and understand.</p>
+
+</div><hr />
+<div class="page-header">
+  <h1><a href="http://thoughtspark.org/2014/04/23/marginalizing-people-is-easy/">Marginalizing People is Easy</a> <small>Posted on 2014/04/23 at 11:00</small></h1>
+</div>
+<div class="widget-row row-fluid">
+  <div class="span9">
+    
+    <a href="http://thoughtspark.org/tags/personal/" class="tag-link"><span class="label label-info">personal</span></a>
+    
+  </div>
+  <div class="span3">
+    <a href="https://twitter.com/share" class="twitter-share-button"
+       data-url="http://thoughtspark.org/2014/04/23/marginalizing-people-is-easy/"
+       data-text="Marginalizing People is Easy"
+       
+       data-hashtags="personal"
+       
+       data-via="whitlockjc"
+       data-count="none"
+       data-lang="en">Tweet</a>
+    <span class="g-plusone"
+         data-size="medium"
+         data-annotation="none"
+         data-href="http://thoughtspark.org/2014/04/23/marginalizing-people-is-easy/"></span>
+  </div>
+</div>
+<div class="article-content">
+  <p>When it comes to people and their opinions, <a href="http://en.wikipedia.org/wiki/Dirty_Harry_(film_series)">Dirty Harry</a> said it best:</p>
+
+<blockquote>
+  <p>Well, opinions are like assholes. Everybody has one.</p>
+  <small>Dirty Harry <cite title="(The Dead Pool)">(The Dead Pool)</cite></small>
+</blockquote>
+
+<p>That&rsquo;s right, everyone has an opinion.  No matter the topic, there will always be those that agree, those that disagree
+and those somewhere in between that can both agree and disagree based on circumstances.  The problem is when someone&rsquo;s
+opinion turns them into an asshole.  These people appear to be incapable or unwilling to disagree without feeling the
+need to marginalize those they disagree with.  To illustrate, let&rsquo;s look at a recent situation where this was going on.</p>
+
+<p>Over Easter, Twitter was rampant with anti-Christian jokes.  They ranged from calling Jesus a zombie to insinuating
+that Christians put together the bunny and candy related holiday to entice young kids&hellip;and everything in between.
+For those that do believe in the story behind Easter, it&rsquo;s kind of a big deal.  Easter to Christians is the day that
+Jesus beat death and came back from the grave.  I&rsquo;ll stop there because I&rsquo;m sure some of you are uncomfortable by now
+and the last thing I need is you accusing me of proselytizing and missing the point.  Back to the topic.</p>
+
+<p>What we have here is two differing opinions: One believe in the story of Easter and the characters involved while
+others do not.  No one can take away your right to have a different opinion but marginalizing people with whom you do
+not agree with is not right and that&rsquo;s exactly what was described above.  Don&rsquo;t believe me?  Let&rsquo;s look at the meaning
+of the word <em>marginalize</em>:</p>
+
+<blockquote>
+  <h3>mar·gin·al·ize</h3>
+  <p><strong><i>verb - </i></strong>treat (a person, group, or concept) as insignificant or peripheral.</p>
+  <small>&ldquo;attempting to marginalize those who disagree&rdquo;</small>
+</blockquote>
+
+<p>After reading the definition, it should be clear that when you begin to treat people as if their thoughts/opinions are
+insignificant you are in fact marginalizing them and that is what these jokes are doing.  These jokes are basically
+saying: <em>I do not value your beliefs, and by extension you as a person.  In fact, I want the whole world to know so I
+will make a mockery of you in public.</em>  You may think these jokes are harmless but someone out there could be hurt by
+what you are saying.  Just because you disagree doesn&rsquo;t mean you should go out of your way to hurt people but that is
+what is going on.  We should accept that there is a disagreement and treat all involved with the same level of respect
+you would expect from them.  Hurting people is wrong.</p>
+
+<p>Let&rsquo;s look at this situation from a different perspective because this isn&rsquo;t just about marginalizing Christians.
+What if these jokes were gay jokes?  What if they were jokes about race or gender?  I would ask what if these jokes
+were sexually insensitive but we already know the answer to that one thanks to <a href="http://www.wired.com/2013/03/richards-affair-and-misogyny-in-tech">Donglegate</a>.  When asking
+these questions it doesn&rsquo;t take long for the answer to come: The <a href="http://www.urbandictionary.com/define.php?term=social%20justice%20warrior">Social Justice Warriors</a>
+would be out in force and it would be a mob-style witch hunt.  Jobs would be at stake, reputations would be at stake,
+etc.</p>
+
+<p>That&rsquo;s the way it should be, although I suggest that we use a little more tact when handling these types of things.
+We as a collective should stand up against all types of marginalization.  No one should feel the sting of being
+marginalized.</p>
+
+<p>So why is it we disallow marginalization based on sexuality, race, gender, etc. but it&rsquo;s completely fine to marginalize
+those with religious beliefs?  Why is it we allow Mozilla employees to stand against marginalizing homosexuals yet the
+same employees are involved in marginalizing Christians with their hurtful Easter jokes?  How is it fair that we can
+pick and choose who can be marginalized and who cannot&hellip;and who gets to make that decision?  We cannot behave this
+way.</p>
+
+<p>In the end, it all comes down to how we see and treat people.  The point at which you let your opinion turn you into
+an asshole, you begin to marginalize those with whom you interact with.  Do it enough and you become insensitive to
+the point where you can hurt people without even knowing it.</p>
+
+<p>I was raised to treat others the way you would expect them to treat you.  That being said, I don&rsquo;t think any of you
+would want someone marginalizing you or being a prick to you so why do it to others?  Next time you want to tell some
+&ldquo;joke&rdquo;, try to put yourself into the shoes of someone who might read this and be offended before you open your mouth.
+It&rsquo;s this kind of thinking, this type of value system, that just might keep you from becoming an asshole.</p>
+
+<p>Marginalizing people is easy&hellip;but do you care enough to not contribute to it?</p>
+
+</div><hr />
+<div class="page-header">
+  <h1><a href="http://thoughtspark.org/2014/01/29/brooks-customer-for-life/">Brooks Customer For Life</a> <small>Posted on 2014/01/29 at 10:00</small></h1>
+</div>
+<div class="widget-row row-fluid">
+  <div class="span9">
+    
+    <a href="http://thoughtspark.org/tags/brooks/" class="tag-link"><span class="label label-info">brooks</span></a>
+    
+    <a href="http://thoughtspark.org/tags/personal/" class="tag-link"><span class="label label-info">personal</span></a>
+    
+    <a href="http://thoughtspark.org/tags/running/" class="tag-link"><span class="label label-info">running</span></a>
+    
+  </div>
+  <div class="span3">
+    <a href="https://twitter.com/share" class="twitter-share-button"
+       data-url="http://thoughtspark.org/2014/01/29/brooks-customer-for-life/"
+       data-text="Brooks Customer For Life"
+       
+       data-hashtags="brooks personal running"
+       
+       data-via="whitlockjc"
+       data-count="none"
+       data-lang="en">Tweet</a>
+    <span class="g-plusone"
+         data-size="medium"
+         data-annotation="none"
+         data-href="http://thoughtspark.org/2014/01/29/brooks-customer-for-life/"></span>
+  </div>
+</div>
+<div class="article-content">
+  <p>Whenever we feel cheated as a customer, it&rsquo;s our first reaction to tell the world about it.  Leaving a bad online
+review, lashing out on social media, posting the experience online for the world to see&hellip;it&rsquo;s become the norm.  Heck,
+there is a current news story titled: <a href="http://abcnews.go.com/US/scathing-yelp-review-cost-woman-750k/story?id=22260611">Scathing Yelp Review Could Cost Woman $750K</a>.  What about
+when things go right?  Where is the &ldquo;Amazing Yelp Review Could Earn Woman $750K&rdquo;?  While that will likely never happen,
+I do think we should be more equal in dishing out our online opinions.  Don&rsquo;t only shout to the masses when things go
+wrong, do the same when things go right.  And that&rsquo;s my plan for this post, I want to tell you of a recent interaction
+with <a href="http://www.brooksrunning.com/">Brooks Running</a>.</p>
+
+<p>I started running back in 2010 but I didn&rsquo;t really hit my stride until last year.  At the end of 2012, I bought a pair
+of Brooks Pure Connect running shoes.  I bought them because they looked great and they were lightweight.  Over the
+next year, I wore the soles off of these shoes.  They lasted over 300 miles of actual running distance, a
+<a href="http://toughmudder.com/">Tough Mudder</a>, two <a href="http://mudbrigadenoco.com/">Mud Brigade</a> races, a <a href="http://paulstofko.com/Crazy_Legs_5k.php">Crazy Legs 10K</a> and countless
+runs.  These shoes were amazing, best pair of shoes I&rsquo;ve ever owned.</p>
+
+<p>When it came time to replace them, the Brooks Pure Connect 2 had just come out and I expected the same from them
+but I couldn&rsquo;t find a pair that fit right.  So I went to the internet and found that <a href="http://www.6pm.com/">6pm.com</a> had a few
+different pair of the original Brooks Pure Connect shoes, new in the box.  Sure, they were a year model old but
+I had proven these shoes were what I wanted.  I bought three pair.  I wanted to make sure I had the shoes I wanted for
+as long as I could.  So I started running in them, spreading the load between the three pair to ensure they&rsquo;d last me
+as long as possible.</p>
+
+<p>One day I finished a 4 mile run and I noticed one shoe was a little looser than the other.  After looking into it, I
+noticed the elastic tongue strap on one shoe was hanging by a thread.  This shoe only had 20 miles on it.  The other
+two pair had the same mileage on them and looked out of the box new.  This is weird so I reach out to Brooks
+Customer Support.</p>
+
+<p>When you reach out to Brooks Customer Support, they ask you to describe the shoe, the age, the mileage and to include
+a picture of the defect.  I filled out their form, submitted and waited.  My initial response from them could be
+summarized like this: Your shoe is the original Brooks Pure Connect, we just released the Brooks Pure Connect 3 so
+the best we can do is offer you 25% off your next purchase.  This is a reasonable response but the shoe was only
+4 months old and only had 20 miles on them and I really felt this was a defective shoe because of the nature of the
+tear.</p>
+
+<p>I responded back but when I did, I made sure to be as tactful as possible.  I told them I was disappointed because the
+shoe was defective, not something that can manifest by sitting in a box on a shelf I added, and that I was stuck with
+a shoe I couldn&rsquo;t wear, a shoe that other than this issue looked out of the box new.  The next response I got back was
+a breath of fresh air.  They basically said that my <strong>respectful</strong> response was appreciated and that they had decided
+that they would honor the warranty from purchase, something they surely didn&rsquo;t have to do, and send me a new pair of
+the Brooks Pure Connect 3 shoes.</p>
+
+<p>I was blown away.  I didn&rsquo;t expect this after they had already said there wasn&rsquo;t anything they could do beyond their
+standing offer in the previous email.  I figured my email would be skimmed and put into some virtual folder.  In the
+end, I was wrong and Brooks went above and beyond.  The way they treated me has created a Brooks customer for life.</p>
+
+<p><strong>Note:</strong> I cannot guarantee this will be your outcome in a similar set of circumstances, nor should you consider this
+to be the norm.  This story is to showcase an awesome example of customer service.</p>
+
+</div><hr />
+<div class="page-header">
+  <h1><a href="http://thoughtspark.org/2014/01/14/creating-a-working-steamos-installer-on-a-mac/">Creating a Working SteamOS Installer on a Mac</a> <small>Posted on 2014/01/14 at 11:30</small></h1>
+</div>
+<div class="widget-row row-fluid">
+  <div class="span9">
+    
+    <a href="http://thoughtspark.org/tags/mac/" class="tag-link"><span class="label label-info">mac</span></a>
+    
+    <a href="http://thoughtspark.org/tags/steamos/" class="tag-link"><span class="label label-info">steamos</span></a>
+    
+    <a href="http://thoughtspark.org/tags/virtualbox/" class="tag-link"><span class="label label-info">virtualbox</span></a>
+    
+  </div>
+  <div class="span3">
+    <a href="https://twitter.com/share" class="twitter-share-button"
+       data-url="http://thoughtspark.org/2014/01/14/creating-a-working-steamos-installer-on-a-mac/"
+       data-text="Creating a Working SteamOS Installer on a Mac"
+       
+       data-hashtags="mac steamos virtualbox"
+       
+       data-via="whitlockjc"
+       data-count="none"
+       data-lang="en">Tweet</a>
+    <span class="g-plusone"
+         data-size="medium"
+         data-annotation="none"
+         data-href="http://thoughtspark.org/2014/01/14/creating-a-working-steamos-installer-on-a-mac/"></span>
+  </div>
+</div>
+<div class="article-content">
+  <p>Ever since <a href="http://store.steampowered.com/livingroom/SteamOS/">SteamOS</a> released, I&rsquo;ve been trying to get it installed into <a href="https://www.virtualbox.org/">VirtualBox</a>.  When I
+first started this process, I found the same <a href="http://steamcommunity.com/sharedfiles/filedetails/?id=204085700">SteamOS Basic Guide Installation on VirtualBox</a>
+everyone else was using, or copying, and began trying to make this happen.  Since VirtualBox abstracts all the
+hardware, I figured the installation process would be identical regardless of my operating system.  For the most part,
+that is right.  Other than the creation of the ISO file, the installation process is identical regardless of your
+operating system.  Unfortunately, this is where things go wrong for Mac users as there was no solid documentation on
+how to create the ISO on Mac OS X.</p>
+
+<p>Mac OS X includes utilities out of the box for things like this.  My assumption, like many others based on the
+suggestions I found, was that I could use these tools to create an ISO from the provided zip file.  Even better news
+was that the suggestions I were finding aligned with my assumption.  Based on my research, all of the suggestions on
+the matter included one of the following approaches:</p>
+
+<h4>Disk Utility UI</h4>
+
+<ul>
+<li>Open Disk Utility</li>
+<li><em>New &gt; Disk Image From Folder&hellip;</em></li>
+<li>Select the folder you extracted the SteamOSInstaller.zip to</li>
+<li>Choose the hybrid-image <em>Image Format</em></li>
+</ul>
+
+<h4>Disk Utility CLI</h4>
+
+<ul>
+<li>Execute <code>hdiutil makehybrid -o PATH_TO_ISO PATH_TO_FOLDER -iso -joliet</code> from a terminal</li>
+</ul>
+
+<p>Both of these worked at face value, an ISO was created from the zip file.  But unfortunately, whenever you tried to
+follow the installation guide and use the ISO, you were very quickly faced with the following error message:
+<code>error: &quot;prefix&quot; is not set</code>.  There was no recovery from this.  You could wait forever and VirtualBox would show
+you the same screen.  Heck, I even tried booting into the EFI shell and loading the ISO manually to see if I could
+somehow work around the situation.</p>
+
+<p>Originally I had given up, I didn&rsquo;t want to waste anymore time on it and no one seemed to have an answer.  And then
+today, for some odd reason, I tried it again, some weeks later since my original attempts.  I had hoped there was a
+bug in the early release and that it had been fixed by now.  I rebuilt my ISO and tried again but to no avail, I got to
+the same place with the same results.  Frustrated, I googled and came across the same posts.  It seems nothing has
+changed.</p>
+
+<p>I asked myself: <em>What is the difference between my attempt and the documented working attempts?</em>  That&rsquo;s when it
+occurred to me that maybe the ISO being created using the options above didn&rsquo;t create a proper ISO.  Seems logical
+since that is the only deviation I&rsquo;ve made from the documentation.  So I went on the hunt for an installation guide
+that used a tool to create the ISO that I could get installed on my Mac and that&rsquo;s when I found that <a href="http://www.gnu.org/software/xorriso/">xorriso</a>
+was available via <a href="http://brew.sh/">Homebrew</a>.  After installing it, I was able to use the following command to create a
+working SteamOS Installer ISO that works flawlessly via VirtualBox:</p>
+<pre class="highlight text">xorriso -as mkisofs -r -checksum_algorithm_iso md5,sha1 -V &#39;Steam OS&#39; \
+-o ../SteamOSInstaller.iso -J -joliet-long -cache-inodes -no-emul-boot \
+-boot-load-size 4 -boot-info-table -eltorito-alt-boot --efi-boot boot/grub/efi.img \
+-append_partition 2 0x01 boot/grub/efi.img \
+-partition_offset 16 .
+</pre>
+<p><strong>Note:</strong> The assumption here is that if you were to extract the zip file to a folder, you&rsquo;d run this command while
+within the folder, otherwise you&rsquo;ll need to alter the paths accordingly.  Also, feel free to change the <code>-o</code> option to
+change the name and location of the created ISO file.</p>
+
+<p>That pretty much wraps things up.  I&rsquo;m excited to play around with SteamOS and while it was a pain to get started, due
+to the dreaded <code>error: &quot;prefix&quot; is not set</code>, I&rsquo;ve finally been able to get past this using the information above.  I
+hope this information helps you other Mac users avoid the pain I originally did.</p>
+
+</div><hr />
+<div class="page-header">
+  <h1><a href="http://thoughtspark.org/2014/01/12/goodbye-2013-and-hello-2014/">Goodbye 2013 and Hello 2014</a> <small>Posted on 2014/01/12 at 17:00</small></h1>
+</div>
+<div class="widget-row row-fluid">
+  <div class="span9">
+    
+    <a href="http://thoughtspark.org/tags/me/" class="tag-link"><span class="label label-info">me</span></a>
+    
+    <a href="http://thoughtspark.org/tags/thoughtspark-org/" class="tag-link"><span class="label label-info">thoughtspark.org</span></a>
+    
+  </div>
+  <div class="span3">
+    <a href="https://twitter.com/share" class="twitter-share-button"
+       data-url="http://thoughtspark.org/2014/01/12/goodbye-2013-and-hello-2014/"
+       data-text="Goodbye 2013 and Hello 2014"
+       
+       data-hashtags="thoughtspark.org me"
+       
+       data-via="whitlockjc"
+       data-count="none"
+       data-lang="en">Tweet</a>
+    <span class="g-plusone"
+         data-size="medium"
+         data-annotation="none"
+         data-href="http://thoughtspark.org/2014/01/12/goodbye-2013-and-hello-2014/"></span>
+  </div>
+</div>
+<div class="article-content">
+  <h3>Goodbye 2013</h3>
+
+<p>2013 was an interesting year for me.  In many ways, I was blessed by it but at the same time, I found myself in a rut
+most of the year.  If it wasn&rsquo;t <a href="http://www.apigee.com">Apigee</a> related or family related, I wasn&rsquo;t able to be as
+productive or as creative as I would like to be.  This has been great for my career at Apigee but I feel 2013 left me
+feeling a bit frustrated.  The good news about 2013 is that I feel like I finished the year reflecting and learning
+things that should make 2014 better.  For example, I realized I spent most of 2013 struggling with time management.
+When you have an insatiable desire to create things, a lack of time management and an inability to prioritize can
+make life very frustrating.  I feel like I have so many cool ideas but I&rsquo;ve struggled bringing them to fruition.</p>
+
+<p>In 2013, I spent a lot of time validating my ideas and researching technologies to help me bring my ideas to light.  To
+bad that was all I did.  Other than contributions to existing OSS softwares, I only completed one personal project of
+my own in 2013, a <a href="https://github.com/whitlockjc/carvoyant">JavaScript Library for Carvoyant</a>.  Just about all the time
+I had, or made available, for personal projects in 2013 was wasted thinking about ideas instead of creating them.</p>
+
+<p>I leave 2013 humbled, on many levels, but very grateful for having been able to learn from my mistakes.</p>
+
+<h3>Hello 2014</h3>
+
+<p>In 2014, I hope to blog more often.  I feel like if I want to share more publicly, I&rsquo;ll have to manage my time better
+to allow for it, and to do it right.  I also feel that there are some really cool things out there I&rsquo;d like to try out
+this year instead of just reading about them.  My experiments could easily become good reads if I make the time to do
+them right.</p>
+
+<p>I&rsquo;d also like to include some personal entries.  Typically I&rsquo;ve keep my writings to be about programming related stuff,
+like cool Emacs snippets or examples on how to use OSS softwares/libraries.  But I find myself in a situation where I
+feel like I have more to give than this.  Sure, I hope to continue offering the same things I always have, hopefully
+better done than before, but I also think I have a perspective and some experiences that might be important to others.
+We&rsquo;ll just have to see how that goes&hellip;I might be writing about this in 2015 as a bad idea.</p>
+
+<p>I enter 2014 hopeful, with knowledge of my short comings to help get beyond them so that 2014 can be better than 2013.</p>
+
+</div><hr />
+<div class="page-header">
+  <h1><a href="http://thoughtspark.org/2013/02/25/dropwizard-and-jersey-exceptionmappers/">Dropwizard and Jersey ExceptionMappers</a> <small>Posted on 2013/02/25 at 12:00</small></h1>
+</div>
+<div class="widget-row row-fluid">
+  <div class="span9">
+    
+    <a href="http://thoughtspark.org/tags/dropwizard/" class="tag-link"><span class="label label-info">dropwizard</span></a>
+    
+    <a href="http://thoughtspark.org/tags/java/" class="tag-link"><span class="label label-info">java</span></a>
+    
+    <a href="http://thoughtspark.org/tags/jersey/" class="tag-link"><span class="label label-info">jersey</span></a>
+    
+    <a href="http://thoughtspark.org/tags/json/" class="tag-link"><span class="label label-info">json</span></a>
+    
+  </div>
+  <div class="span3">
+    <a href="https://twitter.com/share" class="twitter-share-button"
+       data-url="http://thoughtspark.org/2013/02/25/dropwizard-and-jersey-exceptionmappers/"
+       data-text="Dropwizard and Jersey ExceptionMappers"
+       
+       data-hashtags="dropwizard java jersey json"
+       
+       data-via="whitlockjc"
+       data-count="none"
+       data-lang="en">Tweet</a>
+    <span class="g-plusone"
+         data-size="medium"
+         data-annotation="none"
+         data-href="http://thoughtspark.org/2013/02/25/dropwizard-and-jersey-exceptionmappers/"></span>
+  </div>
+</div>
+<div class="article-content">
+  <p>The past month I&rsquo;ve been using an <a href="http://en.wikipedia.org/wiki/Open_source_software">open source</a> project called
+<a href="http://dropwizard.codahale.com/">Dropwizard</a>.  Dropwizard is a self-described as being a &ldquo;Java framework for
+developing ops-friendly, high-performance, RESTful web services&rdquo;.  Dropwizard is an awesome piece of kit that bundles
+best of breed Java tooling like <a href="http://www.eclipse.org/jetty/">Jetty</a>,
+<a href="http://code.google.com/p/guava-libraries/">Guava</a> and <a href="http://jersey.java.net/">Jersey</a>.  Speaking of Jersey, this is
+what I&rsquo;d like to talk about today, specifically about how Dropwizard exposes the ability to create your own Jersey
+ExceptionMapper and how the built-in Dropwizard ExceptionMappers might cause you some grief, with a workaround.</p>
+
+<h3>What is an ExceptionMapper?</h3>
+
+<p>Jersey, or should I say <a href="http://jax-rs-spec.java.net/">JAX-RS</a>, exposes a mechanism that will allow you to map a thrown
+Exception or Throwable to a REST response, instead of being unhandled and being presented to
+the user as some stacktrace or error text.  <em>(This mechanism requires than you implement the generic
+ExceptionMapper interface and then register it.)</em>  This is excellent for REST APIs that like to
+return errors back to the client as part of using the API, like returning a <a href="http://www.json.org/">JSON</a> representation
+of an Exception that can be parsed and handled on the client.</p>
+
+<h3>Custom ExceptionMappers in Dropwizard</h3>
+
+<p>My initial impression of Dropwizard in the context of Jersey and needing to register custom ExceptionMappers was very
+positive since Dropwizard exposes an API for registering ExceptionMappers.  Here is a very brief example for those of
+you looking to register your custom ExceptionMapper within Dropwizard:</p>
+<pre class="highlight java"><span class="kn">package</span> <span class="n">org</span><span class="o">.</span><span class="na">thoughtspark</span><span class="o">.</span><span class="na">dropwizard</span><span class="o">.</span><span class="na">app</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">org.thoughtspark.dropwizard.app.ApplicationConfiguration</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.thoughtspark.dropwizard.app.GenericExceptionMapper</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">com.yammer.dropwizard.Service</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.yammer.dropwizard.config.Bootstrap</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.yammer.dropwizard.config.Environment</span><span class="o">;</span>
+
+<span class="cm">/**
+ * Example Dropwizard {@link Service}.
+ */</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">ApplicationService</span> <span class="kd">extends</span> <span class="n">Service</span><span class="o">&lt;</span><span class="n">ApplicationConfiguration</span><span class="o">&gt;</span> <span class="o">{</span>
+
+    <span class="cm">/**
+     * Entry point for running this services in isolation via Dropwizard.
+     *
+     * @param args the arguments
+     */</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="n">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+        <span class="k">new</span> <span class="n">ApplicationService</span><span class="o">().</span><span class="na">run</span><span class="o">(</span><span class="n">args</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**
+     * {@inheritDoc}
+     */</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="n">initialize</span><span class="o">(</span><span class="n">Bootstrap</span><span class="o">&lt;</span><span class="n">ApplicationConfiguration</span><span class="o">&gt;</span> <span class="n">bootstrap</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">bootstrap</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;application&quot;</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**
+     * {@inheritDoc}
+     */</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="n">run</span><span class="o">(</span><span class="n">ApplicationConfiguration</span> <span class="n">applicationConfiguration</span><span class="o">,</span> <span class="n">Environment</span> <span class="n">environment</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+        <span class="c1">// Register the custom ExceptionMapper(s)</span>
+        <span class="n">environment</span><span class="o">.</span><span class="na">addProvider</span><span class="o">(</span><span class="k">new</span> <span class="n">GenericExceptionMapper</span><span class="o">());</span>
+    <span class="o">}</span>
+
+<span class="o">}</span>
+
+</pre>
+<p>The GenericExceptionMapper being registered will handle all Throwables thrown and return a JSON payload representing
+the error and its message.</p>
+
+<h3>Dropwizards Secret &ldquo;Gotcha&rdquo;</h3>
+
+<p>Everything was going great until I started using Dropwizard
+<a href="http://dropwizard.codahale.com/manual/core/#validation">Validation</a>.  I noticed that whenever my bean validation
+failed, instead of seeing a JSON payload of my validation exception, I was always seeing an HTML version of the
+exception&hellip;almost as if I never registered my custom ExceptionMapper, or maybe my custom ExceptionMapper just wasn&rsquo;t
+working.  Seeing that all Exceptions extend Throwable, I didn&rsquo;t see how my ExceptionMapper wasn&rsquo;t configured properly
+so I dropped into the debugger.</p>
+
+<p>After some looking around, I see that the actual exception being throw was of type InvalidEntityException.  At this
+point, I created a new ExceptionMapper specifically for the InvalidEntityException, restarted Dropwizard and it
+worked!  Instead of the HTML responses for InvalidEntityExceptions, I saw my JSON representation.  Everything was
+working great&hellip;that is until I restarted the server for a different reason and I noticed that the
+InvalidEntityExceptions had gone back to HTML.  I knew I hadn&rsquo;t changed anything related to the ExceptionMapper so I
+started debugging.  After being unable to get the debugger to hit any break points in my ExceptionMappers I started
+looking into the Dropwizard sources, thank goodness for open source software, and that is when I saw something,
+Dropwizard is registering its own ExceptionMapper for the InvalidEntityException.  What was still bugging me was why my
+ExceptionMapper worked once and upon server restart it stopped working, without any changes to my code.  Once again I
+found myself in the bowels of Dropwizard&rsquo;s source and that&rsquo;s when I found my problem.</p>
+
+<p>Dropwizard is adding its custom ExceptionMappers into Jersey&rsquo;s singletons Set, a Set that does not guarantee order.
+This explains why one time my ExceptionMapper would work and another time, the built-in Dropwizard ExceptionMapper
+would work.  Now that we know the problem, below is one way to work around the problem:</p>
+<pre class="highlight java"><span class="kn">package</span> <span class="n">org</span><span class="o">.</span><span class="na">thoughtspark</span><span class="o">.</span><span class="na">dropwizard</span><span class="o">.</span><span class="na">app</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">org.thoughtspark.dropwizard.app.ApplicationConfiguration</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.thoughtspark.dropwizard.app.GenericExceptionMapper</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">com.fasterxml.jackson.jaxrs.json.JsonParseExceptionMapper</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.sun.jersey.api.core.ResourceConfig</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.yammer.dropwizard.Service</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.yammer.dropwizard.config.Bootstrap</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.yammer.dropwizard.config.Environment</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.yammer.dropwizard.jersey.InvalidEntityExceptionMapper</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.util.ArrayList</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.List</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.Set</span><span class="o">;</span>
+
+<span class="cm">/**
+ * Example Dropwizard {@link Service}.
+ */</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">ApplicationService</span> <span class="kd">extends</span> <span class="n">Service</span><span class="o">&lt;</span><span class="n">ApplicationConfiguration</span><span class="o">&gt;</span> <span class="o">{</span>
+
+    <span class="cm">/**
+     * Entry point for running this services in isolation via Dropwizard.
+     *
+     * @param args the arguments
+     */</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="n">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+        <span class="k">new</span> <span class="n">ApplicationService</span><span class="o">().</span><span class="na">run</span><span class="o">(</span><span class="n">args</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**
+     * {@inheritDoc}
+     */</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="n">initialize</span><span class="o">(</span><span class="n">Bootstrap</span><span class="o">&lt;</span><span class="n">ApplicationConfiguration</span><span class="o">&gt;</span> <span class="n">bootstrap</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">bootstrap</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;application&quot;</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**
+     * {@inheritDoc}
+     */</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="n">run</span><span class="o">(</span><span class="n">ApplicationConfiguration</span> <span class="n">applicationConfiguration</span><span class="o">,</span> <span class="n">Environment</span> <span class="n">environment</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+        <span class="c1">// Remove all of Dropwizard&#39;s custom ExceptionMappers</span>
+        <span class="n">ResourceConfig</span> <span class="n">jrConfig</span> <span class="o">=</span> <span class="n">environment</span><span class="o">.</span><span class="na">getJerseyResourceConfig</span><span class="o">();</span>
+        <span class="n">Set</span><span class="o">&lt;</span><span class="n">Object</span><span class="o">&gt;</span> <span class="n">dwSingletons</span> <span class="o">=</span> <span class="n">jrConfig</span><span class="o">.</span><span class="na">getSingletons</span><span class="o">();</span>
+        <span class="n">List</span><span class="o">&lt;</span><span class="n">Object</span><span class="o">&gt;</span> <span class="n">singletonsToRemove</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">Object</span><span class="o">&gt;();</span>
+
+        <span class="k">for</span> <span class="o">(</span><span class="n">Object</span> <span class="n">s</span> <span class="o">:</span> <span class="n">dwSingletons</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">s</span> <span class="k">instanceof</span> <span class="n">ExceptionMapper</span> <span class="o">&amp;&amp;</span> <span class="n">s</span><span class="o">.</span><span class="na">getClass</span><span class="o">().</span><span class="na">getName</span><span class="o">().</span><span class="na">startsWith</span><span class="o">(</span><span class="s">&quot;com.yammer.dropwizard.jersey.&quot;</span><span class="o">))</span> <span class="o">{</span>
+                <span class="n">singletonsToRemove</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">s</span><span class="o">);</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+
+        <span class="k">for</span> <span class="o">(</span><span class="n">Object</span> <span class="n">s</span> <span class="o">:</span> <span class="n">singletonsToRemove</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">jrConfig</span><span class="o">.</span><span class="na">getSingletons</span><span class="o">().</span><span class="na">remove</span><span class="o">(</span><span class="n">s</span><span class="o">);</span>
+        <span class="o">}</span>
+
+        <span class="c1">// Register the custom ExceptionMapper(s)</span>
+        <span class="n">environment</span><span class="o">.</span><span class="na">addProvider</span><span class="o">(</span><span class="k">new</span> <span class="n">GenericExceptionMapper</span><span class="o">());</span>
+    <span class="o">}</span>
+
+<span class="o">}</span>
+</pre>
+<p>In the code above, I remove all Dropwizard ExceptionMappers so that I have complete control over how my application
+renders Jersey Exceptions.  Now no matter how many times I restart the server, my custom ExceptionMapper will be used
+and I can always expect JSON to be returned for Exceptions thrown on the server.  Of course, you might need to change
+the approach above based on your needs but for this scenario, I just wanted any ExceptionMapper that Dropwizard
+provided to be done away with so I could use my custom versions that returned JSON instead of HTML.</p>
+
+<h3>Conclusion</h3>
+
+<p>Dropwizard is awesome and anytime I have to write Java-based REST servers, I&rsquo;ll be using it.  I do question the
+built-in ExceptionMappers, especially with their inability to be configured to output something other than the
+hardcoded HTML, but with the workaround above, I don&rsquo;t have to be stuck because of them.  Please do not let this take
+away from Dropwizard and if you get tired of having to use the workaround above, I&rsquo;m sure the team would welcome a
+patch&hellip;if you beat me to it.</p>
+
+</div><hr />
+<div class="page-header">
+  <h1><a href="http://thoughtspark.org/2013/02/02/tiny-tina-racist-i-think-not/">Tiny Tina Racist?  I Think Not!</a> <small>Posted on 2013/02/02 at 21:42</small></h1>
+</div>
+<div class="widget-row row-fluid">
+  <div class="span9">
+    
+    <a href="http://thoughtspark.org/tags/borderlands/" class="tag-link"><span class="label label-info">borderlands</span></a>
+    
+    <a href="http://thoughtspark.org/tags/gaming/" class="tag-link"><span class="label label-info">gaming</span></a>
+    
+    <a href="http://thoughtspark.org/tags/racism/" class="tag-link"><span class="label label-info">racism</span></a>
+    
+  </div>
+  <div class="span3">
+    <a href="https://twitter.com/share" class="twitter-share-button"
+       data-url="http://thoughtspark.org/2013/02/02/tiny-tina-racist-i-think-not/"
+       data-text="Tiny Tina Racist?  I Think Not!"
+       
+       data-hashtags="gaming borderlands racism"
+       
+       data-via="whitlockjc"
+       data-count="none"
+       data-lang="en">Tweet</a>
+    <span class="g-plusone"
+         data-size="medium"
+         data-annotation="none"
+         data-href="http://thoughtspark.org/2013/02/02/tiny-tina-racist-i-think-not/"></span>
+  </div>
+</div>
+<div class="article-content">
+  <p>I was going through my <a href="http://www.google.com/reader">Google Reader</a> stream today when I came across a thread that
+bothered me: <a href="http://kotaku.com/5981171/players-accuse-tiny-tina-from-borderlands-2-of-verbal-blackface-gearbox-writer-says-hell-change-her-if-racist">Borderlands 2’s Writer Says He’ll Change Tiny Tina If She Conveys Racism, As Some Players Think</a>.
+After reading the thread, I was shocked at the accusation myself.  I remember playing <a href="http://www.borderlands2.com/">Borderlands 2</a>
+with a good friend of mine a few days after the release and not only enjoying the Tiny Tina character but laughing so
+hard I was crying.  I love Tiny Tina and I just cannot see how she or the person behind her
+(<a href="https://twitter.com/reverendanthony">Anthony Burch</a>), could be considered racist.  I would had left it at a simple
+reply to Anthony on Twitter supporting him and <a href="http://www.gearboxsoftware.com/">Gearbox Software</a> but feeling that
+there is so much more to this than 140 characters can say, I figured I&rsquo;d weigh in here.</p>
+
+<h3>What is Racism?</h3>
+
+<p>Racism, as defined by <a href="http://www.merriam-webster.com/dictionary/racism">Merriam-Webster</a>, is as follows:</p>
+
+<blockquote>
+<p>Any action, practice, or belief that reflects the racial worldview—the ideology that humans are divided into separate
+and exclusive biological entities called <em>races</em>, that there is a causal link between inherited physical traits and
+traits of personality, intellect, morality, and other cultural behavioral features, and that some <em>races</em> are innately
+superior to others.</p>
+</blockquote>
+
+<p>That being said, where in the description above  does it say that someone of one race using the <em>lingo</em> of another
+race is racism, or that a race could even impose ownership of <em>lingo</em>?  The idea of saying that Tiny Tina&rsquo;s character
+is racist because she uses <em>&ldquo;black lingo&rdquo;</em> is a joke, although not a laughing matter because it&rsquo;s ridiculous
+accusations like this that fuel the controversal matters of racism.  Could you imagine calling
+<a href="http://www.eminem.com/">Eminem</a>, one of the most talented rappers ever to grace a microphone, a racist because he&rsquo;s
+white and uses <em>&ldquo;black lingo&rdquo;</em> in his raps?</p>
+
+<h3>My Opinion</h3>
+
+<p>In my personal opinion, I think the idea of suggesting that <em>lingo</em> could be owned by a race could be considered racist.
+I mean, suggesting that people of a certain race are the only ones to use certain words is a race-based stereotype, much
+like what is described above.  Having grown up in Georgia myself, I knew quite a few white girls/guys that used
+<em>black lingo</em> and black girls/guys that used <em>white lingo</em>.  To us, they were just words.  As long as you stayed away
+from the derogatory words/phrases commonly referred to as <em>racial slurs</em>, you used whatever verbiage best fit who you
+were with and the context of the conversation regardless of which race used the verbiage most or coined a particular
+word/phrase.</p>
+
+<p>What did Gearbox say about the matter?  Here is Gearbox President Randy Pitchford&rsquo;s
+<a href="https://twitter.com/duvalmagic/status/297897719148716032">response on Twitter</a>:</p>
+
+<blockquote>
+<p><a href="https://twitter.com/reverendanthony">@reverendanthony</a> tina is not racist because you are not racist. You&rsquo;re a pillar
+of tolerance and inclusion.</p>
+</blockquote>
+
+<h3>In Conclusion</h3>
+
+<p>Borderlands 2 is an awesome game and Tiny Tina is one of my favorite game characters of all times.  Like many others, I
+find her hilarious and did not even think of the race card while enjoying the parts of the game she was in.  I think
+Anthony did an excellent job making Tiny Tina quirky, unique and memorable, all the things you&rsquo;d want from a gaming
+character.  I also applaud his handling of the situation linked to above.  In the end, I wish him the best and I hope
+that people can stop trying to make something out of nothing, the world is already destructive enough without outlandish
+accusations about very sensitive subjects such as racism.</p>
+
+</div><hr />
+<div class="page-header">
+  <h1><a href="http://thoughtspark.org/2012/11/28/underscore-js-book/">Underscore.js Book</a> <small>Posted on 2012/11/28 at 15:15</small></h1>
+</div>
+<div class="widget-row row-fluid">
+  <div class="span9">
+    
+    <a href="http://thoughtspark.org/tags/javascript/" class="tag-link"><span class="label label-info">javascript</span></a>
+    
+    <a href="http://thoughtspark.org/tags/me/" class="tag-link"><span class="label label-info">me</span></a>
+    
+    <a href="http://thoughtspark.org/tags/o-reilly/" class="tag-link"><span class="label label-info">o'reilly</span></a>
+    
+    <a href="http://thoughtspark.org/tags/underscore-js/" class="tag-link"><span class="label label-info">underscore.js</span></a>
+    
+  </div>
+  <div class="span3">
+    <a href="https://twitter.com/share" class="twitter-share-button"
+       data-url="http://thoughtspark.org/2012/11/28/underscore-js-book/"
+       data-text="Underscore.js Book"
+       
+       data-hashtags="javascript underscore.js me o'reilly"
+       
+       data-via="whitlockjc"
+       data-count="none"
+       data-lang="en">Tweet</a>
+    <span class="g-plusone"
+         data-size="medium"
+         data-annotation="none"
+         data-href="http://thoughtspark.org/2012/11/28/underscore-js-book/"></span>
+  </div>
+</div>
+<div class="article-content">
+  <p>Let&rsquo;s make it official, in case you didn&rsquo;t hear on <a href="http://twitter.com/whitlockjc/status/259296818360377346">Twitter</a>,
+I&rsquo;ve signed a contract with <a href="http://oreilly.com/">O&#39;Reilly Media</a> to write a book about
+<a href="http://underscorejs.org">Underscore.js</a>.  How did I get into this awesome situation you might ask?  Well, back in
+October <a href="https://twitter.com/jashkenas">Jeremy Ashkenas</a> posted
+<a href="https://twitter.com/jashkenas/status/258249389733187584">on Twitter</a> saying that if you were interested in writing
+a book about Underscore.js, let him know.  I submitted my proposal and it was accepted.  <strong>WOOHOO!!!</strong>  Needless to
+say, I&rsquo;m very excited about this opportunity and I&rsquo;ll do my best to make sure this thing happens.</p>
+
+<h3>Any Suggestions?</h3>
+
+<p>I&rsquo;m not looking to have my name on the cover of just any book, I want this book to be the best possible.  That being
+said, I&rsquo;d love to hear anything you think that could help make the book awesome.  To submit your suggestions, leave
+your requests/suggestions in the comments below.</p>
+
+<h3>Progress</h3>
+
+<p>I&rsquo;ve already started work on this book based on the proposal sent to O&#39;Reilly.  As I make progress, I&rsquo;ll keep you guys
+up to speed here on ThoughtSpark.org.  Feel free to reach out to <a href="https://twitter.com/whitlockjc">me on Twitter</a> or
+in the comments with anything pertinent to this effort.</p>
+
+</div><hr />
+<div class="page-header">
+  <h1><a href="http://thoughtspark.org/2012/11/14/the-new-thoughtspark-org/">The New ThoughtSpark.org</a> <small>Posted on 2012/11/14 at 23:00</small></h1>
+</div>
+<div class="widget-row row-fluid">
+  <div class="span9">
+    
+    <a href="http://thoughtspark.org/tags/thoughtspark-org/" class="tag-link"><span class="label label-info">thoughtspark.org</span></a>
+    
+  </div>
+  <div class="span3">
+    <a href="https://twitter.com/share" class="twitter-share-button"
+       data-url="http://thoughtspark.org/2012/11/14/the-new-thoughtspark-org/"
+       data-text="The New ThoughtSpark.org"
+       
+       data-hashtags="thoughtspark.org"
+       
+       data-via="whitlockjc"
+       data-count="none"
+       data-lang="en">Tweet</a>
+    <span class="g-plusone"
+         data-size="medium"
+         data-annotation="none"
+         data-href="http://thoughtspark.org/2012/11/14/the-new-thoughtspark-org/"></span>
+  </div>
+</div>
+<div class="article-content">
+  <p>I&rsquo;ve decided it&rsquo;s time to rethink how I maintain and deploy <a href="http://www.thoughtspark.org">ThoughtSpark.org</a>.  My
+current deployment model is to use <a href="http://drupal.org">Drupal</a> to craft/host my site&rsquo;s content and I currently
+pay a small monthly fee to <a href="http://www.godaddy.com">GoDaddy</a> for hosting Drupal.  While there isn&rsquo;t anything
+really <strong>wrong</strong> with my current model, I&rsquo;ve grown tired of it.  Below are a few pain points worth mentioning.</p>
+
+<h3>Maintenance Overhead</h3>
+
+<p>I&rsquo;ve grown tired of maintaining Drupal.  I&rsquo;m tired of applying a security patch or verision update and having my
+whole site turn to crap.  Why?  All of my modules then need to be re-enabled and/or updated.  How is this a
+problem?  All non-core functionality on my site <em>(sitemap.xml generation, SPAM filtering, syntax highlighting, &hellip;)</em>
+are all enabled via modules.  If these modules are disabled during the update, and they are, I now have to go through
+the process of re-enabling them just so my site doesn&rsquo;t look like crap and I don&rsquo;t get SPAMed to Hell and back.</p>
+
+<p>Don&rsquo;t get me wrong, Drupal is a phenomenal product.  It&rsquo;s an excellent
+<abbr title="Content Management System">CMS</abbr> and Drupal is also a great example of what an
+<abbr title="Open Source Software">OSS</abbr> project should be.  It&rsquo;s not Drupal&rsquo;s fault that I don&rsquo;t need a
+<abbr title="Content Management System">CMS</abbr> and I&rsquo;m sure there is a reason that the update process is more
+painful than I&rsquo;d like.</p>
+
+<p>Another aspect of the maintenance overhead is the fact that Drupal runs on <a href="http://php.net">PHP</a> and needs a
+database, <a href="http://www.mysql.com">MySQL</a> in my case, so you have to either host your server or pay someone to host it
+you.  I chose the second option.  The overhead for this of course is the financial cost, regardless of how large or
+small it is.</p>
+
+<h3>Authoring</h3>
+
+<p>The options I&rsquo;ve been exposed to in Drupal for authoring content on my site is to use raw
+<abbr title="HyperText Markup Language">HTML</abbr> or using one of the
+<abbr title="What You See Is What You Get">WYSIWYG</abbr> editors.  The problem with raw HTML is it&rsquo;s cumbersom and
+error prone.  Crafting a single post can often end up with a lot of time spent finding HTML typos.  The problem with
+WYSIWYG editors is that you often end up fighting them.  Either the output is junk or they don&rsquo;t handle certain use
+cases, like handling code blocks.  Regardless, I loathe creating content in Drupal but again, I don&rsquo;t feel it&rsquo;s
+Drupal&rsquo;s fault, I just want something simpler.</p>
+
+<p>One approach to creating web-based content I&rsquo;ve become very fond of as of late is
+<a href="http://daringfireball.net/projects/markdown/">Markdown</a>.  Markdown is a great language that allows me to focus more
+on the content being crafted while still being able to style my content very easily.  I can even drop in raw HTML
+wheenver I feel the need to.  If you&rsquo;ve ever visited any <a href="https://www.github.com">GitHub</a> project/user homepage or
+a project&rsquo;s wiki, you&rsquo;ve seen the result of Markdown.</p>
+
+<h3>The Solution</h3>
+
+<p>The new ThoughtSpark.org will no longer be using Drupal and will no longer be deployed on GoDaddy.  Instead, I&rsquo;m going
+to use a static website generator that will take my Markdown files and create my website.  The tool I will be using is
+<a href="http://www.middlemanapp.com">Middleman</a> and I will be using <a href="http://pages.github.com/">GitHub Pages</a> as my host.  Not
+only will writing/maintaining my website content be easier but now it will also require no cost to host.  Those two
+things are good enough reasons for me to switch but there are also the following reasons that are equally compelling:</p>
+
+<ul>
+<li><strong>Security</strong>: With there being no server-side component and no server-side processing, there are much fewer security
+issues that I need to concern myself with</li>
+<li><strong>Performance</strong>: With there being no server-side component and no server-side processing, the performance of the site
+will be faster</li>
+<li><strong>Deployment</strong>: The solutions for hosting static websites are plentiful and you are no longer locked into a
+particular host/product for hosting your website.  <em>(There&rsquo;s a chance you&rsquo;re already using a
+service that will host your static websites for you.  Examples: GitHub&rsquo;s Pages and 
+<a href="http://www.dropboxwiki.com/Hosting_Websites_with_Dropbox">DropBox</a> are two excellent examples.)</em></li>
+</ul>
+
+<h3>In Closing</h3>
+
+<p>GitHub Pages, Markdown, Middleman and <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a> have made it very easy
+for me to re-create and maintain ThoughtSpark.org.  I feel like with this new approach for ThoughtSpark.org, I&rsquo;ll be
+able to get posts out quicker and much easier, while saving a few bucks along the way.  Thanks for your patience and I
+look forward to sharing with you on my new platform.</p>
+
+<p><strong>Note:</strong> There are a few things left to finish before I&rsquo;d say that the migration is complete, follow
+<a href="https://github.com/whitlockjc/thoughtspark.org/issues/1">here</a> if you&rsquo;re interested.</p>
+
+<p><strong>Note:</strong> Originally I had planned on migrating all of the old Drupal posts to the new platform.  I&rsquo;ve decided against
+it for a few reasons and will instead only migrate things upon request.  To request such a thing, use the
+<a href="https://github.com/whitlockjc/thoughtspark.org/issues">issue tracker</a> or hit me up on
+<a href="https://twitter.com/whitlockjc">Twitter</a>.</p>
+
+</div>
+      </div>
+    </div>
+  </div>
+</div>
+      </div>
+    </div>
+
+    <div id="push"></div>
+
+    <div id="footer">
+      <div class="container-fluid">
+        <p>© Jeremy Whitlock 2015 | Brought to you by <a href="http://pages.github.com/">GitHub Pages</a>,
+          <a href="http://middlemanapp.com/">Middleman</a> and
+          <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a>. |
+          <a href="https://github.com/whitlockjc/thoughtspark.org">Site Sources</a>
+        </p>
+      </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="http://thoughtspark.org/js/jquery.js"></script>
+    <script src="http://thoughtspark.org/js/bootstrap.js"></script>
+    <script src="http://thoughtspark.org/js/thoughtspark.org.js"></script>
+  </body>
+</html>

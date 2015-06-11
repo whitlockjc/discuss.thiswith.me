@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+        
+    <title>ThoughtSpark.org - The New ThoughtSpark.org</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Interesting stuff from the eyes of Jeremy Whitlock">
+    <meta name="author" content="Jeremy Whitlock <jcscoobyrs@gmail.com>">
+
+    <!-- Stylesheets -->
+    <link href="http://thoughtspark.org/css/bootstrap.css" rel="stylesheet">
+    <link href="http://thoughtspark.org/css/thoughtspark.org.css" rel="stylesheet">
+    <link href="http://thoughtspark.org/css/bootstrap-responsive.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Google Analytics -->
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-8129913-1']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </head>
+
+  <body>
+
+    <div id="wrapper">
+      <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="navbar-inner">
+          <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </a>
+            <a class="brand" href="http://thoughtspark.org/">ThoughtSpark.org</a>
+            <div class="nav-collapse collapse">
+              <ul class="nav">
+                <li class="">
+                  <a href="http://thoughtspark.org/archives/">Archives</a></li>
+                <li class="">
+                  <a href="http://thoughtspark.org/tags/">Tags Index</a></li>
+                <li class="">
+                  <a href="http://thoughtspark.org/about-me/">About Me</a></li>
+              </ul>
+              <form class="navbar-search pull-right" id="cse-search-box" action="http://google.com/cse" target="_blank">
+                <input type="hidden" name="cx" value="002070316934860344827:uskwlee9cfw" />
+                <input type="hidden" name="ie" value="UTF-8" />
+                <input type="text" class="search-query" name="q" placeholder="Search" />
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="container-fluid" id="content-wrapper">
+        <div class="row-fluid">
+  <div class="span8 offset2 content" id="content">
+    <div class="row-fluid">
+      <div class="span12">
+        <div class="page-header">
+  <h1><a href="http://thoughtspark.org/2012/11/14/the-new-thoughtspark-org/">The New ThoughtSpark.org</a> <small>Posted on 2012/11/14 at 23:00</small></h1>
+</div>
+<div class="widget-row row-fluid">
+  <div class="span9">
+    
+    <a href="http://thoughtspark.org/tags/thoughtspark-org/" class="tag-link"><span class="label label-info">thoughtspark.org</span></a>
+    
+  </div>
+  <div class="span3">
+    <a href="https://twitter.com/share" class="twitter-share-button"
+       data-url="http://thoughtspark.org/2012/11/14/the-new-thoughtspark-org/"
+       data-text="The New ThoughtSpark.org"
+       
+       data-hashtags="thoughtspark.org"
+       
+       data-via="whitlockjc"
+       data-count="none"
+       data-lang="en">Tweet</a>
+    <span class="g-plusone"
+         data-size="medium"
+         data-annotation="none"
+         data-href="http://thoughtspark.org/2012/11/14/the-new-thoughtspark-org/"></span>
+  </div>
+</div>
+<div class="article-content">
+  <p>I&rsquo;ve decided it&rsquo;s time to rethink how I maintain and deploy <a href="http://www.thoughtspark.org">ThoughtSpark.org</a>.  My
+current deployment model is to use <a href="http://drupal.org">Drupal</a> to craft/host my site&rsquo;s content and I currently
+pay a small monthly fee to <a href="http://www.godaddy.com">GoDaddy</a> for hosting Drupal.  While there isn&rsquo;t anything
+really <strong>wrong</strong> with my current model, I&rsquo;ve grown tired of it.  Below are a few pain points worth mentioning.</p>
+
+<h3>Maintenance Overhead</h3>
+
+<p>I&rsquo;ve grown tired of maintaining Drupal.  I&rsquo;m tired of applying a security patch or verision update and having my
+whole site turn to crap.  Why?  All of my modules then need to be re-enabled and/or updated.  How is this a
+problem?  All non-core functionality on my site <em>(sitemap.xml generation, SPAM filtering, syntax highlighting, &hellip;)</em>
+are all enabled via modules.  If these modules are disabled during the update, and they are, I now have to go through
+the process of re-enabling them just so my site doesn&rsquo;t look like crap and I don&rsquo;t get SPAMed to Hell and back.</p>
+
+<p>Don&rsquo;t get me wrong, Drupal is a phenomenal product.  It&rsquo;s an excellent
+<abbr title="Content Management System">CMS</abbr> and Drupal is also a great example of what an
+<abbr title="Open Source Software">OSS</abbr> project should be.  It&rsquo;s not Drupal&rsquo;s fault that I don&rsquo;t need a
+<abbr title="Content Management System">CMS</abbr> and I&rsquo;m sure there is a reason that the update process is more
+painful than I&rsquo;d like.</p>
+
+<p>Another aspect of the maintenance overhead is the fact that Drupal runs on <a href="http://php.net">PHP</a> and needs a
+database, <a href="http://www.mysql.com">MySQL</a> in my case, so you have to either host your server or pay someone to host it
+you.  I chose the second option.  The overhead for this of course is the financial cost, regardless of how large or
+small it is.</p>
+
+<h3>Authoring</h3>
+
+<p>The options I&rsquo;ve been exposed to in Drupal for authoring content on my site is to use raw
+<abbr title="HyperText Markup Language">HTML</abbr> or using one of the
+<abbr title="What You See Is What You Get">WYSIWYG</abbr> editors.  The problem with raw HTML is it&rsquo;s cumbersom and
+error prone.  Crafting a single post can often end up with a lot of time spent finding HTML typos.  The problem with
+WYSIWYG editors is that you often end up fighting them.  Either the output is junk or they don&rsquo;t handle certain use
+cases, like handling code blocks.  Regardless, I loathe creating content in Drupal but again, I don&rsquo;t feel it&rsquo;s
+Drupal&rsquo;s fault, I just want something simpler.</p>
+
+<p>One approach to creating web-based content I&rsquo;ve become very fond of as of late is
+<a href="http://daringfireball.net/projects/markdown/">Markdown</a>.  Markdown is a great language that allows me to focus more
+on the content being crafted while still being able to style my content very easily.  I can even drop in raw HTML
+wheenver I feel the need to.  If you&rsquo;ve ever visited any <a href="https://www.github.com">GitHub</a> project/user homepage or
+a project&rsquo;s wiki, you&rsquo;ve seen the result of Markdown.</p>
+
+<h3>The Solution</h3>
+
+<p>The new ThoughtSpark.org will no longer be using Drupal and will no longer be deployed on GoDaddy.  Instead, I&rsquo;m going
+to use a static website generator that will take my Markdown files and create my website.  The tool I will be using is
+<a href="http://www.middlemanapp.com">Middleman</a> and I will be using <a href="http://pages.github.com/">GitHub Pages</a> as my host.  Not
+only will writing/maintaining my website content be easier but now it will also require no cost to host.  Those two
+things are good enough reasons for me to switch but there are also the following reasons that are equally compelling:</p>
+
+<ul>
+<li><strong>Security</strong>: With there being no server-side component and no server-side processing, there are much fewer security
+issues that I need to concern myself with</li>
+<li><strong>Performance</strong>: With there being no server-side component and no server-side processing, the performance of the site
+will be faster</li>
+<li><strong>Deployment</strong>: The solutions for hosting static websites are plentiful and you are no longer locked into a
+particular host/product for hosting your website.  <em>(There&rsquo;s a chance you&rsquo;re already using a
+service that will host your static websites for you.  Examples: GitHub&rsquo;s Pages and 
+<a href="http://www.dropboxwiki.com/Hosting_Websites_with_Dropbox">DropBox</a> are two excellent examples.)</em></li>
+</ul>
+
+<h3>In Closing</h3>
+
+<p>GitHub Pages, Markdown, Middleman and <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a> have made it very easy
+for me to re-create and maintain ThoughtSpark.org.  I feel like with this new approach for ThoughtSpark.org, I&rsquo;ll be
+able to get posts out quicker and much easier, while saving a few bucks along the way.  Thanks for your patience and I
+look forward to sharing with you on my new platform.</p>
+
+<p><strong>Note:</strong> There are a few things left to finish before I&rsquo;d say that the migration is complete, follow
+<a href="https://github.com/whitlockjc/thoughtspark.org/issues/1">here</a> if you&rsquo;re interested.</p>
+
+<p><strong>Note:</strong> Originally I had planned on migrating all of the old Drupal posts to the new platform.  I&rsquo;ve decided against
+it for a few reasons and will instead only migrate things upon request.  To request such a thing, use the
+<a href="https://github.com/whitlockjc/thoughtspark.org/issues">issue tracker</a> or hit me up on
+<a href="https://twitter.com/whitlockjc">Twitter</a>.</p>
+
+</div>
+      </div>
+    </div>
+  </div>
+</div><div class="row-fluid">
+  <div class="span8 offset2 content" id="content">
+    <div class="row-fluid">
+      <div class="span12">
+        <div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'thoughtsparkorg'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+      </div>
+    </div>
+  </div>
+</div>
+      </div>
+    </div>
+
+    <div id="push"></div>
+
+    <div id="footer">
+      <div class="container-fluid">
+        <p>© Jeremy Whitlock 2015 | Brought to you by <a href="http://pages.github.com/">GitHub Pages</a>,
+          <a href="http://middlemanapp.com/">Middleman</a> and
+          <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a>. |
+          <a href="https://github.com/whitlockjc/thoughtspark.org">Site Sources</a>
+        </p>
+      </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="http://thoughtspark.org/js/jquery.js"></script>
+    <script src="http://thoughtspark.org/js/bootstrap.js"></script>
+    <script src="http://thoughtspark.org/js/thoughtspark.org.js"></script>
+  </body>
+</html>
