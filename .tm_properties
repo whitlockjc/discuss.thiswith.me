@@ -1,5 +1,0 @@
-# ---------------------------------------------------------
-# ThoughtSpark.org Project Root
-# ---------------------------------------------------------
-projectDirectory = "$CWD"
-windowTitle      = "$TM_DISPLAYNAME — ${CWD/^.*\///}"

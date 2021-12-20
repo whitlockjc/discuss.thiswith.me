@@ -1,7 +1,0 @@
-<li>
-  <a href="<%= absolute_url(article.url) %>"><%= article.title %></a>
-  <% article.tags.sort.each do |tag| %>
-  <a href="<%= absolute_url(tag_path(tag)) %>" class="tag-link"><span class="label label-info"><%= tag %></span></a>
-  <% end %>
-  <span class="">(<%= article.date.strftime('Posted on %Y/%m/%d at %H:%M') %>)</span>
-</li>
