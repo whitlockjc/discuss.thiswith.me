@@ -1,0 +1,13 @@
+main:
+- name: Home
+  identifier: home
+  weight: 100
+  url: '/'
+- name: Posts
+  weight: 200
+  identifier: posts
+  url: '/posts/'
+- name: About
+  weight: 300
+  identifier: about
+  url: '/about/'

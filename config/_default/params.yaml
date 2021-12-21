@@ -1,0 +1,26 @@
+author: Jeremy Whitlock
+contentratio: 0.7
+# TODO: Change 2021 to {year}
+copyright: Copyright 2021 Jeremy Whitlock. All rights reserved.
+customCss:
+- css/syntax.css
+description: Let's discuss this...
+favicon: favicons/
+# Required so that the Anatole theme works with "posts" instead of "post" for the content/section type
+mainSections:
+- post
+profilePicture: images/profile.jpg
+socialIcons:
+- icon: fab fa-github
+  title: Github
+  url: https://github.com/whitlockjc
+- icon: fab fa-instagram
+  title: Instagram
+  url: https://www.instagram.com/whitlockjc/
+- icon: fab fa-linkedin
+  title: Linkedin
+  url: https://www.linkedin.com/in/jwhitlock/
+- icon: fab fa-twitter
+  title: Twitter
+  url: https://twitter.com/whitlockjc
+title: I'm Jeremy Whitlock

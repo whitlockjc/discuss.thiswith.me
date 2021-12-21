@@ -1,0 +1,14 @@
+baseURL: https://discuss.thiswith.me
+defaultContentLanguage: en
+# TODO: Setup Discus
+enableEmoji: true
+enableRobotsTXT: true
+# TODO: Setup Google Analytics
+languageCode: en-us
+permalinks:
+  posts: /:section/:year/:month/:title/
+pygmentsCodeFences: true
+pygmentsUseClasses: true
+summaryLength: 10
+theme: anatole
+title: Discuss This With Me
