@@ -1,5 +1,5 @@
-# Ignore Ruby bundler config
-/.bundle
-
-# Ignore the build directory
-build/
+**/themes/
+demo/
+.hugo/*
+!.hugo/version
+.hugo_build.lock

@@ -1,0 +1,50 @@
+baseURL: https://discuss.thiswith.me
+defaultContentLanguage: en
+# TODO: Setup Discus
+enableEmoji: true
+enableRobotsTXT: true
+# TODO: Setup Google Analytics
+languageCode: en-us
+menu:
+  main:
+  - name: Home
+    identifier: home
+    weight: 100
+    url: '/'
+  - name: Posts
+    weight: 200
+    identifier: posts
+    url: '/post/'
+  - name: About
+    weight: 300
+    identifier: about
+    url: '/about/'
+params:
+  author: Jeremy Whitlock
+  contentratio: 0.7
+  # TODO: Change 2021 to {year}
+  copyright: Copyright 2021 Jeremy Whitlock. All rights reserved.
+  customCss:
+  - css/syntax.css
+  description: Let's discuss this...
+  favicon: favicons/
+  profilePicture: images/profile.jpg
+  socialIcons:
+  - icon: fab fa-github
+    title: Github
+    url: https://github.com/whitlockjc
+  - icon: fab fa-instagram
+    title: Instagram
+    url: https://www.instagram.com/whitlockjc/
+  - icon: fab fa-linkedin
+    title: Linkedin
+    url: https://www.linkedin.com/in/jwhitlock/
+  - icon: fab fa-twitter
+    title: Twitter
+    url: https://twitter.com/whitlockjc
+  title: I'm Jeremy Whitlock
+pygmentsCodeFences: true
+pygmentsUseClasses: true
+summaryLength: 10
+theme: anatole
+title: Discuss This With Me (Jeremy Whitlock)
