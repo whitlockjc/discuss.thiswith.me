@@ -7,7 +7,11 @@ main:
   weight: 200
   identifier: posts
   url: '/posts/'
-- name: About
+- name: Tags
   weight: 300
+  identifier: tags
+  url: '/tags/'
+- name: About
+  weight: 400
   identifier: about
   url: '/about/'

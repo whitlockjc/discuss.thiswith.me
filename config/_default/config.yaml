@@ -5,10 +5,12 @@ enableEmoji: true
 enableRobotsTXT: true
 # TODO: Setup Google Analytics
 languageCode: en-us
-permalinks:
-  posts: /:section/:year/:month/:title/
+# permalinks:
+#   posts: /:section/:year/:month/:title/
 pygmentsCodeFences: true
 pygmentsUseClasses: true
-summaryLength: 10
+summaryLength: 50
 theme: anatole
+taxonomies:
+  tag: tags
 title: Discuss This With Me

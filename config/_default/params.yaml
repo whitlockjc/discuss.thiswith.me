@@ -10,6 +10,7 @@ favicon: favicons/
 mainSections:
 - post
 profilePicture: images/profile.jpg
+readMore: true
 socialIcons:
 - icon: fab fa-github
   title: Github
