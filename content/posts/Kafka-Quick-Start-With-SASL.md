@@ -1,6 +1,6 @@
 ---
 title: "Kafka Quick Start With SASL"
-date: 2022-01-11T16:43:39-05:00
+date: 2022-01-11T14:43:39-05:00
 description: "This article discusses how to extend the Kafka Quick Start to use SASL/PLAIN."
 disableComments: false
 tags:
