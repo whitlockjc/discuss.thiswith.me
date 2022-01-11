@@ -1,9 +1,8 @@
 baseURL: https://discuss.thiswith.me
 defaultContentLanguage: en
-# TODO: Setup Discus
+discussShortName: discuss-thiswith-me
 enableEmoji: true
 enableRobotsTXT: true
-# TODO: Setup Google Analytics
 languageCode: en-us
 # permalinks:
 #   posts: /:section/:year/:month/:title/

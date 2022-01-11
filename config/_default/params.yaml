@@ -6,6 +6,7 @@ customCss:
 - css/syntax.css
 description: Let's discuss this...
 favicon: favicons/
+gtagId: G-DPVJB17EXD
 # Required so that the Anatole theme works with "posts" instead of "post" for the content/section type
 mainSections:
 - post
