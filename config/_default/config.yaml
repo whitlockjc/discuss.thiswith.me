@@ -1,6 +1,6 @@
 baseURL: https://discuss.thiswith.me
 defaultContentLanguage: en
-discussShortName: discuss-thiswith-me
+disqusShortname: discuss-thiswith-me
 enableEmoji: true
 enableRobotsTXT: true
 languageCode: en-us
