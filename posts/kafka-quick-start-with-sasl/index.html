@@ -1,435 +1,186 @@
-<!doctype html><html dir=ltr lang=en data-theme><head>
-<title>
-Jeremy Whitlock
+<!doctype html><html dir=ltr lang=en data-theme><head><title>Jeremy Whitlock
 |
-Kafka Quick Start With SASL
-</title>
-<meta charset=utf-8><meta name=generator content="Hugo 0.91.2"><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name=description content="
+Kafka Quick Start With SASL</title><meta charset=utf-8><meta name=generator content="Hugo 0.105.0"><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name=description content="
       This article discusses how to extend the Kafka Quick Start to use SASL/PLAIN.
 
 
-    ">
-<link rel=stylesheet href=/css/main.min.30858f3722ad276300e1e33cf87338692fb045f909480bad28eb89a8fd747049.css integrity="sha256-MIWPNyKtJ2MA4eM8+HM4aS+wRfkJSAutKOuJqP10cEk=" crossorigin=anonymous type=text/css>
-<link rel=stylesheet href=/css/markupHighlight.min.058b31f17db60602cc415fd63b0427e7932fbf35c70d8e341a4c39385f5f6f3e.css integrity="sha256-BYsx8X22BgLMQV/WOwQn55MvvzXHDY40Gkw5OF9fbz4=" crossorigin=anonymous type=text/css>
-<link rel=stylesheet href=/css/syntax.min.663a88bfd8856250d878fe1a548f9481478be426b9ec21acc6ad40e11bcc2f90.css integrity="sha256-ZjqIv9iFYlDYeP4aVI+UgUeL5Ca57CGsxq1A4RvML5A=" crossorigin=anonymous media=screen>
-<link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin=anonymous>
-<link rel="shortcut icon" href=/favicons/favicon.ico type=image/x-icon>
-<link rel=apple-touch-icon sizes=180x180 href=/favicons/apple-touch-icon.png>
-<link rel=icon type=image/png sizes=32x32 href=/favicons/favicon-32x32.png>
-<link rel=icon type=image/png sizes=16x16 href=/favicons/favicon-16x16.png>
-<link rel=canonical href=https://discuss.thiswith.me/posts/kafka-quick-start-with-sasl/>
-<script type=text/javascript src=/js/anatole-header.min.2a2cd9614b7d007dfbb75e8da19e3a0fa872ceab53c6d000c00b7a0c89b85bfc.js integrity="sha256-KizZYUt9AH37t16NoZ46D6hyzqtTxtAAwAt6DIm4W/w=" crossorigin=anonymous></script>
-<script type=text/javascript src=/js/anatole-theme-switcher.min.7fd87181cdd7e8413aa64b6867bb32f3a8dc242e684fc7d5bbb9f600dbc2b6eb.js integrity="sha256-f9hxgc3X6EE6pktoZ7sy86jcJC5oT8fVu7n2ANvCtus=" crossorigin=anonymous></script>
-<meta name=twitter:card content="summary">
-<meta name=twitter:title content="Kafka Quick Start With SASL">
-<meta name=twitter:description content="This article discusses how to extend the Kafka Quick Start to use SASL/PLAIN.">
-<script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","articleSection":"posts","name":"Kafka Quick Start With SASL","headline":"Kafka Quick Start With SASL","alternativeHeadline":"","description":"
+    "><link rel=stylesheet href=/css/main.min.30858f3722ad276300e1e33cf87338692fb045f909480bad28eb89a8fd747049.css integrity="sha256-MIWPNyKtJ2MA4eM8+HM4aS+wRfkJSAutKOuJqP10cEk=" crossorigin=anonymous type=text/css><link rel=stylesheet href=/css/markupHighlight.min.058b31f17db60602cc415fd63b0427e7932fbf35c70d8e341a4c39385f5f6f3e.css integrity="sha256-BYsx8X22BgLMQV/WOwQn55MvvzXHDY40Gkw5OF9fbz4=" crossorigin=anonymous type=text/css><link rel=stylesheet href=/css/syntax.min.663a88bfd8856250d878fe1a548f9481478be426b9ec21acc6ad40e11bcc2f90.css integrity="sha256-ZjqIv9iFYlDYeP4aVI+UgUeL5Ca57CGsxq1A4RvML5A=" crossorigin=anonymous media=screen><link rel=stylesheet href=/css/theme.overrides.min.2982a93a5fbef03e1ef6ccc7dda5ae26999618081a094084cb02bdfd42375eb0.css integrity="sha256-KYKpOl++8D4e9szH3aWuJpmWGAgaCUCEywK9/UI3XrA=" crossorigin=anonymous media=screen><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin=anonymous><link rel="shortcut icon" href=/favicons/favicon.ico type=image/x-icon><link rel=apple-touch-icon sizes=180x180 href=/favicons/apple-touch-icon.png><link rel=icon type=image/png sizes=32x32 href=/favicons/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicons/favicon-16x16.png><link rel=canonical href=https://discuss.thiswith.me/posts/kafka-quick-start-with-sasl/><script type=text/javascript src=/js/anatole-header.min.d0408165d31a17f17bba83038bf54e86121f85021bdf936382e636f0f77a952f.js integrity="sha256-0ECBZdMaF/F7uoMDi/VOhhIfhQIb35NjguY28Pd6lS8=" crossorigin=anonymous></script>
+<script type=text/javascript src=/js/anatole-theme-switcher.min.ea8ebe268922ef9849261a1312cd65b640595e65251ce4c00534a176afd1ac0c.js integrity="sha256-6o6+Joki75hJJhoTEs1ltkBZXmUlHOTABTShdq/RrAw=" crossorigin=anonymous></script><meta name=twitter:card content="summary"><meta name=twitter:title content="Kafka Quick Start With SASL"><meta name=twitter:description content="This article discusses how to extend the Kafka Quick Start to use SASL/PLAIN."><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","articleSection":"posts","name":"Kafka Quick Start With SASL","headline":"Kafka Quick Start With SASL","alternativeHeadline":"","description":"
       This article discusses how to extend the Kafka Quick Start to use SASL\/PLAIN.
 
 
-    ","inLanguage":"en-us","isFamilyFriendly":"true","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/discuss.thiswith.me\/posts\/kafka-quick-start-with-sasl\/"},"author":{"@type":"Person","name":"Jeremy Whitlock"},"creator":{"@type":"Person","name":"Jeremy Whitlock"},"accountablePerson":{"@type":"Person","name":"Jeremy Whitlock"},"copyrightHolder":{"@type":"Person","name":"Jeremy Whitlock"},"copyrightYear":"2022","dateCreated":"2022-01-11T14:43:39.00Z","datePublished":"2022-01-11T14:43:39.00Z","dateModified":"2022-01-11T14:43:39.00Z","publisher":{"@type":"Organization","name":"Jeremy Whitlock","url":"https://discuss.thiswith.me","logo":{"@type":"ImageObject","url":"https:\/\/discuss.thiswith.me\/favicons\/favicon-32x32.png","width":"32","height":"32"}},"image":[],"url":"https:\/\/discuss.thiswith.me\/posts\/kafka-quick-start-with-sasl\/","wordCount":"2433","genre":[],"keywords":["article","kafka","technology","tutorial"]}</script>
-</head>
-<body>
-<header><div class="page-top
-animated fadeInDown">
-<a role=button class=navbar-burger data-target=navMenu aria-label=menu aria-expanded=false>
+    ","inLanguage":"en-us","isFamilyFriendly":"true","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/discuss.thiswith.me\/posts\/kafka-quick-start-with-sasl\/"},"author":{"@type":"Person","name":"Jeremy Whitlock"},"creator":{"@type":"Person","name":"Jeremy Whitlock"},"accountablePerson":{"@type":"Person","name":"Jeremy Whitlock"},"copyrightHolder":{"@type":"Person","name":"Jeremy Whitlock"},"copyrightYear":"2022","dateCreated":"2022-01-11T14:43:39.00Z","datePublished":"2022-01-11T14:43:39.00Z","dateModified":"2022-01-11T14:43:39.00Z","publisher":{"@type":"Organization","name":"Jeremy Whitlock","url":"https://discuss.thiswith.me","logo":{"@type":"ImageObject","url":"https:\/\/discuss.thiswith.me\/favicons\/favicon-32x32.png","width":"32","height":"32"}},"image":[],"url":"https:\/\/discuss.thiswith.me\/posts\/kafka-quick-start-with-sasl\/","wordCount":"2433","genre":[],"keywords":["article","kafka","technology","tutorial"]}</script></head><body><header><div class="page-top
+animated fadeInDown"><a role=button class=navbar-burger data-target=navMenu aria-label=menu aria-expanded=false><span aria-hidden=true></span>
 <span aria-hidden=true></span>
-<span aria-hidden=true></span>
-<span aria-hidden=true></span>
-</a>
-<nav>
-<ul class=nav__list id=navMenu>
-<div class=nav__links>
-<li>
-<a href=/ title>Home</a>
-</li>
-<li>
-<a href=/posts/ title>Posts</a>
-</li>
-<li>
-<a href=/tags/ title>Tags</a>
-</li>
-<li>
-<a href=/about/ title>About</a>
-</li>
-</div>
-<ul>
-<li>
-<a class=theme-switch title="Switch Theme">
-<i class="fas fa-adjust fa-fw" aria-hidden=true></i>
-</a>
-</li>
-</ul>
-</ul>
-</nav>
-</div>
-</header>
-<div class=wrapper>
-<aside><div class="sidebar
-animated fadeInDown">
-<div class=sidebar__content>
-<div class=logo-title>
-<div class=title>
-<img src=/images/profile.jpg alt="profile picture">
-<h3 title><a href=/>I'm Jeremy Whitlock</a></h3>
-<div class=description>
-<p>Let's discuss this...</p>
-</div>
-</div>
-</div>
-<ul class=social-links>
-<li>
-<a href=https://github.com/whitlockjc rel=me aria-label=Github title=Github>
-<i class="fab fa-github fa-2x" aria-hidden=true></i>
-</a>
-</li>
-<li>
-<a href=https://www.instagram.com/whitlockjc/ rel=me aria-label=Instagram title=Instagram>
-<i class="fab fa-instagram fa-2x" aria-hidden=true></i>
-</a>
-</li>
-<li>
-<a href=https://www.linkedin.com/in/jwhitlock/ rel=me aria-label=Linkedin title=Linkedin>
-<i class="fab fa-linkedin fa-2x" aria-hidden=true></i>
-</a>
-</li>
-<li>
-<a href=https://twitter.com/whitlockjc rel=me aria-label=Twitter title=Twitter>
-<i class="fab fa-twitter fa-2x" aria-hidden=true></i>
-</a>
-</li>
-</ul>
-</div><footer class="footer footer--sidebar">
-<div class=by_farbox>
-<ul class=footer__list>
-<li class=footer__item>
-&copy;
-Copyright 2021 Jeremy Whitlock. All rights reserved.
-</li>
-</ul>
-</div>
-</footer>
-<script type=text/javascript src=/js/medium-zoom.min.71100d84fab0ad794b8399a66ac810700cc78d703f715dc10af4d7ba7b761362.js integrity="sha256-cRANhPqwrXlLg5mmasgQcAzHjXA/cV3BCvTXunt2E2I=" crossorigin=anonymous></script>
+<span aria-hidden=true></span></a><nav><ul class=nav__list id=navMenu><div class=nav__links><li><a href=/ title>Home</a></li><li><a href=/posts/ title>Posts</a></li><li><a href=/tags/ title>Tags</a></li><li><a href=/about/ title>About</a></li></div><ul><li><a class=theme-switch title="Switch Theme"><i class="fas fa-adjust fa-fw" aria-hidden=true></i></a></li></ul></ul></nav></div></header><div class=wrapper><aside><div class="sidebar
+animated fadeInDown"><div class=sidebar__content><div class=logo-title><div class=title><img src=/images/profile.jpg alt="profile picture"><h3 title><a href=/>I'm Jeremy Whitlock</a></h3><div class=description><p>Let's discuss this...</p></div></div></div><ul class=social-links><li><a href=https://github.com/whitlockjc rel=me aria-label=Github title=Github><i class="fab fa-github fa-2x" aria-hidden=true></i></a></li><li><a href=https://www.instagram.com/whitlockjc/ rel=me aria-label=Instagram title=Instagram><i class="fab fa-instagram fa-2x" aria-hidden=true></i></a></li><li><a href=https://www.linkedin.com/in/jwhitlock/ rel=me aria-label=Linkedin title=Linkedin><i class="fab fa-linkedin fa-2x" aria-hidden=true></i></a></li><li><a href=https://twitter.com/whitlockjc rel=me aria-label=Twitter title=Twitter><i class="fab fa-twitter fa-2x" aria-hidden=true></i></a></li></ul></div><footer class="footer footer--sidebar"><div class=by_farbox><ul class=footer__list><li class=footer__item>&copy;
+Copyright 2021 Jeremy Whitlock. All rights reserved.</li></ul></div></footer><script type=text/javascript src=/js/medium-zoom.min.44288fd315b6cda68c1f4743caad56535c0f81a5b5a672f385e82b3896575c1d.js integrity="sha256-RCiP0xW2zaaMH0dDyq1WU1wPgaW1pnLzhegrOJZXXB0=" crossorigin=anonymous></script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-DPVJB17EXD"></script>
-<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date),gtag('config','G-DPVJB17EXD')</script>
-</div>
-</aside>
-<main>
-<div class=autopagerize_page_element>
-<div class=content>
-<div class="post
-animated fadeInDown">
-<div class=post-content>
-<div class=post-title>
-<h1>Kafka Quick Start With SASL</h1>
-<div class=info>
-<em class="fas fa-calendar-day"></em>
-<span class=date>
-Tue, Jan 11, 2022
-</span>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-DPVJB17EXD")</script></div></aside><main><div class=autopagerize_page_element><div class=content><div class="post
+animated fadeInDown"><div class=post-content><div class=post-title><h1>Kafka Quick Start With SASL</h1><div class=info><em class="fas fa-calendar-day"></em>
+<span class=date>Tue, Jan 11, 2022</span>
 <em class="fas fa-stopwatch"></em>
-<span class=reading-time>12-minute read</span>
-</div>
-</div><h3>Table of Contents</h3>
-<nav id=TableOfContents>
-<ul>
-<li><a href=#overview>Overview</a></li>
-<li><a href=#step-1-get-kafka>Step 1: Get Kafka</a></li>
-<li><a href=#step-2-start-the-kafka-environment>Step 2: Start the Kafka Environment</a>
-<ul>
-<li><a href=#step-2a-configuring-zookeeper-for-sasl>Step 2a: Configuring ZooKeeper for SASL</a></li>
-<li><a href=#step-2b-starting-zookeeper>Step 2b: Starting ZooKeeper</a></li>
-<li><a href=#step-2c-configuring-kafka-broker-for-sasl>Step 2c: Configuring Kafka Broker for SASL</a></li>
-<li><a href=#step-2d-starting-the-kafka-broker>Step 2d: Starting the Kafka Broker</a></li>
-</ul>
-</li>
-<li><a href=#step-3-create-a-topic-to-store-your-events>Step 3: Create a Topic to Store Your Events</a></li>
-<li><a href=#step-4-write-some-events-into-the-topic>Step 4: Write Some Events Into the Topic</a></li>
-<li><a href=#step-5-read-the-events>Step 5: Read the Events</a></li>
-<li><a href=#deviating-from-the-happy-path>Deviating From the Happy Path</a></li>
-<li><a href=#simplifying-the-process>Simplifying the Process</a></li>
-<li><a href=#in-closing>In Closing</a></li>
-</ul>
-</nav><p>Recently I found myself playing around with <a href=https://kafka.apache.org/>Apache Kafka</a>, an
+<span class=reading-time>12-minute read</span></div></div><h3>Table of Contents</h3><nav id=TableOfContents><ul><li><a href=#overview>Overview</a></li><li><a href=#step-1-get-kafka>Step 1: Get Kafka</a></li><li><a href=#step-2-start-the-kafka-environment>Step 2: Start the Kafka Environment</a><ul><li><a href=#step-2a-configuring-zookeeper-for-sasl>Step 2a: Configuring ZooKeeper for SASL</a></li><li><a href=#step-2b-starting-zookeeper>Step 2b: Starting ZooKeeper</a></li><li><a href=#step-2c-configuring-kafka-broker-for-sasl>Step 2c: Configuring Kafka Broker for SASL</a></li><li><a href=#step-2d-starting-the-kafka-broker>Step 2d: Starting the Kafka Broker</a></li></ul></li><li><a href=#step-3-create-a-topic-to-store-your-events>Step 3: Create a Topic to Store Your Events</a></li><li><a href=#step-4-write-some-events-into-the-topic>Step 4: Write Some Events Into the Topic</a></li><li><a href=#step-5-read-the-events>Step 5: Read the Events</a></li><li><a href=#deviating-from-the-happy-path>Deviating From the Happy Path</a></li><li><a href=#simplifying-the-process>Simplifying the Process</a></li><li><a href=#in-closing>In Closing</a></li></ul></nav><p>Recently I found myself playing around with <a href=https://kafka.apache.org/>Apache Kafka</a>, an
 <em>&ldquo;open-source distributed event streaming platform&rdquo;</em>, and I can&rsquo;t speak highly enough to the excellent
 <a href=https://kafka.apache.org/quickstart>Kafka QuickStart</a> guide. Within a few minutes, this guide has you running a full
 <em>(albeit simplified)</em> Kafka installation, consuming/publishing events and in doing so, the underlying Kafka concepts are
 made easy to understand without having to dive into the complexities of a Kafka installation. What I would like to do
 is provide a similar guide to enabling a simple layer of security to your Kafka installation. This guide will be a
 complete, step-by-stype guide for enabling SASL/PLAIN for your Kafka installation using the exact same process as the
-Kafka QuickStart guide.</p>
-<h2 id=overview>Overview</h2>
-<p>The Kafka QuickStart guide goes beyond just running Kafka, touching on things like Kafka Connect and Kafka Streams, but
-for our purposes we only need to concern ourselves with the first five steps:</p>
-<ol>
-<li>Get Kafka</li>
-<li>Start the Kafka Environment</li>
-<li>Create a Topic to Store Your Events</li>
-<li>Write Some Events into the Topic</li>
-<li>Read the Events</li>
-</ol>
-<p>Let&rsquo;s get started.</p>
-<h2 id=step-1-get-kafka>Step 1: Get Kafka</h2>
-<p>To avoid writing a document that is outdated anytime a new release of Apache Kafka drops, and the Kafka QuickStart guide
+Kafka QuickStart guide.</p><h2 id=overview>Overview</h2><p>The Kafka QuickStart guide goes beyond just running Kafka, touching on things like Kafka Connect and Kafka Streams, but
+for our purposes we only need to concern ourselves with the first five steps:</p><ol><li>Get Kafka</li><li>Start the Kafka Environment</li><li>Create a Topic to Store Your Events</li><li>Write Some Events into the Topic</li><li>Read the Events</li></ol><p>Let&rsquo;s get started.</p><h2 id=step-1-get-kafka>Step 1: Get Kafka</h2><p>To avoid writing a document that is outdated anytime a new release of Apache Kafka drops, and the Kafka QuickStart guide
 updates, the simplest thing here is to
 <a href=https://kafka.apache.org/quickstart#quickstart_download>link to the guide itself</a> and rely on your ability to follow
-<em>Step 1</em> from there. From this point forward, the place where you extracted Kafka will be referred to as <code>$KAFKA_HOME</code>.</p>
-<h2 id=step-2-start-the-kafka-environment>Step 2: Start the Kafka Environment</h2>
-<p>Once you&rsquo;ve downloaded and extracted Apache Kafka, the real work begins in <em>Step 2</em>. The Kafka QuickStart guide greatly
+<em>Step 1</em> from there. From this point forward, the place where you extracted Kafka will be referred to as <code>$KAFKA_HOME</code>.</p><h2 id=step-2-start-the-kafka-environment>Step 2: Start the Kafka Environment</h2><p>Once you&rsquo;ve downloaded and extracted Apache Kafka, the real work begins in <em>Step 2</em>. The Kafka QuickStart guide greatly
 simplifies what&rsquo;s going on by describing this step as <em>&ldquo;Start[ing] the Kafka Environment&rdquo;</em> but we have to do a little
 more explaining here. The <em>&ldquo;Kafka Environment&rdquo;</em> consistes of two components, each of which need to be separately
-configured to achieve our goal.</p>
-<h3 id=step-2a-configuring-zookeeper-for-sasl>Step 2a: Configuring ZooKeeper for SASL</h3>
-<p>As of the time of writing this, <a href=https://zookeeper.apache.org/>ZooKeeper</a> is a prerequisite for Kafka but its purpose and importance do not
+configured to achieve our goal.</p><h3 id=step-2a-configuring-zookeeper-for-sasl>Step 2a: Configuring ZooKeeper for SASL</h3><p>As of the time of writing this, <a href=https://zookeeper.apache.org/>ZooKeeper</a> is a prerequisite for Kafka but its purpose and importance do not
 matter. Enabling SASL for ZooKeeper <strong>is not</strong> required but to be completely thorough, we will document the process
 anyway. If you choose to enable SASL between Kafka clients and brokers, but <strong>do not</strong> want to require SASL between
-Kafka and ZooKeeper, just skip the steps documented in this section.</p>
-<p>The first step is to create a copy of the ZooKeeper configuration, reason being that we want to clearly separate our
-SASL vs. SASL-less configuration files. To do this, run the following:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-plain data-lang=plain>cp ${KAFKA_HOME}/config/zookeeper.properties ${KAFKA_HOME}/config/zookeeper_sasl.properties
-</code></pre></div><p>The next step is to update <code>${KAFKA_HOME}/config/zookeeper_sasl.properties</code> so that it has the following contents
-appended to the very end:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-ini data-lang=ini><span class=c1># SASL</span>
-<span class=na>authProvider.sasl</span><span class=o>=</span><span class=s>org.apache.zookeeper.server.auth.SASLAuthenticationProvider</span>
-<span class=na>requireClientAuthScheme</span><span class=o>=</span><span class=s>sasl</span>
-</code></pre></div><p>Below is a brief description of each of the configuration items above:</p>
-<ul>
-<li><code>authProvider.sasl</code>: Configures ZooKeeper to use the SASL authentication provider</li>
-<li><code>requireClientAuthScheme</code>: Configures ZooKeeper to require SASL for all client conntexts</li>
-</ul>
-<p>The final step is to create a <a href=https://docs.oracle.com/javase/7/docs/technotes/guides/security/jaas/JAASRefGuide.html>JAAS</a> configuration file that configures the ZooKeeper users and configures the
-JAAS <a href=https://docs.oracle.com/javase/7/docs/technotes/guides/security/jaas/JAASLMDevGuide.html>LoginModule</a> to use the appropriate credentials. To do this, run the following:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-plain data-lang=plain>touch ${KAFKA_HOME}/config/zookeeper_jaas.config
-</code></pre></div><p>And finally, we populate <code>${KAFKA_HOME}/config/zookeeper_jaas.config</code> with the following:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-scala data-lang=scala><span class=nc>Server</span> <span class=o>{</span>
-   <span class=n>org</span><span class=o>.</span><span class=n>apache</span><span class=o>.</span><span class=n>kafka</span><span class=o>.</span><span class=n>common</span><span class=o>.</span><span class=n>security</span><span class=o>.</span><span class=n>plain</span><span class=o>.</span><span class=nc>PlainLoginModule</span> <span class=n>required</span>
-   <span class=n>username</span><span class=o>=</span><span class=s>&#34;zookeeper&#34;</span>
-   <span class=n>password</span><span class=o>=</span><span class=s>&#34;zookeeper-secret&#34;</span>
-   <span class=n>user_zookeeper</span><span class=o>=</span><span class=s>&#34;zookeeper-secret&#34;</span><span class=o>;</span>
-<span class=o>};</span>
-</code></pre></div><p>The content of this file configures ZooKeeper to have a <code>zookeeper</code> user, which will be used by the Kafka Broker later
-to establish its connection to ZooKeeper.</p>
-<h3 id=step-2b-starting-zookeeper>Step 2b: Starting ZooKeeper</h3>
-<p>Before we can start ZooKeeper as per the Kafka QuickStart guide, we need to set
+Kafka and ZooKeeper, just skip the steps documented in this section.</p><p>The first step is to create a copy of the ZooKeeper configuration, reason being that we want to clearly separate our
+SASL vs. SASL-less configuration files. To do this, run the following:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-plain data-lang=plain><span class=line><span class=cl>cp ${KAFKA_HOME}/config/zookeeper.properties ${KAFKA_HOME}/config/zookeeper_sasl.properties
+</span></span></code></pre></div><p>The next step is to update <code>${KAFKA_HOME}/config/zookeeper_sasl.properties</code> so that it has the following contents
+appended to the very end:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-ini data-lang=ini><span class=line><span class=cl><span class=c1># SASL</span>
+</span></span><span class=line><span class=cl><span class=na>authProvider.sasl</span><span class=o>=</span><span class=s>org.apache.zookeeper.server.auth.SASLAuthenticationProvider</span>
+</span></span><span class=line><span class=cl><span class=na>requireClientAuthScheme</span><span class=o>=</span><span class=s>sasl</span>
+</span></span></code></pre></div><p>Below is a brief description of each of the configuration items above:</p><ul><li><code>authProvider.sasl</code>: Configures ZooKeeper to use the SASL authentication provider</li><li><code>requireClientAuthScheme</code>: Configures ZooKeeper to require SASL for all client conntexts</li></ul><p>The final step is to create a <a href=https://docs.oracle.com/javase/7/docs/technotes/guides/security/jaas/JAASRefGuide.html>JAAS</a> configuration file that configures the ZooKeeper users and configures the
+JAAS <a href=https://docs.oracle.com/javase/7/docs/technotes/guides/security/jaas/JAASLMDevGuide.html>LoginModule</a> to use the appropriate credentials. To do this, run the following:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-plain data-lang=plain><span class=line><span class=cl>touch ${KAFKA_HOME}/config/zookeeper_jaas.config
+</span></span></code></pre></div><p>And finally, we populate <code>${KAFKA_HOME}/config/zookeeper_jaas.config</code> with the following:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-scala data-lang=scala><span class=line><span class=cl><span class=nc>Server</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>   <span class=n>org</span><span class=o>.</span><span class=n>apache</span><span class=o>.</span><span class=n>kafka</span><span class=o>.</span><span class=n>common</span><span class=o>.</span><span class=n>security</span><span class=o>.</span><span class=n>plain</span><span class=o>.</span><span class=nc>PlainLoginModule</span> <span class=n>required</span>
+</span></span><span class=line><span class=cl>   <span class=n>username</span><span class=o>=</span><span class=s>&#34;zookeeper&#34;</span>
+</span></span><span class=line><span class=cl>   <span class=n>password</span><span class=o>=</span><span class=s>&#34;zookeeper-secret&#34;</span>
+</span></span><span class=line><span class=cl>   <span class=n>user_zookeeper</span><span class=o>=</span><span class=s>&#34;zookeeper-secret&#34;</span><span class=o>;</span>
+</span></span><span class=line><span class=cl><span class=o>};</span>
+</span></span></code></pre></div><p>The content of this file configures ZooKeeper to have a <code>zookeeper</code> user, which will be used by the Kafka Broker later
+to establish its connection to ZooKeeper.</p><h3 id=step-2b-starting-zookeeper>Step 2b: Starting ZooKeeper</h3><p>Before we can start ZooKeeper as per the Kafka QuickStart guide, we need to set
 the <code>KAFKA_OPTS</code> environment variable so that it will use the ZooKeeper-specific JAAS configuration file by running the
-following:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-plain data-lang=plain>export KAFKA_OPTS=&#34;-Djava.security.auth.login.config=${KAFKA_HOME}/config/zookeeper_jaas.config&#34;
-</code></pre></div><p>Once that environment variable is set, we can run the following to start ZooKeeper per the Kafka QuickStart guide:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-plain data-lang=plain>bin/zookeeper-server-start.sh config/zookeeper_sasl.properties
-</code></pre></div><p>At this point, assuming ZooKeeper starts up properly, you can safely move on to the next step.</p>
-<h3 id=step-2c-configuring-kafka-broker-for-sasl>Step 2c: Configuring Kafka Broker for SASL</h3>
-<p>The steps for updating the Kafka Broker to use SASL is identical to ZooKeeper, albeit the configuration file chnages are
+following:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-plain data-lang=plain><span class=line><span class=cl>export KAFKA_OPTS=&#34;-Djava.security.auth.login.config=${KAFKA_HOME}/config/zookeeper_jaas.config&#34;
+</span></span></code></pre></div><p>Once that environment variable is set, we can run the following to start ZooKeeper per the Kafka QuickStart guide:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-plain data-lang=plain><span class=line><span class=cl>bin/zookeeper-server-start.sh config/zookeeper_sasl.properties
+</span></span></code></pre></div><p>At this point, assuming ZooKeeper starts up properly, you can safely move on to the next step.</p><h3 id=step-2c-configuring-kafka-broker-for-sasl>Step 2c: Configuring Kafka Broker for SASL</h3><p>The steps for updating the Kafka Broker to use SASL is identical to ZooKeeper, albeit the configuration file chnages are
 slightly different <em>(as they are different systems being configured)</em>. Just like with ZooKeeper, we will create a copy
 of the Kafka Broker configuration file and update it for enabling SASL instead of modifying the original file. That
-being said, the first step is to create a copy of the Kafka Broker configuration. To do this, run the following:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-plain data-lang=plain>cp ${KAFKA_HOME}/config/server.properties ${KAFKA_HOME}/config/server_sasl.properties
-</code></pre></div><p>The next step is to update <code>${KAFKA_HOME}/config/server_sasl.properties</code> so that it has the following contents
-appended to the very end:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-ini data-lang=ini><span class=c1># SASL</span>
-<span class=na>sasl.enabled.mechanisms</span><span class=o>=</span><span class=s>PLAIN</span>
-<span class=na>sasl.mechanism.inter.broker.protocol</span><span class=o>=</span><span class=s>PLAIN</span>
-<span class=na>security.inter.broker.protocol</span><span class=o>=</span><span class=s>SASL_PLAINTEXT</span>
-<span class=na>listeners</span><span class=o>=</span><span class=s>SASL_PLAINTEXT://localhost:9092</span>
-<span class=na>advertised.listeners</span><span class=o>=</span><span class=s>SASL_PLAINTEXT://localhost:9092</span>
-</code></pre></div><p>As with ZooKeeper, below is a brief description of each of the configuration items above:</p>
-<ul>
-<li><code>sasl.enabled.mechanisms</code>: Enables the <code>SASL/PLAIN</code> SASL mechanism for communicating with the Kafka Broker</li>
-<li><code>sasl.mechanism.inter.broker.protocol</code>: Enables the <code>SASL/PLAIN</code> sasl mechamism for inter-broker communications</li>
-<li><code>security.inter.broker.protocol</code>: Configures <code>SASL/PLAIN</code> as the security protocol for inter-broker communications</li>
-<li><code>listeners</code>: Exposes a <code>SASL/PLAIN</code> REST API for the given host/port combination</li>
-<li><code>advertised.listeners</code>: Tells ZooKeeper which listeners are available for Kafka client connections</li>
-</ul>
-<p>As with ZooKeeper, the final step is to create a <a href=https://docs.oracle.com/javase/7/docs/technotes/guides/security/jaas/JAASRefGuide.html>JAAS</a> configuration file that configures the Kafka Broker users.
+being said, the first step is to create a copy of the Kafka Broker configuration. To do this, run the following:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-plain data-lang=plain><span class=line><span class=cl>cp ${KAFKA_HOME}/config/server.properties ${KAFKA_HOME}/config/server_sasl.properties
+</span></span></code></pre></div><p>The next step is to update <code>${KAFKA_HOME}/config/server_sasl.properties</code> so that it has the following contents
+appended to the very end:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-ini data-lang=ini><span class=line><span class=cl><span class=c1># SASL</span>
+</span></span><span class=line><span class=cl><span class=na>sasl.enabled.mechanisms</span><span class=o>=</span><span class=s>PLAIN</span>
+</span></span><span class=line><span class=cl><span class=na>sasl.mechanism.inter.broker.protocol</span><span class=o>=</span><span class=s>PLAIN</span>
+</span></span><span class=line><span class=cl><span class=na>security.inter.broker.protocol</span><span class=o>=</span><span class=s>SASL_PLAINTEXT</span>
+</span></span><span class=line><span class=cl><span class=na>listeners</span><span class=o>=</span><span class=s>SASL_PLAINTEXT://localhost:9092</span>
+</span></span><span class=line><span class=cl><span class=na>advertised.listeners</span><span class=o>=</span><span class=s>SASL_PLAINTEXT://localhost:9092</span>
+</span></span></code></pre></div><p>As with ZooKeeper, below is a brief description of each of the configuration items above:</p><ul><li><code>sasl.enabled.mechanisms</code>: Enables the <code>SASL/PLAIN</code> SASL mechanism for communicating with the Kafka Broker</li><li><code>sasl.mechanism.inter.broker.protocol</code>: Enables the <code>SASL/PLAIN</code> sasl mechamism for inter-broker communications</li><li><code>security.inter.broker.protocol</code>: Configures <code>SASL/PLAIN</code> as the security protocol for inter-broker communications</li><li><code>listeners</code>: Exposes a <code>SASL/PLAIN</code> REST API for the given host/port combination</li><li><code>advertised.listeners</code>: Tells ZooKeeper which listeners are available for Kafka client connections</li></ul><p>As with ZooKeeper, the final step is to create a <a href=https://docs.oracle.com/javase/7/docs/technotes/guides/security/jaas/JAASRefGuide.html>JAAS</a> configuration file that configures the Kafka Broker users.
 This file also is used to configure the credentials used by the Kafka Broker when establishing a connection to
-ZooKeeper, based on the content above. To do this, run the following:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-plain data-lang=plain>touch ${KAFKA_HOME}/config/server_jaas.config
-</code></pre></div><p>And finally, we populate <code>${KAFKA_HOME}/config/server_jaas.config</code> with the following:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-scala data-lang=scala><span class=nc>KafkaServer</span> <span class=o>{</span>
-   <span class=n>org</span><span class=o>.</span><span class=n>apache</span><span class=o>.</span><span class=n>kafka</span><span class=o>.</span><span class=n>common</span><span class=o>.</span><span class=n>security</span><span class=o>.</span><span class=n>plain</span><span class=o>.</span><span class=nc>PlainLoginModule</span> <span class=n>required</span>
-   <span class=n>username</span><span class=o>=</span><span class=s>&#34;admin&#34;</span>
-   <span class=n>password</span><span class=o>=</span><span class=s>&#34;admin-secret&#34;</span>
-   <span class=n>user_admin</span><span class=o>=</span><span class=s>&#34;admin-secret&#34;</span>
-   <span class=n>user_consumer</span><span class=o>=</span><span class=s>&#34;consumer-secret&#34;</span>
-   <span class=n>user_producer</span><span class=o>=</span><span class=s>&#34;producer-secret&#34;</span><span class=o>;</span>
-<span class=o>};</span>
-
-<span class=nc>Client</span> <span class=o>{</span>
-   <span class=n>org</span><span class=o>.</span><span class=n>apache</span><span class=o>.</span><span class=n>kafka</span><span class=o>.</span><span class=n>common</span><span class=o>.</span><span class=n>security</span><span class=o>.</span><span class=n>plain</span><span class=o>.</span><span class=nc>PlainLoginModule</span> <span class=n>required</span>
-   <span class=n>username</span><span class=o>=</span><span class=s>&#34;zookeeper&#34;</span>
-   <span class=n>password</span><span class=o>=</span><span class=s>&#34;zookeeper-secret&#34;</span><span class=o>;</span>
-<span class=o>};</span>
-</code></pre></div><p>The content of this file configures three users for connecting to the Kafka Broker
+ZooKeeper, based on the content above. To do this, run the following:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-plain data-lang=plain><span class=line><span class=cl>touch ${KAFKA_HOME}/config/server_jaas.config
+</span></span></code></pre></div><p>And finally, we populate <code>${KAFKA_HOME}/config/server_jaas.config</code> with the following:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-scala data-lang=scala><span class=line><span class=cl><span class=nc>KafkaServer</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>   <span class=n>org</span><span class=o>.</span><span class=n>apache</span><span class=o>.</span><span class=n>kafka</span><span class=o>.</span><span class=n>common</span><span class=o>.</span><span class=n>security</span><span class=o>.</span><span class=n>plain</span><span class=o>.</span><span class=nc>PlainLoginModule</span> <span class=n>required</span>
+</span></span><span class=line><span class=cl>   <span class=n>username</span><span class=o>=</span><span class=s>&#34;admin&#34;</span>
+</span></span><span class=line><span class=cl>   <span class=n>password</span><span class=o>=</span><span class=s>&#34;admin-secret&#34;</span>
+</span></span><span class=line><span class=cl>   <span class=n>user_admin</span><span class=o>=</span><span class=s>&#34;admin-secret&#34;</span>
+</span></span><span class=line><span class=cl>   <span class=n>user_consumer</span><span class=o>=</span><span class=s>&#34;consumer-secret&#34;</span>
+</span></span><span class=line><span class=cl>   <span class=n>user_producer</span><span class=o>=</span><span class=s>&#34;producer-secret&#34;</span><span class=o>;</span>
+</span></span><span class=line><span class=cl><span class=o>};</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nc>Client</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>   <span class=n>org</span><span class=o>.</span><span class=n>apache</span><span class=o>.</span><span class=n>kafka</span><span class=o>.</span><span class=n>common</span><span class=o>.</span><span class=n>security</span><span class=o>.</span><span class=n>plain</span><span class=o>.</span><span class=nc>PlainLoginModule</span> <span class=n>required</span>
+</span></span><span class=line><span class=cl>   <span class=n>username</span><span class=o>=</span><span class=s>&#34;zookeeper&#34;</span>
+</span></span><span class=line><span class=cl>   <span class=n>password</span><span class=o>=</span><span class=s>&#34;zookeeper-secret&#34;</span><span class=o>;</span>
+</span></span><span class=line><span class=cl><span class=o>};</span>
+</span></span></code></pre></div><p>The content of this file configures three users for connecting to the Kafka Broker
 <em>(<code>admin</code>, <code>consumer</code> and <code>producer</code>)</em>. This file also configures the ZooKeeper client credentials to use the
-<code>zookeeper</code> user configured in the ZooKeeper section above.</p>
-<h3 id=step-2d-starting-the-kafka-broker>Step 2d: Starting the Kafka Broker</h3>
-<p>Before we can start the Kafka Broker as per the Kafka QuickStart guide, we need to set
+<code>zookeeper</code> user configured in the ZooKeeper section above.</p><h3 id=step-2d-starting-the-kafka-broker>Step 2d: Starting the Kafka Broker</h3><p>Before we can start the Kafka Broker as per the Kafka QuickStart guide, we need to set
 the <code>KAFKA_OPTS</code> environment variable so that it will use the Kafka Broker-specific JAAS configuration file by running
-the following:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-plain data-lang=plain>export KAFKA_OPTS=&#34;-Djava.security.auth.login.config=${KAFKA_HOME}/config/server_jaas.config&#34;
-</code></pre></div><p>Once that environment variable is set, we can run the following to start the Kafka Broker per the Kafka QuickStart
-guide:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-plain data-lang=plain>bin/kafka-server-start.sh config/server_sasl.properties
-</code></pre></div><p>At this point, assuming the Kafka Broker starts up properly, you can safely move on to the next step.</p>
-<h2 id=step-3-create-a-topic-to-store-your-events>Step 3: Create a Topic to Store Your Events</h2>
-<p>Each step from this point forward will be mostly identical, in that we will be configuring Kafka Clients for connections
+the following:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-plain data-lang=plain><span class=line><span class=cl>export KAFKA_OPTS=&#34;-Djava.security.auth.login.config=${KAFKA_HOME}/config/server_jaas.config&#34;
+</span></span></code></pre></div><p>Once that environment variable is set, we can run the following to start the Kafka Broker per the Kafka QuickStart
+guide:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-plain data-lang=plain><span class=line><span class=cl>bin/kafka-server-start.sh config/server_sasl.properties
+</span></span></code></pre></div><p>At this point, assuming the Kafka Broker starts up properly, you can safely move on to the next step.</p><h2 id=step-3-create-a-topic-to-store-your-events>Step 3: Create a Topic to Store Your Events</h2><p>Each step from this point forward will be mostly identical, in that we will be configuring Kafka Clients for connections
 to the Kafka Broker to perform Kafka interactions. And per the Kafka QuickStart guide, the first step is to create a
 topic for us to interact with. Since SASL is now enabled for our Kafka Broker, we must follow the necessaty steps to
-configure our Kafka Client to use SASL.</p>
-<p>Since the Kafka QuickStart guide <strong>does not</strong> use a configuration file for the Kafka Client used to create the topic, we
-will create a very simplified Kafka Client configuration file by performing the following:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-plain data-lang=plain>touch ${KAFKA_HOME}/config/admin_sasl.properties
-</code></pre></div><p>We then need to populate this file with the following content, to tell the Kafka Client to use SASL:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-ini data-lang=ini><span class=c1># SASL</span>
-<span class=na>security.protocol</span><span class=o>=</span><span class=s>SASL_PLAINTEXT</span>
-<span class=na>sasl.mechanism</span><span class=o>=</span><span class=s>PLAIN</span>
-</code></pre></div><p>The next step is to create a JAAS file that configures the credentials used by the Kafka Client to connect to the Kafka
-Broker. To do this, perform the following:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-plain data-lang=plain>touch ${KAFKA_HOME}/config/admin_jaas.config
-</code></pre></div><p>And as we&rsquo;ve done a few times already, we need to populate the Kafka Client credentials into the file:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-scala data-lang=scala><span class=nc>KafkaClient</span> <span class=o>{</span>
-   <span class=n>org</span><span class=o>.</span><span class=n>apache</span><span class=o>.</span><span class=n>kafka</span><span class=o>.</span><span class=n>common</span><span class=o>.</span><span class=n>security</span><span class=o>.</span><span class=n>plain</span><span class=o>.</span><span class=nc>PlainLoginModule</span> <span class=n>required</span>
-   <span class=n>username</span><span class=o>=</span><span class=s>&#34;admin&#34;</span>
-   <span class=n>password</span><span class=o>=</span><span class=s>&#34;admin-secret&#34;</span><span class=o>;</span>
-<span class=o>};</span>
-</code></pre></div><p>Now that we have our Kafka Client configuration file on disk and the necessary JAAS file as well, we can follow the same
-steps we have a couple times already and tell Kafka to use our JAAS file. To do this, we need to set the <code>KAFKA_OPTS</code> environment variable so that it will use the necessary JAAS configuration file by running the following:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-plain data-lang=plain>export KAFKA_OPTS=&#34;-Djava.security.auth.login.config=${KAFKA_HOME}/config/admin_jaas.config&#34;
-</code></pre></div><p>And finally, we can run the Kafka Client command to create our topic per the Kafka QuickStart guide:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-plain data-lang=plain>bin/kafka-topics.sh --create --partitions 1 --replication-factor 1 \
-    --topic quickstart-events --bootstrap-server localhost:9092 \
-    --command-config config/admin_sasl.properties
-</code></pre></div><p>The only difference between the command used in the Kafka QuickStart guide and this guide is that we now must use the
+configure our Kafka Client to use SASL.</p><p>Since the Kafka QuickStart guide <strong>does not</strong> use a configuration file for the Kafka Client used to create the topic, we
+will create a very simplified Kafka Client configuration file by performing the following:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-plain data-lang=plain><span class=line><span class=cl>touch ${KAFKA_HOME}/config/admin_sasl.properties
+</span></span></code></pre></div><p>We then need to populate this file with the following content, to tell the Kafka Client to use SASL:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-ini data-lang=ini><span class=line><span class=cl><span class=c1># SASL</span>
+</span></span><span class=line><span class=cl><span class=na>security.protocol</span><span class=o>=</span><span class=s>SASL_PLAINTEXT</span>
+</span></span><span class=line><span class=cl><span class=na>sasl.mechanism</span><span class=o>=</span><span class=s>PLAIN</span>
+</span></span></code></pre></div><p>The next step is to create a JAAS file that configures the credentials used by the Kafka Client to connect to the Kafka
+Broker. To do this, perform the following:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-plain data-lang=plain><span class=line><span class=cl>touch ${KAFKA_HOME}/config/admin_jaas.config
+</span></span></code></pre></div><p>And as we&rsquo;ve done a few times already, we need to populate the Kafka Client credentials into the file:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-scala data-lang=scala><span class=line><span class=cl><span class=nc>KafkaClient</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>   <span class=n>org</span><span class=o>.</span><span class=n>apache</span><span class=o>.</span><span class=n>kafka</span><span class=o>.</span><span class=n>common</span><span class=o>.</span><span class=n>security</span><span class=o>.</span><span class=n>plain</span><span class=o>.</span><span class=nc>PlainLoginModule</span> <span class=n>required</span>
+</span></span><span class=line><span class=cl>   <span class=n>username</span><span class=o>=</span><span class=s>&#34;admin&#34;</span>
+</span></span><span class=line><span class=cl>   <span class=n>password</span><span class=o>=</span><span class=s>&#34;admin-secret&#34;</span><span class=o>;</span>
+</span></span><span class=line><span class=cl><span class=o>};</span>
+</span></span></code></pre></div><p>Now that we have our Kafka Client configuration file on disk and the necessary JAAS file as well, we can follow the same
+steps we have a couple times already and tell Kafka to use our JAAS file. To do this, we need to set the <code>KAFKA_OPTS</code> environment variable so that it will use the necessary JAAS configuration file by running the following:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-plain data-lang=plain><span class=line><span class=cl>export KAFKA_OPTS=&#34;-Djava.security.auth.login.config=${KAFKA_HOME}/config/admin_jaas.config&#34;
+</span></span></code></pre></div><p>And finally, we can run the Kafka Client command to create our topic per the Kafka QuickStart guide:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-plain data-lang=plain><span class=line><span class=cl>bin/kafka-topics.sh --create --partitions 1 --replication-factor 1 \
+</span></span><span class=line><span class=cl>    --topic quickstart-events --bootstrap-server localhost:9092 \
+</span></span><span class=line><span class=cl>    --command-config config/admin_sasl.properties
+</span></span></code></pre></div><p>The only difference between the command used in the Kafka QuickStart guide and this guide is that we now must use the
 <code>--command-config</code> flag to tell it to use the Kafka Client configuration file we created above. As long as the command
 runs without issue, we now have a Kafka topic to interact with to complete the rest of the Kafka QuickStart using SASL
-authentication.</p>
-<h2 id=step-4-write-some-events-into-the-topic>Step 4: Write Some Events Into the Topic</h2>
-<p>This step will become somewhat repetitive, as we will perform the same steps we have a few times already. But to be
+authentication.</p><h2 id=step-4-write-some-events-into-the-topic>Step 4: Write Some Events Into the Topic</h2><p>This step will become somewhat repetitive, as we will perform the same steps we have a few times already. But to be
 thorough, we will repeat the entire process. The first step is to create a Kafka Client configuration file based on the
 one provided by the Kafka QuickStart guide. The purpose is to clearly separate our SASL and non-SASL configuration
-files. To do this, perform the following:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-plain data-lang=plain>cp ${KAFKA_HOME}/config/producer.properties ${KAFKA_HOME}/config/producer_sasl.properties
-</code></pre></div><p>The next step is to append the following content to <code>${KAFKA_HOME}/config/producer_sasl.properties</code>:</p>
-<pre tabindex=0><code class=language-properties data-lang=properties># SASL
-security.protocol=SASL_PLAINTEXT
-sasl.mechanism=PLAIN
-</code></pre><p>The next step is to create our JAAS file that will contain the Kafka Client credentials used by our producer client. To
-do this, perform the following:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-plain data-lang=plain>touch ${KAFKA_HOME}/config/producer_jaas.config
-</code></pre></div><p>And as we&rsquo;ve done a few times, we need to populate this file with the Kafka Client credentials for our producer:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-scala data-lang=scala><span class=nc>KafkaClient</span> <span class=o>{</span>
-   <span class=n>org</span><span class=o>.</span><span class=n>apache</span><span class=o>.</span><span class=n>kafka</span><span class=o>.</span><span class=n>common</span><span class=o>.</span><span class=n>security</span><span class=o>.</span><span class=n>plain</span><span class=o>.</span><span class=nc>PlainLoginModule</span> <span class=n>required</span>
-   <span class=n>username</span><span class=o>=</span><span class=s>&#34;producer&#34;</span>
-   <span class=n>password</span><span class=o>=</span><span class=s>&#34;producer-secret&#34;</span><span class=o>;</span>
-<span class=o>};</span>
-</code></pre></div><p>This file configures the Kafka Client to use the <code>producer</code> credentials when connecting to the Kafka Broker. And again,
+files. To do this, perform the following:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-plain data-lang=plain><span class=line><span class=cl>cp ${KAFKA_HOME}/config/producer.properties ${KAFKA_HOME}/config/producer_sasl.properties
+</span></span></code></pre></div><p>The next step is to append the following content to <code>${KAFKA_HOME}/config/producer_sasl.properties</code>:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-properties data-lang=properties><span class=line><span class=cl><span class=c1># SASL</span>
+</span></span><span class=line><span class=cl><span class=na>security.protocol</span><span class=o>=</span><span class=s>SASL_PLAINTEXT</span>
+</span></span><span class=line><span class=cl><span class=na>sasl.mechanism</span><span class=o>=</span><span class=s>PLAIN</span>
+</span></span></code></pre></div><p>The next step is to create our JAAS file that will contain the Kafka Client credentials used by our producer client. To
+do this, perform the following:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-plain data-lang=plain><span class=line><span class=cl>touch ${KAFKA_HOME}/config/producer_jaas.config
+</span></span></code></pre></div><p>And as we&rsquo;ve done a few times, we need to populate this file with the Kafka Client credentials for our producer:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-scala data-lang=scala><span class=line><span class=cl><span class=nc>KafkaClient</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>   <span class=n>org</span><span class=o>.</span><span class=n>apache</span><span class=o>.</span><span class=n>kafka</span><span class=o>.</span><span class=n>common</span><span class=o>.</span><span class=n>security</span><span class=o>.</span><span class=n>plain</span><span class=o>.</span><span class=nc>PlainLoginModule</span> <span class=n>required</span>
+</span></span><span class=line><span class=cl>   <span class=n>username</span><span class=o>=</span><span class=s>&#34;producer&#34;</span>
+</span></span><span class=line><span class=cl>   <span class=n>password</span><span class=o>=</span><span class=s>&#34;producer-secret&#34;</span><span class=o>;</span>
+</span></span><span class=line><span class=cl><span class=o>};</span>
+</span></span></code></pre></div><p>This file configures the Kafka Client to use the <code>producer</code> credentials when connecting to the Kafka Broker. And again,
 as we&rsquo;ve done a few times already we now need to tell our Kafka Client command how which JAAS file to use for our Kafka
 Client, which involves setting the <code>KAFKA_OPTS</code> environment variable so that it will use the necessary JAAS
-configuration file. To do this, run the following:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-plain data-lang=plain>export KAFKA_OPTS=&#34;-Djava.security.auth.login.config=${KAFKA_HOME}/config/producer_jaas.config&#34;
-</code></pre></div><p>We can now pick up where the Kafka QuickStart guide continues by running the producer Kafka Client command and altering
-it to use our Kafka Client configuration file configured for SASL by using the following:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-plain data-lang=plain>bin/kafka-console-producer.sh --topic quickstart-events --bootstrap-server localhost:9092 \
-    --producer.config config/producer_sasl.properties
-</code></pre></div><p>If this command runs successfully, it will sit there and wait for input. Type in a few <em>&ldquo;events&rdquo;</em> by typing some string
+configuration file. To do this, run the following:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-plain data-lang=plain><span class=line><span class=cl>export KAFKA_OPTS=&#34;-Djava.security.auth.login.config=${KAFKA_HOME}/config/producer_jaas.config&#34;
+</span></span></code></pre></div><p>We can now pick up where the Kafka QuickStart guide continues by running the producer Kafka Client command and altering
+it to use our Kafka Client configuration file configured for SASL by using the following:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-plain data-lang=plain><span class=line><span class=cl>bin/kafka-console-producer.sh --topic quickstart-events --bootstrap-server localhost:9092 \
+</span></span><span class=line><span class=cl>    --producer.config config/producer_sasl.properties
+</span></span></code></pre></div><p>If this command runs successfully, it will sit there and wait for input. Type in a few <em>&ldquo;events&rdquo;</em> by typing some string
 and hitting <code>Enter</code> to submit the event. After submitting a few events, we&rsquo;re now ready to pick up with the last
-section of our guide by using a Kafka Client to consume these newly-produced events.</p>
-<h2 id=step-5-read-the-events>Step 5: Read the Events</h2>
-<p>The last step in our Kafka QuickStart guide is a repeat of the same process we&rsquo;ve done a few times already, but
+section of our guide by using a Kafka Client to consume these newly-produced events.</p><h2 id=step-5-read-the-events>Step 5: Read the Events</h2><p>The last step in our Kafka QuickStart guide is a repeat of the same process we&rsquo;ve done a few times already, but
 thankfully for the last time. The good news is that by now you should have an idea of what to expect, and repeating
-this process should drive it home what is required to configure a Kafka Client for SASL.</p>
-<p>The first step is to create a Kafka Client configuration file based on the
+this process should drive it home what is required to configure a Kafka Client for SASL.</p><p>The first step is to create a Kafka Client configuration file based on the
 one provided by the Kafka QuickStart guide. The purpose is to clearly separate our SASL and non-SASL configuration
-files. To do this, perform the following:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-plain data-lang=plain>cp ${KAFKA_HOME}/config/consumer.properties ${KAFKA_HOME}/config/consumer_sasl.properties
-</code></pre></div><p>The next step is to append the following content to <code>${KAFKA_HOME}/config/consumer_sasl.properties</code>:</p>
-<pre tabindex=0><code class=language-properties data-lang=properties># SASL
-security.protocol=SASL_PLAINTEXT
-sasl.mechanism=PLAIN
-</code></pre><p>The next step is to create our JAAS file that will contain the Kafka Client credentials used by our producer client. To
-do this, perform the following:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-plain data-lang=plain>touch ${KAFKA_HOME}/config/consumer_jaas.config
-</code></pre></div><p>And as we&rsquo;ve done a few times, we need to populate this file with the Kafka Client credentials for our producer:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-scala data-lang=scala><span class=nc>KafkaClient</span> <span class=o>{</span>
-   <span class=n>org</span><span class=o>.</span><span class=n>apache</span><span class=o>.</span><span class=n>kafka</span><span class=o>.</span><span class=n>common</span><span class=o>.</span><span class=n>security</span><span class=o>.</span><span class=n>plain</span><span class=o>.</span><span class=nc>PlainLoginModule</span> <span class=n>required</span>
-   <span class=n>username</span><span class=o>=</span><span class=s>&#34;consumer&#34;</span>
-   <span class=n>password</span><span class=o>=</span><span class=s>&#34;consumer-secret&#34;</span><span class=o>;</span>
-<span class=o>};</span>
-</code></pre></div><p>This file configures the Kafka Client to use the <code>consumer</code> credentials when connecting to the Kafka Broker. And again,
+files. To do this, perform the following:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-plain data-lang=plain><span class=line><span class=cl>cp ${KAFKA_HOME}/config/consumer.properties ${KAFKA_HOME}/config/consumer_sasl.properties
+</span></span></code></pre></div><p>The next step is to append the following content to <code>${KAFKA_HOME}/config/consumer_sasl.properties</code>:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-properties data-lang=properties><span class=line><span class=cl><span class=c1># SASL</span>
+</span></span><span class=line><span class=cl><span class=na>security.protocol</span><span class=o>=</span><span class=s>SASL_PLAINTEXT</span>
+</span></span><span class=line><span class=cl><span class=na>sasl.mechanism</span><span class=o>=</span><span class=s>PLAIN</span>
+</span></span></code></pre></div><p>The next step is to create our JAAS file that will contain the Kafka Client credentials used by our producer client. To
+do this, perform the following:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-plain data-lang=plain><span class=line><span class=cl>touch ${KAFKA_HOME}/config/consumer_jaas.config
+</span></span></code></pre></div><p>And as we&rsquo;ve done a few times, we need to populate this file with the Kafka Client credentials for our producer:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-scala data-lang=scala><span class=line><span class=cl><span class=nc>KafkaClient</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>   <span class=n>org</span><span class=o>.</span><span class=n>apache</span><span class=o>.</span><span class=n>kafka</span><span class=o>.</span><span class=n>common</span><span class=o>.</span><span class=n>security</span><span class=o>.</span><span class=n>plain</span><span class=o>.</span><span class=nc>PlainLoginModule</span> <span class=n>required</span>
+</span></span><span class=line><span class=cl>   <span class=n>username</span><span class=o>=</span><span class=s>&#34;consumer&#34;</span>
+</span></span><span class=line><span class=cl>   <span class=n>password</span><span class=o>=</span><span class=s>&#34;consumer-secret&#34;</span><span class=o>;</span>
+</span></span><span class=line><span class=cl><span class=o>};</span>
+</span></span></code></pre></div><p>This file configures the Kafka Client to use the <code>consumer</code> credentials when connecting to the Kafka Broker. And again,
 as we&rsquo;ve done a few times already we now need to tell our Kafka Client command how which JAAS file to use for our Kafka
 Client, which involves setting the <code>KAFKA_OPTS</code> environment variable so that it will use the necessary JAAS
-configuration file. To do this, run the following:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-plain data-lang=plain>export KAFKA_OPTS=&#34;-Djava.security.auth.login.config=${KAFKA_HOME}/config/consumer_jaas.config&#34;
-</code></pre></div><p>We can now pick up where the Kafka QuickStart guide continues by running the producer Kafka Client command and altering
-it to use our Kafka Client configuration file configured for SASL by using the following:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-plain data-lang=plain>bin/kafka-console-consumer.sh --topic quickstart-events --from-beginning --bootstrap-server localhost:9092 \
-   --consumer.config config/consumer_sasl.properties
-</code></pre></div><p>If this command runs successfully, it will print all events you created in the previous step and sit there waiting for
-new events to be produced.</p>
-<p>At this point, we have successfully gone through the Kafka QuickStart guide but with the necessary extension work to
+configuration file. To do this, run the following:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-plain data-lang=plain><span class=line><span class=cl>export KAFKA_OPTS=&#34;-Djava.security.auth.login.config=${KAFKA_HOME}/config/consumer_jaas.config&#34;
+</span></span></code></pre></div><p>We can now pick up where the Kafka QuickStart guide continues by running the producer Kafka Client command and altering
+it to use our Kafka Client configuration file configured for SASL by using the following:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-plain data-lang=plain><span class=line><span class=cl>bin/kafka-console-consumer.sh --topic quickstart-events --from-beginning --bootstrap-server localhost:9092 \
+</span></span><span class=line><span class=cl>   --consumer.config config/consumer_sasl.properties
+</span></span></code></pre></div><p>If this command runs successfully, it will print all events you created in the previous step and sit there waiting for
+new events to be produced.</p><p>At this point, we have successfully gone through the Kafka QuickStart guide but with the necessary extension work to
 enable and use SASL security for our Kafka Installation. Pat yourself on the back, pour one out for the homies and
-let&rsquo;s wrap this up.</p>
-<h2 id=deviating-from-the-happy-path>Deviating From the Happy Path</h2>
-<p>It must be said that this SASL-based extension to the Kafka QuickStart guide only followed the <em>happy path</em> but there is
+let&rsquo;s wrap this up.</p><h2 id=deviating-from-the-happy-path>Deviating From the Happy Path</h2><p>It must be said that this SASL-based extension to the Kafka QuickStart guide only followed the <em>happy path</em> but there is
 some utility in seeing what happens whenever we deviate from the happy path. If you would like to see some of what
 failing SASL looks like, feel free to take any of the commands we ran above starting the Kafka components and using the
 non-SASL version. For example, instead of using <code>${KAFKA_HOME}/config/server_sasl.properties</code> when starting up the
 Kafka Broker, use <code>${KAFKA_HOME}/config/server.properties</code> and you should see that the Kafka Broker is unable to
-connect to ZooKeeper.</p>
-<h2 id=simplifying-the-process>Simplifying the Process</h2>
-<p>For each Kafka component above, especially the plethora of Kafka Clients we configured, there was a very consistent and
+connect to ZooKeeper.</p><h2 id=simplifying-the-process>Simplifying the Process</h2><p>For each Kafka component above, especially the plethora of Kafka Clients we configured, there was a very consistent and
 repeatable process that was followed. That being said, we can break down the SASLification <em>(I made that up)</em> into the
-following steps:</p>
-<ol>
-<li>Configure the Kafka component to enable/require/use SASL <em>(component-specific)</em></li>
-<li>Create a JAAS file with the SASL credentials for the component to use</li>
-<li>Configure the environment to use the JAAS file <em>(Set the <code>KAFKA_OPTS</code> environment variable)</em></li>
-<li>Run the Kafka component with the appropriate configuration file</li>
-</ol>
-<p>There is even one more simplification that could be used in many cases and that&rsquo;s leveraging the <code>sasl.jaas.config</code>
+following steps:</p><ol><li>Configure the Kafka component to enable/require/use SASL <em>(component-specific)</em></li><li>Create a JAAS file with the SASL credentials for the component to use</li><li>Configure the environment to use the JAAS file <em>(Set the <code>KAFKA_OPTS</code> environment variable)</em></li><li>Run the Kafka component with the appropriate configuration file</li></ol><p>There is even one more simplification that could be used in many cases and that&rsquo;s leveraging the <code>sasl.jaas.config</code>
 configuration option in the Kafka conifguration file to throw your JAAS configuration into it. So instead of having a
 separate JAAS file and having to set the <code>KAFKA_OPTS</code> environment variable, you could omit that step and just set the
 <code>sasl.jaas.config</code>. For example, in <em>Step 5</em> we configured a Kafka Client for the consumer and we could just has easily
-used the following content for <code>${KAFKA_HOME}/config/consumer_sasl.properties</code>:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-ini data-lang=ini><span class=na>security.protocol</span><span class=o>=</span><span class=s>SASL_PLAINTEXT</span>
-<span class=na>sasl.mechanism</span><span class=o>=</span><span class=s>PLAIN</span>
-<span class=na>sasl.jaas.config</span><span class=o>=</span><span class=s>org.apache.kafka.common.security.plain.PlainLoginModule required username=&#34;consumer&#34; password=&#34;consumer-secret&#34;;</span>
-</code></pre></div><p>As with most things, there are a few different ways to accomplish the same thing but for teaching purposes it made sense
+used the following content for <code>${KAFKA_HOME}/config/consumer_sasl.properties</code>:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-ini data-lang=ini><span class=line><span class=cl><span class=na>security.protocol</span><span class=o>=</span><span class=s>SASL_PLAINTEXT</span>
+</span></span><span class=line><span class=cl><span class=na>sasl.mechanism</span><span class=o>=</span><span class=s>PLAIN</span>
+</span></span><span class=line><span class=cl><span class=na>sasl.jaas.config</span><span class=o>=</span><span class=s>org.apache.kafka.common.security.plain.PlainLoginModule required username=&#34;consumer&#34; password=&#34;consumer-secret&#34;;</span>
+</span></span></code></pre></div><p>As with most things, there are a few different ways to accomplish the same thing but for teaching purposes it made sense
 to break things up into individual chunks instead of combining them. But at least now you know how you can simplify the
-process.</p>
-<h2 id=in-closing>In Closing</h2>
-<p>When I first got into Kafka, the Kafka QuickStart guide simplified the process greatly and I am forever appreciative.
+process.</p><h2 id=in-closing>In Closing</h2><p>When I first got into Kafka, the Kafka QuickStart guide simplified the process greatly and I am forever appreciative.
 But as I wanted to learn more about enabling SASL, there wasn&rsquo;t a simplified document that provided the same value. I
-hope that I was able to provide that for you, and that you enjoyed the journey as much as I did. Good luck!</p>
-</div>
-<div class=post-footer>
-<div class=info>
-<span class=separator><a class=tag href=/tags/article/>article</a><a class=tag href=/tags/kafka/>kafka</a><a class=tag href=/tags/technology/>technology</a><a class=tag href=/tags/tutorial/>tutorial</a></span>
-</div>
-</div>
-<div id=fb_comments_container>
-<h2>comments</h2>
-<div id=disqus_thread></div>
-<script type=application/javascript>var disqus_config=function(){};(function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById('disqus_thread').innerHTML='Disqus comments not available by default when the website is previewed locally.';return}var b=document,a=b.createElement('script');a.async=!0,a.src='//discuss-thiswith-me.disqus.com/embed.js',a.setAttribute('data-timestamp',+new Date),(b.head||b.body).appendChild(a)})()</script>
-<noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript>
-<a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a>
-</div>
-</div>
-</div>
-</div>
-</main>
-</div><footer class="footer footer--base">
-<div class=by_farbox>
-<ul class=footer__list>
-<li class=footer__item>
-&copy;
-Copyright 2021 Jeremy Whitlock. All rights reserved.
-</li>
-</ul>
-</div>
-</footer>
-<script type=text/javascript src=/js/medium-zoom.min.71100d84fab0ad794b8399a66ac810700cc78d703f715dc10af4d7ba7b761362.js integrity="sha256-cRANhPqwrXlLg5mmasgQcAzHjXA/cV3BCvTXunt2E2I=" crossorigin=anonymous></script>
+hope that I was able to provide that for you, and that you enjoyed the journey as much as I did. Good luck!</p></div><div class=post-footer><div class=info><span class=separator><a class=tag href=/tags/article/>article</a><a class=tag href=/tags/kafka/>kafka</a><a class=tag href=/tags/technology/>technology</a><a class=tag href=/tags/tutorial/>tutorial</a></span></div></div><div id=fb_comments_container><h2>comments</h2><div id=disqus_thread></div><script type=application/javascript>window.disqus_config=function(){},function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById("disqus_thread").innerHTML="Disqus comments not available by default when the website is previewed locally.";return}var t=document,e=t.createElement("script");e.async=!0,e.src="//discuss-thiswith-me.disqus.com/embed.js",e.setAttribute("data-timestamp",+new Date),(t.head||t.body).appendChild(e)}()</script><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript><a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a></div></div></div></div></main></div><footer class="footer footer--base"><div class=by_farbox><ul class=footer__list><li class=footer__item>&copy;
+Copyright 2021 Jeremy Whitlock. All rights reserved.</li></ul></div></footer><script type=text/javascript src=/js/medium-zoom.min.44288fd315b6cda68c1f4743caad56535c0f81a5b5a672f385e82b3896575c1d.js integrity="sha256-RCiP0xW2zaaMH0dDyq1WU1wPgaW1pnLzhegrOJZXXB0=" crossorigin=anonymous></script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-DPVJB17EXD"></script>
-<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date),gtag('config','G-DPVJB17EXD')</script>
-</body>
-</html>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-DPVJB17EXD")</script></body></html>
