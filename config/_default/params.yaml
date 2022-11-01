@@ -4,6 +4,7 @@ contentratio: 0.7
 copyright: Copyright 2021 Jeremy Whitlock. All rights reserved.
 customCss:
 - css/syntax.css
+- css/theme.overrides.css
 description: Let's discuss this...
 favicon: favicons/
 gtagId: G-DPVJB17EXD
